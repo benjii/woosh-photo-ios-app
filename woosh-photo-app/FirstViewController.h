@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FirstViewController : UIViewController
+@interface FirstViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UIImageView *imgView;
+
+-(IBAction) selectPhotographButtonTapped:(id)sender;
+//-(IBAction) takeWithCameraButtonClicked:(id)sender;
+
+-(IBAction) clearPhoto:(id)sender;
 
 @end

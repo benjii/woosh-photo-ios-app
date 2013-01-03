@@ -29,6 +29,7 @@
 		B5B73FCF16929105008A8BBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B73F9C16929105008A8BBC /* Foundation.framework */; };
 		B5B73FD716929105008A8BBC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B5B73FD516929105008A8BBC /* InfoPlist.strings */; };
 		B5B73FDA16929105008A8BBC /* woosh_photo_appTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B73FD916929105008A8BBC /* woosh_photo_appTests.m */; };
+		B5E3AB31169293F30076A99E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5E3AB30169293F30076A99E /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		B5B73FD616929105008A8BBC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B5B73FD816929105008A8BBC /* woosh_photo_appTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = woosh_photo_appTests.h; sourceTree = "<group>"; };
 		B5B73FD916929105008A8BBC /* woosh_photo_appTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = woosh_photo_appTests.m; sourceTree = "<group>"; };
+		B5E3AB30169293F30076A99E /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5E3AB31169293F30076A99E /* CoreLocation.framework in Frameworks */,
 				B5B73F9B16929105008A8BBC /* UIKit.framework in Frameworks */,
 				B5B73F9D16929105008A8BBC /* Foundation.framework in Frameworks */,
 				B5B73F9F16929105008A8BBC /* CoreGraphics.framework in Frameworks */,
@@ -119,6 +122,7 @@
 		B5B73F9916929105008A8BBC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B5E3AB30169293F30076A99E /* CoreLocation.framework */,
 				B5B73F9A16929105008A8BBC /* UIKit.framework */,
 				B5B73F9C16929105008A8BBC /* Foundation.framework */,
 				B5B73F9E16929105008A8BBC /* CoreGraphics.framework */,
@@ -415,6 +419,7 @@
 				GCC_PREFIX_HEADER = "woosh-photo-app/woosh-photo-app-Prefix.pch";
 				INFOPLIST_FILE = "woosh-photo-app/woosh-photo-app-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -426,6 +431,7 @@
 				GCC_PREFIX_HEADER = "woosh-photo-app/woosh-photo-app-Prefix.pch";
 				INFOPLIST_FILE = "woosh-photo-app/woosh-photo-app-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -483,6 +489,7 @@
 				B5B73FDF16929105008A8BBC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B5B73FE016929105008A8BBC /* Build configuration list for PBXNativeTarget "woosh-photo-appTests" */ = {
 			isa = XCConfigurationList;
@@ -491,6 +498,7 @@
 				B5B73FE216929105008A8BBC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
