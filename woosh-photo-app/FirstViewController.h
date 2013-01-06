@@ -11,10 +11,11 @@
 @interface FirstViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *scanOrClearButton;
 
 -(IBAction) selectPhotographButtonTapped:(id)sender;
-//-(IBAction) takeWithCameraButtonClicked:(id)sender;
+-(IBAction) scanOrClearPhoto:(id)sender;
 
--(IBAction) clearPhoto:(id)sender;
+-(void) makeOffer:(id)sender;
 
 @end

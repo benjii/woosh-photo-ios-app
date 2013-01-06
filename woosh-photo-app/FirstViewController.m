@@ -7,17 +7,37 @@
 //
 
 #import "FirstViewController.h"
+#import "Woosh.h"
 
 @interface FirstViewController ()
 
 @end
 
+static const int MODE_OFFER = 0;
+static const int MODE_ACCEPT = 1;
+
+int mode = MODE_ACCEPT;
+
+
 @implementation FirstViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    
+#if (TARGET_IPHONE_SIMULATOR)
+    // if we are running in the simiulator then overlay an 'offer' button on the UIImage view
+    UIButton *offerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [offerButton setTitle:@"Offer" forState:UIControlStateNormal];
+    [offerButton setFrame:CGRectMake(230, 410, 80, 33)];
+    [offerButton addTarget:self action:@selector(makeOffer:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.imgView addSubview:offerButton];
+#endif
+    
+    // ensure that the view is initialised correctly
+    mode = MODE_ACCEPT;
+    self.scanOrClearButton.title = @"Scan";
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -28,11 +48,41 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *chosenImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+
+    self.imgView.contentMode = UIViewContentModeScaleAspectFit;
     self.imgView.image = chosenImage;
     
+    // set the mode to 'offer' - the user has a photo selected and can make an offer
+    mode = MODE_OFFER;
+    self.scanOrClearButton.title = @"Clear";
+    
     [self dismissViewControllerAnimated:YES completion:nil];
+}
 
-    NSLog(@"");
+-(void) makeOffer:(id)sender {
+    
+    // convert the raw image data into a PNG (use JPEG instead?)
+    NSData *jpeg = UIImagePNGRepresentation(self.imgView.image);
+    
+    // call the Woosh API to make the offer
+    BOOL result = [[Woosh woosh] offerWithPhoto:@"default" photograph:jpeg];
+
+    if (result == YES) {
+        UIAlertView *confirmationAlert = [[UIAlertView alloc] initWithTitle:@"Offer Made"
+                                                                     message:@"Your offer is now available."
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"OK"
+                                                           otherButtonTitles:nil];
+        [confirmationAlert show];
+
+        // now that the offer has been made, reset the UI to be in accept mode
+        self.imgView.image = nil;
+        
+        // the user cleared the offer - move to 'accept' mode
+        mode = MODE_ACCEPT;
+        self.scanOrClearButton.title = @"Scan";
+
+    }
 }
 
 -(IBAction) selectPhotographButtonTapped:(id)sender {
@@ -88,29 +138,25 @@
     
 }
 
+-(IBAction) scanOrClearPhoto:(id)sender {
+    
+    if (mode == MODE_OFFER) {
+    
+        self.imgView.image = nil;
+        
+        // the user cleared the offer - move to 'accept' mode
+        mode = MODE_ACCEPT;
+        self.scanOrClearButton.title = @"Scan";
 
-//-(IBAction) takeWithCameraButtonClicked:(id)sender {
-//    
-//    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-//
-//        // set up the image picker
-//        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-//        [picker setSourceType:UIImagePickerControllerSourceTypeCamera];
-//        [picker setDelegate:self];
-//        
-//        [self presentViewController:picker animated:YES completion:nil];
-//        
-//    } else {
-//    
-//        // slert the user that their device does not have photographic capability
-//        [[[UIAlertView alloc] initWithTitle:@"No Camera" message:@"Your device does not have photographic capability." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-//
-//    }
-//    
-//}
-
--(IBAction) clearPhoto:(id)sender {
-    self.imgView.image = nil;
+    } else {
+        
+        // TODO scan for offers in the local geographic region
+        NSArray *availableOffers = [[Woosh woosh] scan];
+        
+        NSLog(@"%@", availableOffers);
+        
+    }
+    
 }
 
 @end

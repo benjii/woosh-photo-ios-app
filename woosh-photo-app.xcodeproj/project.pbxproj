@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B54922EC169736A9002C9438 /* Woosh.m in Sources */ = {isa = PBXBuildFile; fileRef = B54922EB169736A9002C9438 /* Woosh.m */; };
+		B5A360AA16958A2400AE9B92 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A360A916958A2400AE9B92 /* CoreMotion.framework */; };
 		B5B73F9B16929105008A8BBC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B73F9A16929105008A8BBC /* UIKit.framework */; };
 		B5B73F9D16929105008A8BBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B73F9C16929105008A8BBC /* Foundation.framework */; };
 		B5B73F9F16929105008A8BBC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B73F9E16929105008A8BBC /* CoreGraphics.framework */; };
@@ -30,6 +32,7 @@
 		B5B73FD716929105008A8BBC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B5B73FD516929105008A8BBC /* InfoPlist.strings */; };
 		B5B73FDA16929105008A8BBC /* woosh_photo_appTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B73FD916929105008A8BBC /* woosh_photo_appTests.m */; };
 		B5E3AB31169293F30076A99E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5E3AB30169293F30076A99E /* CoreLocation.framework */; };
+		B5F8E1951699FB03000FF293 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F8E1941699FB03000FF293 /* NSData+Base64.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +46,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B54922EA169736A9002C9438 /* Woosh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Woosh.h; sourceTree = "<group>"; };
+		B54922EB169736A9002C9438 /* Woosh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Woosh.m; sourceTree = "<group>"; };
+		B5A360A916958A2400AE9B92 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		B5B73F9616929105008A8BBC /* woosh-photo-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "woosh-photo-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5B73F9A16929105008A8BBC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B5B73F9C16929105008A8BBC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -73,6 +79,8 @@
 		B5B73FD816929105008A8BBC /* woosh_photo_appTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = woosh_photo_appTests.h; sourceTree = "<group>"; };
 		B5B73FD916929105008A8BBC /* woosh_photo_appTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = woosh_photo_appTests.m; sourceTree = "<group>"; };
 		B5E3AB30169293F30076A99E /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		B5F8E1931699FB03000FF293 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		B5F8E1941699FB03000FF293 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5A360AA16958A2400AE9B92 /* CoreMotion.framework in Frameworks */,
 				B5E3AB31169293F30076A99E /* CoreLocation.framework in Frameworks */,
 				B5B73F9B16929105008A8BBC /* UIKit.framework in Frameworks */,
 				B5B73F9D16929105008A8BBC /* Foundation.framework in Frameworks */,
@@ -100,6 +109,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B54922E816973694002C9438 /* Global */ = {
+			isa = PBXGroup;
+			children = (
+				B54922EA169736A9002C9438 /* Woosh.h */,
+				B54922EB169736A9002C9438 /* Woosh.m */,
+			);
+			name = Global;
+			sourceTree = "<group>";
+		};
 		B5B73F8B16929105008A8BBC = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				B5E3AB30169293F30076A99E /* CoreLocation.framework */,
+				B5A360A916958A2400AE9B92 /* CoreMotion.framework */,
 				B5B73F9A16929105008A8BBC /* UIKit.framework */,
 				B5B73F9C16929105008A8BBC /* Foundation.framework */,
 				B5B73F9E16929105008A8BBC /* CoreGraphics.framework */,
@@ -134,6 +153,8 @@
 		B5B73FA016929105008A8BBC /* woosh-photo-app */ = {
 			isa = PBXGroup;
 			children = (
+				B5F8E18E1699FA69000FF293 /* Util */,
+				B54922E816973694002C9438 /* Global */,
 				B5B73FA916929105008A8BBC /* AppDelegate.h */,
 				B5B73FAA16929105008A8BBC /* AppDelegate.m */,
 				B5B73FB216929105008A8BBC /* MainStoryboard_iPhone.storyboard */,
@@ -182,6 +203,15 @@
 				B5B73FD516929105008A8BBC /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B5F8E18E1699FA69000FF293 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				B5F8E1931699FB03000FF293 /* NSData+Base64.h */,
+				B5F8E1941699FB03000FF293 /* NSData+Base64.m */,
+			);
+			name = Util;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -303,6 +333,8 @@
 				B5B73FAB16929105008A8BBC /* AppDelegate.m in Sources */,
 				B5B73FBA16929105008A8BBC /* FirstViewController.m in Sources */,
 				B5B73FC116929105008A8BBC /* SecondViewController.m in Sources */,
+				B54922EC169736A9002C9438 /* Woosh.m in Sources */,
+				B5F8E1951699FB03000FF293 /* NSData+Base64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
