@@ -63,11 +63,14 @@ int mode = MODE_ACCEPT;
     
     // convert the raw image data into a PNG (use JPEG instead?)
     NSData *jpeg = UIImagePNGRepresentation(self.imgView.image);
-    
-    // call the Woosh API to make the offer
-    BOOL result = [[Woosh woosh] offerWithPhoto:@"default" photograph:jpeg];
 
-    if (result == YES) {
+    // we do two things here - create the card and then offer it
+    NSString *newCardId = [[Woosh woosh] createCardWithPhoto:@"default" photograph:jpeg];
+    NSString *newOfferId = [[Woosh woosh] makeOffer:newCardId
+                                           latitude:[[Woosh woosh] latitude]
+                                          longitude:[[Woosh woosh] longitude]];
+
+    if (newOfferId != nil) {
         UIAlertView *confirmationAlert = [[UIAlertView alloc] initWithTitle:@"Offer Made"
                                                                      message:@"Your offer is now available."
                                                                     delegate:nil
@@ -152,6 +155,21 @@ int mode = MODE_ACCEPT;
         
         // TODO scan for offers in the local geographic region
         NSArray *availableOffers = [[Woosh woosh] scan];
+        
+        if ([availableOffers count] == 0) {
+            
+            UIAlertView *noAvailableOffersAlert = [[UIAlertView alloc] initWithTitle:@"Sorry!"
+                                                                             message:@"There are no offers available at your location at the present time. Please try again later."
+                                                                            delegate:nil
+                                                                   cancelButtonTitle:@"Bummer!"
+                                                                   otherButtonTitles: nil];
+            [noAvailableOffersAlert show];
+            
+        } else {
+            
+            // TODO process each offer
+            
+        }
         
         NSLog(@"%@", availableOffers);
         

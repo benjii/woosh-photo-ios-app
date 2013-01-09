@@ -50,15 +50,25 @@
         [alert show];
     }
     
+    // start the location manager
+    self.locationManager = [[CLLocationManager alloc] init];
     
-//    // instantiate the motion manager
-//    CMMotionManager *motionManager = [[CMMotionManager alloc] init];
-//    
-//    [motionManager startDeviceMotionUpdates];
-//    [motionManager stopDeviceMotionUpdates];
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    [self.locationManager startUpdatingLocation];
     
     // Override point for customization after application launch.
     return YES;
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    
+    CLLocation *mostRecentLocation = [locations objectAtIndex:[locations count] - 1];
+    
+    // store the location in the Woosh service singleton
+    [[Woosh woosh] setLatitude:mostRecentLocation.coordinate.latitude];
+    [[Woosh woosh] setLatitude:mostRecentLocation.coordinate.longitude];
+    
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

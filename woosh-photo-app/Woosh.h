@@ -15,8 +15,13 @@
 // the singleton Woosh services instance
 + (Woosh *) woosh;
 
+// the user's most recent location
+@property (nonatomic) double latitude;
+@property (nonatomic) double longitude;
+
 // utility method for making an offer withg a single photograph
-- (BOOL) offerWithPhoto:(NSString *)name photograph:(NSData *)photograph;
+- (NSString *) createCardWithPhoto:(NSString *)name photograph:(NSData *)photograph;
+- (NSString *) makeOffer:(NSString *)cardId latitude:(double)latitude longitude:(double)longitude;
 
 // perform a scan (an 'up woosh')
 - (NSArray *) scan;
