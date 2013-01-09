@@ -20,10 +20,10 @@
 @property (nonatomic) double longitude;
 
 // utility method for making an offer withg a single photograph
-- (NSString *) createCardWithPhoto:(NSString *)name photograph:(NSData *)photograph;
-- (NSString *) makeOffer:(NSString *)cardId latitude:(double)latitude longitude:(double)longitude;
+- (NSURLConnection *) createCardWithPhoto:(NSString *)name photograph:(NSData *)photograph delegate:(id <NSURLConnectionDelegate>)delegate;
+- (NSURLConnection *) makeOffer:(NSString *)cardId latitude:(double)latitude longitude:(double)longitude delegate:(id <NSURLConnectionDelegate>)delegate;
 
 // perform a scan (an 'up woosh')
-- (NSArray *) scan;
+- (NSURLConnection *) scan:(id <NSURLConnectionDelegate>)delegate;
 
 @end

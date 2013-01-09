@@ -13,13 +13,25 @@
 
 @end
 
+// app mode constants
 static const int MODE_OFFER = 0;
 static const int MODE_ACCEPT = 1;
 
 int mode = MODE_ACCEPT;
 
+// request type constants
+static const int REQUEST_TYPE_NONE = -1;
+
+static const int REQUEST_TYPE_SCAN = 0;
+static const int REQUEST_TYPE_CREATE_CARD = 1;
+static const int REQUEST_TYPE_MAKE_OFFER = 2;
+
+int request_type = REQUEST_TYPE_NONE;
+
 
 @implementation FirstViewController
+
+@synthesize receivedData;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -65,27 +77,11 @@ int mode = MODE_ACCEPT;
     NSData *jpeg = UIImagePNGRepresentation(self.imgView.image);
 
     // we do two things here - create the card and then offer it
-    NSString *newCardId = [[Woosh woosh] createCardWithPhoto:@"default" photograph:jpeg];
-    NSString *newOfferId = [[Woosh woosh] makeOffer:newCardId
-                                           latitude:[[Woosh woosh] latitude]
-                                          longitude:[[Woosh woosh] longitude]];
+    // the card creation is started here, and the offer is made then the new card ID is received in the response (within the delegate)
+    request_type = REQUEST_TYPE_CREATE_CARD;
+    self.receivedData = [NSMutableData data];
+    [[Woosh woosh] createCardWithPhoto:@"default" photograph:jpeg delegate:self];
 
-    if (newOfferId != nil) {
-        UIAlertView *confirmationAlert = [[UIAlertView alloc] initWithTitle:@"Offer Made"
-                                                                     message:@"Your offer is now available."
-                                                                    delegate:nil
-                                                           cancelButtonTitle:@"OK"
-                                                           otherButtonTitles:nil];
-        [confirmationAlert show];
-
-        // now that the offer has been made, reset the UI to be in accept mode
-        self.imgView.image = nil;
-        
-        // the user cleared the offer - move to 'accept' mode
-        mode = MODE_ACCEPT;
-        self.scanOrClearButton.title = @"Scan";
-
-    }
 }
 
 -(IBAction) selectPhotographButtonTapped:(id)sender {
@@ -152,10 +148,38 @@ int mode = MODE_ACCEPT;
         self.scanOrClearButton.title = @"Scan";
 
     } else {
+
+        // scan for offers at the current location
+        request_type = REQUEST_TYPE_SCAN;
+
+        // reset the response data
+        self.receivedData = [NSMutableData data];
         
-        // TODO scan for offers in the local geographic region
-        NSArray *availableOffers = [[Woosh woosh] scan];
+        [[Woosh woosh] scan:self];
+                        
+    }
+    
+}
+
+//
+// everything below here is asynchronous HTTP request processing, including handling authentication challenges
+//
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+
+    // TODO response processing
+    if (request_type == REQUEST_TYPE_NONE) {
+     
+        // do nothing
+
+    } else if (request_type == REQUEST_TYPE_SCAN) {
         
+        // render the response into an array for processing and pass back to the caller
+        NSError *jsonErr = nil;
+        NSArray *availableOffers = [NSJSONSerialization JSONObjectWithData:self.receivedData
+                                                                   options:NSJSONReadingMutableContainers
+                                                                     error:&jsonErr];
+       
         if ([availableOffers count] == 0) {
             
             UIAlertView *noAvailableOffersAlert = [[UIAlertView alloc] initWithTitle:@"Sorry!"
@@ -167,14 +191,94 @@ int mode = MODE_ACCEPT;
             
         } else {
             
-            // TODO process each offer
+            // TODO process each available offer
             
         }
+
+    } else if (request_type == REQUEST_TYPE_CREATE_CARD) {
         
-        NSLog(@"%@", availableOffers);
+        NSError *error = nil;
+        NSDictionary *respDict = [NSJSONSerialization JSONObjectWithData:self.receivedData
+                                                                 options:NSJSONReadingMutableContainers
+                                                                   error:&error];
         
+        NSString* newStr = [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding];
+        NSLog(@"%@", newStr);
+        
+        // grab the new card ID from the response
+        NSString *newCardId = [respDict objectForKey:@"id"];
+
+        // now make an offer on the card (in this app it's automatic to make an offer immediately after creating a card)
+        request_type = REQUEST_TYPE_MAKE_OFFER;
+        self.receivedData = [NSMutableData data];
+        [[Woosh woosh] makeOffer:newCardId latitude:[[Woosh woosh] latitude] longitude:[[Woosh woosh] longitude] delegate:self];
+        
+    } else if (request_type == REQUEST_TYPE_MAKE_OFFER) {
+        
+        NSError *error = nil;
+        NSDictionary *respDict = [NSJSONSerialization JSONObjectWithData:self.receivedData
+                                                                 options:NSJSONReadingMutableContainers
+                                                                   error:&error];
+
+        
+        NSString *newOfferId = [respDict objectForKey:@"id"];
+
+        
+        if (newOfferId != nil) {
+            UIAlertView *confirmationAlert = [[UIAlertView alloc] initWithTitle:@"Success!"
+                                                                        message:@"Your offer is now available to others within your proximity."
+                                                                       delegate:nil
+                                                              cancelButtonTitle:@"Sweet!"
+                                                              otherButtonTitles:nil];
+            [confirmationAlert show];
+            
+            // now that the offer has been made, reset the UI to be in accept mode
+            self.imgView.image = nil;
+            
+            // the user cleared the offer - move to 'accept' mode
+            mode = MODE_ACCEPT;
+            self.scanOrClearButton.title = @"Scan";
+            
+        }
     }
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
     
+    // deal with the authentication challenge
+    
+    if ([challenge previousFailureCount] > 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Authentication Error"
+                                                        message:@"Invalid credentials provided."
+                                                       delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+        
+    } else {
+        
+        NSDictionary *systemProps = [[Woosh woosh] systemProperties];
+        
+        // we answer the challenge with the username and password provided by the user at login
+        NSString *username = [systemProps objectForKey:@"username"];
+        NSString *password = [systemProps objectForKey:@"password"];
+        
+        NSURLCredential *cred = [[NSURLCredential alloc] initWithUser:username password:password                                                                            persistence:NSURLCredentialPersistenceForSession];
+        
+        [[challenge sender] useCredential:cred forAuthenticationChallenge:challenge];
+    }
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    [self.receivedData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    [self.receivedData appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    NSLog(@"Connection failed! Error - %@ %@",
+          [error localizedDescription],
+          [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
 }
 
 @end

@@ -19,7 +19,7 @@
 static Woosh *instance;
 
 static int RANDOM_CARD_NAME_LENGTH = 8;
-static int DEFAULT_OFFER_DURATION = 60000;      // milliseconds
+static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 
 
 + (Woosh *) woosh {
@@ -51,20 +51,8 @@ static int DEFAULT_OFFER_DURATION = 60000;      // milliseconds
 	return uuidString;
 }
 
-//- (BOOL) startAsyncHttpRequest:(NSURLRequest *)request {
-//    self.connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
-//    
-//    if (self.connection != nil) {
-//        self.receivedData = [NSMutableData data];
-//    }
-//    
-//    [self.connection start];
-//    
-//    return YES;
-//}
-
 // utility method for making an offer withg a single photograph
-- (NSString *) createCardWithPhoto:(NSString *)name photograph:(NSData *)photograph {
+- (NSURLConnection *) createCardWithPhoto:(NSString *)name photograph:(NSData *)photograph delegate:(id <NSURLConnectionDelegate>)delegate {
     
     // the first thing that we do is create a new Woosh card
 	NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
@@ -90,8 +78,6 @@ static int DEFAULT_OFFER_DURATION = 60000;      // milliseconds
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:cardDictionary options:NSJSONWritingPrettyPrinted error:nil];
     NSString *payload = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
-//    NSLog(@"%@", payload);
-    
     // encode the JSON for transport
     NSData *postData = [payload dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
 
@@ -99,26 +85,10 @@ static int DEFAULT_OFFER_DURATION = 60000;      // milliseconds
     [newCardReq setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [newCardReq setHTTPBody:postData];
 
-//    NSString *request = [[NSString alloc] initWithData:postData encoding:NSASCIIStringEncoding];
-//    NSLog(@"%@", request);
-
-    // send the request to create the Woosh card and wait for the response
-    NSURLResponse *newCardResp = [[NSURLResponse alloc] init];
-    NSError *newCardError = [[NSError alloc] init];
-    NSData *newCardResponseData = [NSURLConnection sendSynchronousRequest:newCardReq
-                                                        returningResponse:&newCardResp
-                                                                    error:&newCardError];
-
-    NSError *error = nil;
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:newCardResponseData
-                                                         options:NSJSONReadingMutableContainers
-                                                           error:&error];
-    
-    // return the ID of the new card to the caller
-    return [json objectForKey:@"id"];
+    return [[NSURLConnection alloc] initWithRequest:newCardReq delegate:delegate startImmediately:YES];
 }
 
-- (NSString*) makeOffer:(NSString *)cardId latitude:(double)latitude longitude:(double)longitude {
+- (NSURLConnection *) makeOffer:(NSString *)cardId latitude:(double)latitude longitude:(double)longitude delegate:(id<NSURLConnectionDelegate>)delegate {
 
     // the first thing that we do is create a new Woosh card
 	NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
@@ -147,25 +117,11 @@ static int DEFAULT_OFFER_DURATION = 60000;      // milliseconds
     [newOfferReq setHTTPMethod:@"POST"];
     [newOfferReq setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [newOfferReq setHTTPBody:postData];
-        
-    // send the request to create the Woosh card and wait for the response
-    NSURLResponse *newOfferResp = [[NSURLResponse alloc] init];
-    NSError *newOfferError = [[NSError alloc] init];
-    NSData *newOfferResponseData = [NSURLConnection sendSynchronousRequest:newOfferReq
-                                                         returningResponse:&newOfferResp
-                                                                     error:&newOfferError];
-    
-    NSError *error = nil;
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:newOfferResponseData
-                                                         options:NSJSONReadingMutableContainers
-                                                           error:&error];
-    
-    // return the ID of the new card to the caller
-    return [json objectForKey:@"id"];
 
+    return [[NSURLConnection alloc] initWithRequest:newOfferReq delegate:delegate startImmediately:YES];
 }
 
-- (NSArray *) scan {
+- (NSURLConnection *) scan:(id <NSURLConnectionDelegate>)delegate {
 
     // construct the request URL
 	NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
@@ -178,20 +134,8 @@ static int DEFAULT_OFFER_DURATION = 60000;      // milliseconds
                                                         timeoutInterval:60.0];
     [req setHTTPMethod:@"GET"];
 
-    // send the request to create the Woosh card and wait for the response
-    NSURLResponse *resp = [[NSURLResponse alloc] init];
-    NSError *respErr = [[NSError alloc] init];
-    NSData *respData = [NSURLConnection sendSynchronousRequest:req
-                                                         returningResponse:&resp
-                                                                     error:&respErr];
-    
-    // render the response into an array for processing and pass back to the caller
-    NSError *jsonErr = nil;
-    NSArray *json = [NSJSONSerialization JSONObjectWithData:respData
-                                                    options:NSJSONReadingMutableContainers
-                                                      error:&jsonErr];
-    
-    return json;
+    // kick off the request
+    return [[NSURLConnection alloc] initWithRequest:req delegate:delegate startImmediately:YES];    
 }
 
 @end

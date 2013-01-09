@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FirstViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate>
+@interface FirstViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate, NSURLConnectionDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *scanOrClearButton;
+
+@property NSMutableData *receivedData;
 
 -(IBAction) selectPhotographButtonTapped:(id)sender;
 -(IBAction) scanOrClearPhoto:(id)sender;
