@@ -31,6 +31,7 @@
 		B5B73FCF16929105008A8BBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B73F9C16929105008A8BBC /* Foundation.framework */; };
 		B5B73FD716929105008A8BBC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B5B73FD516929105008A8BBC /* InfoPlist.strings */; };
 		B5B73FDA16929105008A8BBC /* woosh_photo_appTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B73FD916929105008A8BBC /* woosh_photo_appTests.m */; };
+		B5CAAA8F16A1900F0015CD67 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5CAAA8E16A1900F0015CD67 /* AssetsLibrary.framework */; };
 		B5E3AB31169293F30076A99E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5E3AB30169293F30076A99E /* CoreLocation.framework */; };
 		B5F8E1951699FB03000FF293 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F8E1941699FB03000FF293 /* NSData+Base64.m */; };
 /* End PBXBuildFile section */
@@ -78,6 +79,7 @@
 		B5B73FD616929105008A8BBC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B5B73FD816929105008A8BBC /* woosh_photo_appTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = woosh_photo_appTests.h; sourceTree = "<group>"; };
 		B5B73FD916929105008A8BBC /* woosh_photo_appTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = woosh_photo_appTests.m; sourceTree = "<group>"; };
+		B5CAAA8E16A1900F0015CD67 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		B5E3AB30169293F30076A99E /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		B5F8E1931699FB03000FF293 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		B5F8E1941699FB03000FF293 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5CAAA8F16A1900F0015CD67 /* AssetsLibrary.framework in Frameworks */,
 				B5A360AA16958A2400AE9B92 /* CoreMotion.framework in Frameworks */,
 				B5E3AB31169293F30076A99E /* CoreLocation.framework in Frameworks */,
 				B5B73F9B16929105008A8BBC /* UIKit.framework in Frameworks */,
@@ -140,6 +143,7 @@
 		B5B73F9916929105008A8BBC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B5CAAA8E16A1900F0015CD67 /* AssetsLibrary.framework */,
 				B5E3AB30169293F30076A99E /* CoreLocation.framework */,
 				B5A360A916958A2400AE9B92 /* CoreMotion.framework */,
 				B5B73F9A16929105008A8BBC /* UIKit.framework */,

@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Luminos. All rights reserved.
 //
 
+#import <AssetsLibrary/AssetsLibrary.h>
+
 #import "FirstViewController.h"
 #import "Woosh.h"
 
@@ -174,6 +176,9 @@ int request_type = REQUEST_TYPE_NONE;
 
     } else if (request_type == REQUEST_TYPE_SCAN) {
         
+//        NSString* newStr = [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding];
+//        NSLog(@"%@", newStr);
+
         // render the response into an array for processing and pass back to the caller
         NSError *jsonErr = nil;
         NSArray *availableOffers = [NSJSONSerialization JSONObjectWithData:self.receivedData
@@ -191,7 +196,40 @@ int request_type = REQUEST_TYPE_NONE;
             
         } else {
             
-            // TODO process each available offer
+            NSError *error = nil;
+            NSArray *offers = [NSJSONSerialization JSONObjectWithData:self.receivedData
+                                                              options:NSJSONReadingMutableContainers
+                                                                error:&error];
+
+            // procoess each offer
+            for (int count = 0; count < [offers count]; count++) {
+                NSDictionary *offer = [offers objectAtIndex:count];
+        
+                NSString *url = [[[[offer objectForKey:@"offeredCard"] objectForKey:@"data"] objectAtIndex:0] objectForKey:@"value"];
+                NSURLRequest *photoDownloadReq = [NSURLRequest requestWithURL:[NSURL URLWithString:url]
+                                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                              timeoutInterval:60.0];
+
+                // download the photo
+                NSURLResponse *resp = nil;
+                NSError *error = nil;
+                NSData *photographData = [NSURLConnection sendSynchronousRequest:photoDownloadReq
+                                                           returningResponse:&resp
+                                                                       error:&error];                
+                // save it to the camera roll
+                ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+                [library writeImageDataToSavedPhotosAlbum:photographData
+                                                 metadata:nil
+                                          completionBlock:nil];
+            }
+            
+            // tell the user what we just did
+            UIAlertView *savedPhotosAlert = [[UIAlertView alloc] initWithTitle:@"Success!"
+                                                                       message:[NSString stringWithFormat:@"%d were found in your proximity and have been saved to your photo library.", [offers count]]
+                                                                      delegate:nil
+                                                             cancelButtonTitle:@"OK!"
+                                                             otherButtonTitles: nil];
+            [savedPhotosAlert show];
             
         }
 
@@ -202,8 +240,8 @@ int request_type = REQUEST_TYPE_NONE;
                                                                  options:NSJSONReadingMutableContainers
                                                                    error:&error];
         
-        NSString* newStr = [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding];
-        NSLog(@"%@", newStr);
+//        NSString* newStr = [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding];
+//        NSLog(@"%@", newStr);
         
         // grab the new card ID from the response
         NSString *newCardId = [respDict objectForKey:@"id"];
