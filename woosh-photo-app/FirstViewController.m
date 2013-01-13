@@ -54,8 +54,7 @@ int request_type = REQUEST_TYPE_NONE;
     self.scanOrClearButton.title = @"Scan";    
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -177,7 +176,6 @@ int request_type = REQUEST_TYPE_NONE;
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
 
-    // TODO response processing
     if (request_type == REQUEST_TYPE_NONE) {
      
         // do nothing
