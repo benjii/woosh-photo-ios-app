@@ -14,40 +14,59 @@
                         <subviews>
                             <imageView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IvD-Nt-aNt">
                                 <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="458" id="bP4-Cq-805"/>
+                                </constraints>
                             </imageView>
-                            <navigationBar contentMode="top" barStyle="blackOpaque" translatesAutoresizingMaskIntoConstraints="NO" id="z7e-cf-Img">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9o-0i-pNd">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="33" id="IJj-Fm-bfx"/>
+                                    <constraint firstAttribute="width" constant="115" id="XSd-1s-8Rm"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Offer">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="9qT-ni-IuM">
                                 <items>
-                                    <navigationItem title="Woosh" id="CCR-5Q-tUK">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="camera" id="bGn-M7-aVx">
-                                            <connections>
-                                                <action selector="selectPhotographButtonTapped:" destination="2" id="Clj-bm-Kuc"/>
-                                            </connections>
-                                        </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" title="Scan" id="SYz-ew-TJz">
-                                            <connections>
-                                                <action selector="scanOrClearPhoto:" destination="2" id="2la-wa-OLI"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
+                                    <barButtonItem systemItem="camera" id="qZG-uJ-p7X">
+                                        <connections>
+                                            <action selector="selectPhotographButtonTapped:" destination="2" id="2mX-EO-nk0"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="SW8-ZG-vY5"/>
+                                    <barButtonItem title="Woosh" style="plain" id="53o-tN-Nve"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="SoO-ad-xdX"/>
+                                    <barButtonItem title="Scan" id="gug-wQ-Fxk">
+                                        <connections>
+                                            <action selector="scanOrClearPhoto:" destination="2" id="yY9-Eo-nU7"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
-                            </navigationBar>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="z7e-cf-Img" firstAttribute="leading" secondItem="16" secondAttribute="leading" type="default" id="0AC-Z5-CI4"/>
+                            <constraint firstAttribute="bottom" secondItem="N9o-0i-pNd" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="2Ee-s2-wbC"/>
                             <constraint firstItem="IvD-Nt-aNt" firstAttribute="trailing" secondItem="16" secondAttribute="trailing" type="default" id="3KF-hU-afc"/>
-                            <constraint firstItem="z7e-cf-Img" firstAttribute="top" secondItem="16" secondAttribute="top" type="default" id="I3v-LU-ath"/>
-                            <constraint firstItem="z7e-cf-Img" firstAttribute="trailing" secondItem="16" secondAttribute="trailing" type="default" id="QV6-E8-5Vt"/>
-                            <constraint firstItem="z7e-cf-Img" firstAttribute="bottom" secondItem="IvD-Nt-aNt" secondAttribute="top" type="default" id="WWK-Ye-L6B"/>
-                            <constraint firstItem="IvD-Nt-aNt" firstAttribute="bottom" secondItem="16" secondAttribute="bottom" type="default" id="akF-vA-bY4"/>
+                            <constraint firstItem="9qT-ni-IuM" firstAttribute="trailing" secondItem="16" secondAttribute="trailing" type="default" id="5CE-HZ-QEP"/>
+                            <constraint firstAttribute="trailing" secondItem="N9o-0i-pNd" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="JBZ-Wh-6bZ"/>
+                            <constraint firstItem="IvD-Nt-aNt" firstAttribute="bottom" secondItem="16" secondAttribute="bottom" type="default" id="WFL-J0-nuy"/>
+                            <constraint firstItem="9qT-ni-IuM" firstAttribute="top" secondItem="16" secondAttribute="top" type="default" id="bzJ-Oh-WcK"/>
+                            <constraint firstItem="9qT-ni-IuM" firstAttribute="leading" secondItem="16" secondAttribute="leading" type="default" id="gRH-l0-EjG"/>
                             <constraint firstItem="IvD-Nt-aNt" firstAttribute="leading" secondItem="16" secondAttribute="leading" type="default" id="qCg-kw-uak"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Woosh" image="first.png" id="7"/>
-                    <navigationItem key="navigationItem" title="Title" id="KSX-ON-jen"/>
                     <connections>
                         <outlet property="imgView" destination="IvD-Nt-aNt" id="W3w-kM-dgN"/>
-                        <outlet property="scanOrClearButton" destination="SYz-ew-TJz" id="glj-ux-bLV"/>
+                        <outlet property="offerButton" destination="N9o-0i-pNd" id="ZSw-rA-alp"/>
+                        <outlet property="scanOrClearButton" destination="gug-wQ-Fxk" id="y0N-8x-ohK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="10" sceneMemberID="firstResponder"/>
@@ -91,10 +110,11 @@
             </objects>
             <point key="canvasLocation" x="653" y="498"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tab Bar Controller - Woosh-->
         <scene sceneID="15">
             <objects>
-                <tabBarController id="4" sceneMemberID="viewController">
+                <tabBarController title="Woosh" id="4" sceneMemberID="viewController">
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="blackTranslucent" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="5">
                         <rect key="frame" x="0.0" y="431" width="320" height="49"/>
@@ -121,6 +141,7 @@
                 <relationship kind="action" name="scanOrClearPhoto:"/>
                 <relationship kind="action" name="selectPhotographButtonTapped:"/>
                 <relationship kind="outlet" name="imgView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="offerButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="scanOrClearButton" candidateClass="UIBarButtonItem"/>
             </relationships>
         </class>

@@ -54,6 +54,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>ServerEndpoint</key>
-	<string>http://localhost:8080/woosh/m/</string>
+	<string>http://192.168.1.100:8080/woosh/m/</string>
 </dict>
 </plist>

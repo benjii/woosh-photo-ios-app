@@ -34,24 +34,24 @@ int request_type = REQUEST_TYPE_NONE;
 @implementation FirstViewController
 
 @synthesize receivedData;
+@synthesize offerButton;
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-#if (TARGET_IPHONE_SIMULATOR)
+//#if (TARGET_IPHONE_SIMULATOR)
     // if we are running in the simiulator then overlay an 'offer' button on the UIImage view
-    UIButton *offerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [offerButton setTitle:@"Offer" forState:UIControlStateNormal];
-    [offerButton setFrame:CGRectMake(230, 410, 80, 33)];
-    [offerButton addTarget:self action:@selector(makeOffer:) forControlEvents:UIControlEventTouchUpInside];
+//    self.offerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    [self.offerButton setTitle:@"Offer" forState:UIControlStateNormal];
+    [self.offerButton setFrame:CGRectMake(230, 370, 80, 33)];
+    [self.offerButton addTarget:self action:@selector(makeOffer:) forControlEvents:UIControlEventTouchUpInside];
+    [self.offerButton setHidden:YES];
+//#endif
 
-    [self.imgView addSubview:offerButton];
-#endif
-    
     // ensure that the view is initialised correctly
     mode = MODE_ACCEPT;
-    self.scanOrClearButton.title = @"Scan";
-    
+    self.scanOrClearButton.title = @"Scan";    
 }
 
 - (void)didReceiveMemoryWarning
@@ -63,8 +63,13 @@ int request_type = REQUEST_TYPE_NONE;
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *chosenImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
 
-    self.imgView.contentMode = UIViewContentModeScaleAspectFit;
     self.imgView.image = chosenImage;
+    
+    // display the offer button
+    [self.offerButton setHidden:NO];
+
+    // make sure that the UIImageView is displaying correctly
+    [self.imgView bringSubviewToFront:self.offerButton];
     
     // set the mode to 'offer' - the user has a photo selected and can make an offer
     mode = MODE_OFFER;
@@ -74,12 +79,14 @@ int request_type = REQUEST_TYPE_NONE;
 }
 
 -(void) makeOffer:(id)sender {
+
+    // TODO pop up an activity indicator here so that user knows what it going on
     
     // convert the raw image data into a PNG (use JPEG instead?)
-    NSData *jpeg = UIImagePNGRepresentation(self.imgView.image);
+    NSData *jpeg = UIImageJPEGRepresentation(self.imgView.image, 0.0);
 
     // we do two things here - create the card and then offer it
-    // the card creation is started here, and the offer is made then the new card ID is received in the response (within the delegate)
+    // the card creation is started here and the offer is made then the new card ID is received in the response (within the delegate)
     request_type = REQUEST_TYPE_CREATE_CARD;
     self.receivedData = [NSMutableData data];
     [[Woosh woosh] createCardWithPhoto:@"default" photograph:jpeg delegate:self];
@@ -148,6 +155,7 @@ int request_type = REQUEST_TYPE_NONE;
         // the user cleared the offer - move to 'accept' mode
         mode = MODE_ACCEPT;
         self.scanOrClearButton.title = @"Scan";
+        [self.offerButton setHidden:YES];
 
     } else {
 

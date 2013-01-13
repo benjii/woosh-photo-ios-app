@@ -13,6 +13,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *scanOrClearButton;
 
+@property (weak, nonatomic) IBOutlet UIButton *offerButton;
+
 @property NSMutableData *receivedData;
 
 -(IBAction) selectPhotographButtonTapped:(id)sender;
