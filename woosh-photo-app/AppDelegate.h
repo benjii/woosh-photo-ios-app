@@ -8,15 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import <CoreLocation/CoreLocation.h>
-#import <CoreMotion/CoreMotion.h>
-
-@interface AppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate, UIAlertViewDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) CLLocationManager *locationManager;
-@property (strong, nonatomic) CMMotionManager *motionManager;
-
-@property (strong, nonatomic) NSMutableArray *lastDeviceMotions;
 
 @end

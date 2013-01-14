@@ -123,6 +123,8 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 
 - (NSURLConnection *) scan:(id <NSURLConnectionDelegate>)delegate {
 
+    NSLog(@"%@", delegate);
+    
     // construct the request URL
 	NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
     NSString *scanEndpoint = [endpoint stringByAppendingPathComponent:@"offers"];    
@@ -136,6 +138,7 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 
     // kick off the request
     return [[NSURLConnection alloc] initWithRequest:req delegate:delegate startImmediately:YES];    
+
 }
 
 @end

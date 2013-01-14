@@ -30,28 +30,150 @@ static const int REQUEST_TYPE_MAKE_OFFER = 2;
 
 int request_type = REQUEST_TYPE_NONE;
 
+// last user action constants
+static const int LAST_ACTION_NONE = 0;
+static const int LAST_ACTION_SCAN = 1;
+static const int LAST_ACTION_OFFER = 2;
+
+int last_action = LAST_ACTION_NONE;
+
 
 @implementation FirstViewController
 
 @synthesize receivedData;
 @synthesize offerButton;
+@synthesize activityView;
+
+@synthesize locationManager;
+@synthesize motionManager;
+
+@synthesize lastDeviceMotions;
+
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//#if (TARGET_IPHONE_SIMULATOR)
+#if (TARGET_IPHONE_SIMULATOR)
     // if we are running in the simiulator then overlay an 'offer' button on the UIImage view
-//    self.offerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    [self.offerButton setTitle:@"Offer" forState:UIControlStateNormal];
     [self.offerButton setFrame:CGRectMake(230, 370, 80, 33)];
     [self.offerButton addTarget:self action:@selector(makeOffer:) forControlEvents:UIControlEventTouchUpInside];
     [self.offerButton setHidden:YES];
-//#endif
+#endif
 
+    [self.activityView setHidden:YES];
+    
     // ensure that the view is initialised correctly
     mode = MODE_ACCEPT;
-    self.scanOrClearButton.title = @"Scan";    
+    self.scanOrClearButton.title = @"Scan";
+    
+    // start the location manager
+    self.locationManager = [[CLLocationManager alloc] init];
+    
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    [self.locationManager startUpdatingLocation];
+    
+    // start the motion manager
+    self.motionManager = [[CMMotionManager alloc] init];
+    self.motionManager.deviceMotionUpdateInterval = 0.25;  // second
+    self.lastDeviceMotions = [NSMutableArray arrayWithCapacity:3];
+
+    // start monitoring for device motion updates
+    [self.motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue mainQueue]                    // this MUST be the main queue
+                                            withHandler:^(CMDeviceMotion *motion, NSError *error)
+    {
+        [self processDeviceMotion:motion error:error];
+    }];
+    
+}
+
+- (void) processDeviceMotion:(CMDeviceMotion *)motion error:(NSError *)error {
+
+    if ([self.lastDeviceMotions count] == 3) {
+        
+        // we store the last three device motions in order (so shift all existing motions one step closer to the start of the array
+        // and insert the new motion at the end)
+        [self.lastDeviceMotions replaceObjectAtIndex:0 withObject:[self.lastDeviceMotions objectAtIndex:1]];
+        [self.lastDeviceMotions replaceObjectAtIndex:1 withObject:[self.lastDeviceMotions objectAtIndex:2]];
+        [self.lastDeviceMotions replaceObjectAtIndex:2 withObject:motion];
+        
+//                // TODO determine if the pitch has changed enough to performa woosh
+//                NSLog(@"%@", [[self.lastDeviceMotions objectAtIndex:0] attitude]);
+//                NSLog(@"%@", [[self.lastDeviceMotions objectAtIndex:1] attitude]);
+//                NSLog(@"%@", [[self.lastDeviceMotions objectAtIndex:2] attitude]);
+        
+        double leastRecentPitch = [[self.lastDeviceMotions objectAtIndex:0] attitude].pitch;
+        double mostRecentPitch = [[self.lastDeviceMotions objectAtIndex:2] attitude].pitch;
+        
+//                NSLog(@"least: %f", leastRecentPitch);
+//                NSLog(@"most: %f", mostRecentPitch);
+//                NSLog(@"%f", leastRecentPitch - mostRecentPitch);
+        
+        if ( (leastRecentPitch - mostRecentPitch < -1) && last_action == LAST_ACTION_NONE) {
+            
+            // kick off a scan request
+            [self.activityView setHidden:NO];
+            [self.activityView startAnimating];
+
+            last_action = LAST_ACTION_SCAN;
+            request_type = REQUEST_TYPE_SCAN;
+            
+            // reset the response data
+            self.receivedData = [NSMutableData data];
+            
+            [[Woosh woosh] scan:self];
+            
+            NSLog(@"scan");
+            
+        } else if ( (leastRecentPitch - mostRecentPitch > 1) && last_action == LAST_ACTION_NONE) {
+            
+            if (self.imgView.image != nil) {
+
+                last_action = LAST_ACTION_OFFER;
+                
+                // pop up an activity view
+                [self.activityView setHidden:NO];
+                [self.activityView startAnimating];
+                
+                // convert the raw image data into a PNG (use JPEG instead?)
+                NSData *jpeg = UIImageJPEGRepresentation(self.imgView.image, 0.0);
+                
+                // we do two things here - create the card and then offer it
+                // the card creation is started here and the offer is made then the new card ID is received in the response (within the delegate)
+                request_type = REQUEST_TYPE_CREATE_CARD;
+                
+                self.receivedData = [NSMutableData data];
+                
+                [[Woosh woosh] createCardWithPhoto:@"default" photograph:jpeg delegate:self];
+                
+                NSLog(@"offer");
+            }
+            
+        } else {
+            
+            last_action = LAST_ACTION_NONE;
+            NSLog(@"none");
+            
+        }
+//                NSLog(@"--------");
+        
+    } else {
+        
+        [self.lastDeviceMotions addObject:motion];
+        
+    }
+
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    
+    CLLocation *mostRecentLocation = [locations objectAtIndex:[locations count] - 1];
+    
+    // store the location in the Woosh service singleton
+    [[Woosh woosh] setLatitude:mostRecentLocation.coordinate.latitude];
+    [[Woosh woosh] setLatitude:mostRecentLocation.coordinate.longitude];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -65,8 +187,10 @@ int request_type = REQUEST_TYPE_NONE;
     self.imgView.image = chosenImage;
     
     // display the offer button
+#if (TARGET_IPHONE_SIMULATOR)
     [self.offerButton setHidden:NO];
-
+#endif
+    
     // make sure that the UIImageView is displaying correctly
     [self.imgView bringSubviewToFront:self.offerButton];
     
@@ -79,17 +203,24 @@ int request_type = REQUEST_TYPE_NONE;
 
 -(void) makeOffer:(id)sender {
 
-    // TODO pop up an activity indicator here so that user knows what it going on
+    if (self.imgView.image != nil) {
+
+        [self.activityView setHidden:NO];
+        [self.activityView startAnimating];
+
+        // convert the raw image data into a PNG (use JPEG instead?)
+        NSData *jpeg = UIImageJPEGRepresentation(self.imgView.image, 0.0);
+        
+        // we do two things here - create the card and then offer it
+        // the card creation is started here and the offer is made then the new card ID is received in the response (within the delegate)
+        request_type = REQUEST_TYPE_CREATE_CARD;
+        
+        self.receivedData = [NSMutableData data];
+        
+        [[Woosh woosh] createCardWithPhoto:@"default" photograph:jpeg delegate:self];
+
+    }
     
-    // convert the raw image data into a PNG (use JPEG instead?)
-    NSData *jpeg = UIImageJPEGRepresentation(self.imgView.image, 0.0);
-
-    // we do two things here - create the card and then offer it
-    // the card creation is started here and the offer is made then the new card ID is received in the response (within the delegate)
-    request_type = REQUEST_TYPE_CREATE_CARD;
-    self.receivedData = [NSMutableData data];
-    [[Woosh woosh] createCardWithPhoto:@"default" photograph:jpeg delegate:self];
-
 }
 
 -(IBAction) selectPhotographButtonTapped:(id)sender {
@@ -158,6 +289,9 @@ int request_type = REQUEST_TYPE_NONE;
 
     } else {
 
+        [self.activityView setHidden:NO];
+        [self.activityView startAnimating];
+        
         // scan for offers at the current location
         request_type = REQUEST_TYPE_SCAN;
 
@@ -193,6 +327,9 @@ int request_type = REQUEST_TYPE_NONE;
        
         if ([availableOffers count] == 0) {
             
+            [self.activityView stopAnimating];
+            [self.activityView setHidden:YES];
+
             UIAlertView *noAvailableOffersAlert = [[UIAlertView alloc] initWithTitle:@"Sorry!"
                                                                              message:@"There are no offers available at your location at the present time. Please try again later."
                                                                             delegate:nil
@@ -229,6 +366,9 @@ int request_type = REQUEST_TYPE_NONE;
                                           completionBlock:nil];
             }
             
+            [self.activityView stopAnimating];
+            [self.activityView setHidden:YES];
+
             // tell the user what we just did
             UIAlertView *savedPhotosAlert = [[UIAlertView alloc] initWithTitle:@"Success!"
                                                                        message:[NSString stringWithFormat:@"%d were found in your proximity and have been saved to your photo library.", [offers count]]
@@ -269,6 +409,11 @@ int request_type = REQUEST_TYPE_NONE;
 
         
         if (newOfferId != nil) {
+
+            // stop the activity view
+            [self.activityView stopAnimating];
+            [self.activityView setHidden:YES];
+
             UIAlertView *confirmationAlert = [[UIAlertView alloc] initWithTitle:@"Success!"
                                                                         message:@"Your offer is now available to others within your proximity."
                                                                        delegate:nil

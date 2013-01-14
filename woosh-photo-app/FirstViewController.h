@@ -7,16 +7,25 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <CoreMotion/CoreMotion.h>
 
-@interface FirstViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate, NSURLConnectionDelegate>
+#import <CoreMotion/CoreMotion.h>
+#import <CoreLocation/CoreLocation.h>
+
+
+@interface FirstViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate, NSURLConnectionDelegate, CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *scanOrClearButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityView;
 
 @property (weak, nonatomic) IBOutlet UIButton *offerButton;
 
 @property NSMutableData *receivedData;
+
+@property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) CMMotionManager *motionManager;
+
+@property (strong, nonatomic) NSMutableArray *lastDeviceMotions;
 
 -(IBAction) selectPhotographButtonTapped:(id)sender;
 -(IBAction) scanOrClearPhoto:(id)sender;

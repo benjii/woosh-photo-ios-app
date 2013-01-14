@@ -18,7 +18,7 @@
                                     <constraint firstAttribute="height" constant="458" id="bP4-Cq-805"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9o-0i-pNd">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9o-0i-pNd">
                                 <constraints>
                                     <constraint firstAttribute="height" constant="33" id="IJj-Fm-bfx"/>
                                     <constraint firstAttribute="width" constant="115" id="XSd-1s-8Rm"/>
@@ -49,6 +49,7 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="bvk-1Q-CZQ"/>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -58,12 +59,15 @@
                             <constraint firstAttribute="trailing" secondItem="N9o-0i-pNd" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="JBZ-Wh-6bZ"/>
                             <constraint firstItem="IvD-Nt-aNt" firstAttribute="bottom" secondItem="16" secondAttribute="bottom" type="default" id="WFL-J0-nuy"/>
                             <constraint firstItem="9qT-ni-IuM" firstAttribute="top" secondItem="16" secondAttribute="top" type="default" id="bzJ-Oh-WcK"/>
+                            <constraint firstItem="bvk-1Q-CZQ" firstAttribute="centerY" secondItem="16" secondAttribute="centerY" type="default" id="cyJ-td-4HJ"/>
+                            <constraint firstItem="bvk-1Q-CZQ" firstAttribute="centerX" secondItem="9qT-ni-IuM" secondAttribute="centerX" type="default" id="fLY-Zf-tx6"/>
                             <constraint firstItem="9qT-ni-IuM" firstAttribute="leading" secondItem="16" secondAttribute="leading" type="default" id="gRH-l0-EjG"/>
                             <constraint firstItem="IvD-Nt-aNt" firstAttribute="leading" secondItem="16" secondAttribute="leading" type="default" id="qCg-kw-uak"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Woosh" image="first.png" id="7"/>
                     <connections>
+                        <outlet property="activityView" destination="bvk-1Q-CZQ" id="hUZ-9y-VpA"/>
                         <outlet property="imgView" destination="IvD-Nt-aNt" id="W3w-kM-dgN"/>
                         <outlet property="offerButton" destination="N9o-0i-pNd" id="ZSw-rA-alp"/>
                         <outlet property="scanOrClearButton" destination="gug-wQ-Fxk" id="y0N-8x-ohK"/>
@@ -140,6 +144,7 @@
             <relationships>
                 <relationship kind="action" name="scanOrClearPhoto:"/>
                 <relationship kind="action" name="selectPhotographButtonTapped:"/>
+                <relationship kind="outlet" name="activityView" candidateClass="UIActivityIndicatorView"/>
                 <relationship kind="outlet" name="imgView" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="offerButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="scanOrClearButton" candidateClass="UIBarButtonItem"/>
