@@ -15,8 +15,13 @@
 @interface FirstViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate, NSURLConnectionDelegate, CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *scanOrClearButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *clearButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityView;
+@property (weak, nonatomic) IBOutlet UIToolbar *mainToolbar;
+
+//@property (weak, nonatomic) IBOutlet UIBarButtonItem *cameraItem;
+//@property (weak, nonatomic) IBOutlet UIBarButtonItem *wooshLabel;
+//@property (weak, nonatomic) IBOutlet UIBarButtonItem *clearItem;
 
 @property (weak, nonatomic) IBOutlet UIButton *offerButton;
 

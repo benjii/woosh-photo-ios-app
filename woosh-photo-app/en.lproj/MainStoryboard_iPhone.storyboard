@@ -42,7 +42,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="SW8-ZG-vY5"/>
                                     <barButtonItem title="Woosh" style="plain" id="53o-tN-Nve"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="SoO-ad-xdX"/>
-                                    <barButtonItem title="Scan" id="gug-wQ-Fxk">
+                                    <barButtonItem enabled="NO" title="Clear" id="gug-wQ-Fxk">
                                         <connections>
                                             <action selector="scanOrClearPhoto:" destination="2" id="yY9-Eo-nU7"/>
                                         </connections>
@@ -68,9 +68,10 @@
                     <tabBarItem key="tabBarItem" title="Woosh" image="first.png" id="7"/>
                     <connections>
                         <outlet property="activityView" destination="bvk-1Q-CZQ" id="hUZ-9y-VpA"/>
+                        <outlet property="clearButton" destination="gug-wQ-Fxk" id="zqx-UF-b1M"/>
                         <outlet property="imgView" destination="IvD-Nt-aNt" id="W3w-kM-dgN"/>
+                        <outlet property="mainToolbar" destination="9qT-ni-IuM" id="glA-r2-HxW"/>
                         <outlet property="offerButton" destination="N9o-0i-pNd" id="ZSw-rA-alp"/>
-                        <outlet property="scanOrClearButton" destination="gug-wQ-Fxk" id="y0N-8x-ohK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="10" sceneMemberID="firstResponder"/>
@@ -145,9 +146,10 @@
                 <relationship kind="action" name="scanOrClearPhoto:"/>
                 <relationship kind="action" name="selectPhotographButtonTapped:"/>
                 <relationship kind="outlet" name="activityView" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="clearButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="imgView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="mainToolbar" candidateClass="UIToolbar"/>
                 <relationship kind="outlet" name="offerButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="scanOrClearButton" candidateClass="UIBarButtonItem"/>
             </relationships>
         </class>
         <class className="NSLayoutConstraint" superclassName="NSObject">

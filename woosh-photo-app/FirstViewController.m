@@ -42,7 +42,10 @@ int last_action = LAST_ACTION_NONE;
 
 @synthesize receivedData;
 @synthesize offerButton;
+
+@synthesize clearButton;
 @synthesize activityView;
+@synthesize mainToolbar;
 
 @synthesize locationManager;
 @synthesize motionManager;
@@ -65,7 +68,7 @@ int last_action = LAST_ACTION_NONE;
     
     // ensure that the view is initialised correctly
     mode = MODE_ACCEPT;
-    self.scanOrClearButton.title = @"Scan";
+    self.clearButton.enabled = NO;
     
     // start the location manager
     self.locationManager = [[CLLocationManager alloc] init];
@@ -92,24 +95,15 @@ int last_action = LAST_ACTION_NONE;
 
     if ([self.lastDeviceMotions count] == 3) {
         
-        // we store the last three device motions in order (so shift all existing motions one step closer to the start of the array
+        // we store the last three device motions in order so shift all existing motions one step closer to the start of the array
         // and insert the new motion at the end)
         [self.lastDeviceMotions replaceObjectAtIndex:0 withObject:[self.lastDeviceMotions objectAtIndex:1]];
         [self.lastDeviceMotions replaceObjectAtIndex:1 withObject:[self.lastDeviceMotions objectAtIndex:2]];
         [self.lastDeviceMotions replaceObjectAtIndex:2 withObject:motion];
         
-//                // TODO determine if the pitch has changed enough to performa woosh
-//                NSLog(@"%@", [[self.lastDeviceMotions objectAtIndex:0] attitude]);
-//                NSLog(@"%@", [[self.lastDeviceMotions objectAtIndex:1] attitude]);
-//                NSLog(@"%@", [[self.lastDeviceMotions objectAtIndex:2] attitude]);
-        
         double leastRecentPitch = [[self.lastDeviceMotions objectAtIndex:0] attitude].pitch;
         double mostRecentPitch = [[self.lastDeviceMotions objectAtIndex:2] attitude].pitch;
-        
-//                NSLog(@"least: %f", leastRecentPitch);
-//                NSLog(@"most: %f", mostRecentPitch);
-//                NSLog(@"%f", leastRecentPitch - mostRecentPitch);
-        
+                
         if ( (leastRecentPitch - mostRecentPitch < -1) && last_action == LAST_ACTION_NONE) {
             
             // kick off a scan request
@@ -124,7 +118,7 @@ int last_action = LAST_ACTION_NONE;
             
             [[Woosh woosh] scan:self];
             
-            NSLog(@"scan");
+//            NSLog(@"scan");
             
         } else if ( (leastRecentPitch - mostRecentPitch > 1) && last_action == LAST_ACTION_NONE) {
             
@@ -147,17 +141,16 @@ int last_action = LAST_ACTION_NONE;
                 
                 [[Woosh woosh] createCardWithPhoto:@"default" photograph:jpeg delegate:self];
                 
-                NSLog(@"offer");
+//                NSLog(@"offer");
             }
             
         } else {
             
             last_action = LAST_ACTION_NONE;
-            NSLog(@"none");
+//            NSLog(@"none");
             
         }
-//                NSLog(@"--------");
-        
+    
     } else {
         
         [self.lastDeviceMotions addObject:motion];
@@ -196,7 +189,7 @@ int last_action = LAST_ACTION_NONE;
     
     // set the mode to 'offer' - the user has a photo selected and can make an offer
     mode = MODE_OFFER;
-    self.scanOrClearButton.title = @"Clear";
+    self.clearButton.enabled = YES;
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -284,7 +277,7 @@ int last_action = LAST_ACTION_NONE;
         
         // the user cleared the offer - move to 'accept' mode
         mode = MODE_ACCEPT;
-        self.scanOrClearButton.title = @"Scan";
+        self.clearButton.enabled = NO;
         [self.offerButton setHidden:YES];
 
     } else {
@@ -371,7 +364,7 @@ int last_action = LAST_ACTION_NONE;
 
             // tell the user what we just did
             UIAlertView *savedPhotosAlert = [[UIAlertView alloc] initWithTitle:@"Success!"
-                                                                       message:[NSString stringWithFormat:@"%d were found in your proximity and have been saved to your photo library.", [offers count]]
+                                                                       message:[NSString stringWithFormat:@"%d offer(s) were found in your proximity and have been saved to your photo library.", [offers count]]
                                                                       delegate:nil
                                                              cancelButtonTitle:@"OK!"
                                                              otherButtonTitles: nil];
@@ -426,8 +419,7 @@ int last_action = LAST_ACTION_NONE;
             
             // the user cleared the offer - move to 'accept' mode
             mode = MODE_ACCEPT;
-            self.scanOrClearButton.title = @"Scan";
-            
+            self.clearButton.enabled = NO;
         }
     }
 }
