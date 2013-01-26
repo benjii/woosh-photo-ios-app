@@ -51,6 +51,24 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 	return uuidString;
 }
 
+- (BOOL) ping {
+    
+    // the first thing that we do is create a new Woosh card
+	NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
+    NSString *pingEndpoint = [endpoint stringByAppendingPathComponent:@"ping"];
+    
+    NSMutableURLRequest *pingReq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:pingEndpoint]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                            timeoutInterval:1.0];
+    
+    NSURLResponse *pingResp;
+    NSError *pingErr;
+    [NSURLConnection sendSynchronousRequest:pingReq returningResponse:&pingResp error:&pingErr];
+
+    // if the error is NIL then we successfully reached the server
+    return pingErr == nil;
+}
+
 // utility method for making an offer withg a single photograph
 - (NSURLConnection *) createCardWithPhoto:(NSString *)name photograph:(NSData *)photograph delegate:(id <NSURLConnectionDelegate>)delegate {
     

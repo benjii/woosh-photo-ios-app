@@ -11,6 +11,7 @@
 #import "FirstViewController.h"
 #import "Woosh.h"
 
+
 @interface FirstViewController ()
 
 @end
@@ -116,10 +117,24 @@ int last_action = LAST_ACTION_NONE;
             // reset the response data
             self.receivedData = [NSMutableData data];
             
-            [[Woosh woosh] scan:self];
+            if ( [[Woosh woosh] ping]) {
             
-//            NSLog(@"scan");
-            
+                [[Woosh woosh] scan:self];
+
+            } else {
+
+                [self.activityView stopAnimating];
+                [self.activityView setHidden:YES];
+                
+                UIAlertView *connectionAlert = [[UIAlertView alloc] initWithTitle:@"Connection Error!"
+                                                                          message:@"The Woosh app was not able to connect to the Woosh servers at this time. Sorry 'bout that, but please try again soon."
+                                                                         delegate:nil
+                                                                cancelButtonTitle:@"OK"
+                                                                otherButtonTitles:nil];
+                [connectionAlert show];
+
+            }
+        
         } else if ( (leastRecentPitch - mostRecentPitch > 1) && last_action == LAST_ACTION_NONE) {
             
             if (self.imgView.image != nil) {
@@ -139,9 +154,24 @@ int last_action = LAST_ACTION_NONE;
                 
                 self.receivedData = [NSMutableData data];
                 
-                [[Woosh woosh] createCardWithPhoto:@"default" photograph:jpeg delegate:self];
+                if ( [[Woosh woosh] ping] ) {
+
+                    [[Woosh woosh] createCardWithPhoto:@"default" photograph:jpeg delegate:self];
+
+                } else {
+                    
+                    [self.activityView stopAnimating];
+                    [self.activityView setHidden:YES];
+
+                    UIAlertView *connectionAlert = [[UIAlertView alloc] initWithTitle:@"Connection Error!"
+                                                                              message:@"The Woosh app was not able to connect to the Woosh servers at this time. Sorry 'bout that, but please try again soon."
+                                                                             delegate:nil
+                                                                    cancelButtonTitle:@"OK"
+                                                                    otherButtonTitles:nil];
+                    [connectionAlert show];
+                    
+                }
                 
-//                NSLog(@"offer");
             }
             
         } else {
@@ -196,23 +226,42 @@ int last_action = LAST_ACTION_NONE;
 
 -(void) makeOffer:(id)sender {
 
-    if (self.imgView.image != nil) {
+    
+    if ([[Woosh woosh] ping]) {
 
-        [self.activityView setHidden:NO];
-        [self.activityView startAnimating];
+        // if the network is reachable then continue
+        if (self.imgView.image != nil) {
+            
+            [self.activityView setHidden:NO];
+            [self.activityView startAnimating];
+            
+            // convert the raw image data into a PNG (use JPEG instead?)
+            NSData *jpeg = UIImageJPEGRepresentation(self.imgView.image, 0.0);
+            
+            // we do two things here - create the card and then offer it
+            // the card creation is started here and the offer is made then the new card ID is received in the response (within the delegate)
+            request_type = REQUEST_TYPE_CREATE_CARD;
+            
+            self.receivedData = [NSMutableData data];
+            
+            [[Woosh woosh] createCardWithPhoto:@"default" photograph:jpeg delegate:self];
+            
+        }
 
-        // convert the raw image data into a PNG (use JPEG instead?)
-        NSData *jpeg = UIImageJPEGRepresentation(self.imgView.image, 0.0);
+    } else {
         
-        // we do two things here - create the card and then offer it
-        // the card creation is started here and the offer is made then the new card ID is received in the response (within the delegate)
-        request_type = REQUEST_TYPE_CREATE_CARD;
-        
-        self.receivedData = [NSMutableData data];
-        
-        [[Woosh woosh] createCardWithPhoto:@"default" photograph:jpeg delegate:self];
+        [self.activityView stopAnimating];
+        [self.activityView setHidden:YES];
 
+        UIAlertView *connectionAlert = [[UIAlertView alloc] initWithTitle:@"Connection Error!"
+                                                                  message:@"The Woosh app was not able to connect to the Woosh servers at this time. Sorry 'bout that, but please try again soon."
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:nil];
+        [connectionAlert show];
+        
     }
+    
     
 }
 
@@ -291,8 +340,24 @@ int last_action = LAST_ACTION_NONE;
         // reset the response data
         self.receivedData = [NSMutableData data];
         
-        [[Woosh woosh] scan:self];
-                        
+        if ([[Woosh woosh] ping]) {
+        
+            [[Woosh woosh] scan:self];
+
+        } else {
+            
+            [self.activityView stopAnimating];
+            [self.activityView setHidden:YES];
+
+            UIAlertView *connectionAlert = [[UIAlertView alloc] initWithTitle:@"Connection Error!"
+                                                                      message:@"The Woosh app was not able to connect to the Woosh servers at this time. Sorry 'bout that, but please try again soon."
+                                                                     delegate:nil
+                                                            cancelButtonTitle:@"OK"
+                                                            otherButtonTitles:nil];
+            [connectionAlert show];
+       
+        }
+    
     }
     
 }
@@ -460,6 +525,16 @@ int last_action = LAST_ACTION_NONE;
     NSLog(@"Connection failed! Error - %@ %@",
           [error localizedDescription],
           [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+    
+    [self.activityView stopAnimating];
+    [self.activityView setHidden:YES];
+    
+    UIAlertView *connectionAlert = [[UIAlertView alloc] initWithTitle:@"Oops!"
+                                                              message:@"We tried to post your offer to the Woosh servers but we were unable to at this time. But we are sure that this is a temporary glitch, so please try again soon."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"Bummer"
+                                                    otherButtonTitles:nil];
+    [connectionAlert show];
 }
 
 @end

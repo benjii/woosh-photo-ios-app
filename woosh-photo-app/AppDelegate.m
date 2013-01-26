@@ -21,7 +21,7 @@
     
     // log some interesting output
     NSLog(@"Application directory: %@", [documentPath path]);
-    
+
     NSMutableDictionary *props = nil;
     
     if ( [[NSFileManager defaultManager] fileExistsAtPath:[systemPropertiesPath path]] ) {
@@ -31,7 +31,7 @@
         
         // this both instantiates the Woosh services and sets it's system properties
         [[Woosh woosh] setSystemProperties:props];
-        
+                
     } else {
         
         // properties file does not exist - create it

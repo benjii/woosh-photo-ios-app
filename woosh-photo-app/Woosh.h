@@ -19,6 +19,9 @@
 @property (nonatomic) double latitude;
 @property (nonatomic) double longitude;
 
+// perform a Woosh server ping
+- (BOOL) ping;
+
 // utility method for making an offer withg a single photograph
 - (NSURLConnection *) createCardWithPhoto:(NSString *)name photograph:(NSData *)photograph delegate:(id <NSURLConnectionDelegate>)delegate;
 - (NSURLConnection *) makeOffer:(NSString *)cardId latitude:(double)latitude longitude:(double)longitude delegate:(id <NSURLConnectionDelegate>)delegate;
