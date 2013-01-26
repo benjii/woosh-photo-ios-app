@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B525B8DB16B456710011D811 /* woosh-icon-standard.png in Resources */ = {isa = PBXBuildFile; fileRef = B525B8DA16B456710011D811 /* woosh-icon-standard.png */; };
+		B525B8DE16B4567C0011D811 /* woosh-icon-retina.png in Resources */ = {isa = PBXBuildFile; fileRef = B525B8DD16B4567C0011D811 /* woosh-icon-retina.png */; };
 		B54922EC169736A9002C9438 /* Woosh.m in Sources */ = {isa = PBXBuildFile; fileRef = B54922EB169736A9002C9438 /* Woosh.m */; };
 		B5A360AA16958A2400AE9B92 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A360A916958A2400AE9B92 /* CoreMotion.framework */; };
 		B5B73F9B16929105008A8BBC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B73F9A16929105008A8BBC /* UIKit.framework */; };
@@ -47,6 +49,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B525B8DA16B456710011D811 /* woosh-icon-standard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "woosh-icon-standard.png"; path = "../woosh-icon-standard.png"; sourceTree = "<group>"; };
+		B525B8DD16B4567C0011D811 /* woosh-icon-retina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "woosh-icon-retina.png"; path = "../woosh-icon-retina.png"; sourceTree = "<group>"; };
 		B54922EA169736A9002C9438 /* Woosh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Woosh.h; sourceTree = "<group>"; };
 		B54922EB169736A9002C9438 /* Woosh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Woosh.m; sourceTree = "<group>"; };
 		B5A360A916958A2400AE9B92 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -186,6 +190,8 @@
 				B5B73FAC16929105008A8BBC /* Default.png */,
 				B5B73FAE16929105008A8BBC /* Default@2x.png */,
 				B5B73FB016929105008A8BBC /* Default-568h@2x.png */,
+				B525B8DD16B4567C0011D811 /* woosh-icon-retina.png */,
+				B525B8DA16B456710011D811 /* woosh-icon-standard.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -299,6 +305,8 @@
 				B5B73FBE16929105008A8BBC /* first@2x.png in Resources */,
 				B5B73FC316929105008A8BBC /* second.png in Resources */,
 				B5B73FC516929105008A8BBC /* second@2x.png in Resources */,
+				B525B8DB16B456710011D811 /* woosh-icon-standard.png in Resources */,
+				B525B8DE16B4567C0011D811 /* woosh-icon-retina.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
