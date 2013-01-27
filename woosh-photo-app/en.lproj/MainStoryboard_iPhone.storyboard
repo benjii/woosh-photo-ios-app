@@ -39,12 +39,22 @@
                                             <action selector="selectPhotographButtonTapped:" destination="2" id="2mX-EO-nk0"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Offer" id="x3H-wN-5Ux">
+                                        <connections>
+                                            <action selector="makeOffer:" destination="2" id="Sud-i8-2Mj"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="SW8-ZG-vY5"/>
                                     <barButtonItem title="Woosh" style="plain" id="53o-tN-Nve"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="SoO-ad-xdX"/>
-                                    <barButtonItem enabled="NO" title="Clear" id="gug-wQ-Fxk">
+                                    <barButtonItem title="Scan" id="aRA-wZ-kg8">
                                         <connections>
-                                            <action selector="scanOrClearPhoto:" destination="2" id="yY9-Eo-nU7"/>
+                                            <action selector="scanForOffers:" destination="2" id="z59-25-FYe"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Clear" id="gug-wQ-Fxk">
+                                        <connections>
+                                            <action selector="clearPhoto:" destination="2" id="0MK-Ip-ee6"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -68,10 +78,14 @@
                     <tabBarItem key="tabBarItem" title="Woosh" image="first.png" id="7"/>
                     <connections>
                         <outlet property="activityView" destination="bvk-1Q-CZQ" id="hUZ-9y-VpA"/>
+                        <outlet property="cameraButton" destination="qZG-uJ-p7X" id="CUE-1o-V4g"/>
                         <outlet property="clearButton" destination="gug-wQ-Fxk" id="zqx-UF-b1M"/>
+                        <outlet property="flexibleSpace" destination="SW8-ZG-vY5" id="2JB-KH-tzS"/>
                         <outlet property="imgView" destination="IvD-Nt-aNt" id="W3w-kM-dgN"/>
                         <outlet property="mainToolbar" destination="9qT-ni-IuM" id="glA-r2-HxW"/>
-                        <outlet property="offerButton" destination="N9o-0i-pNd" id="ZSw-rA-alp"/>
+                        <outlet property="offerButton" destination="x3H-wN-5Ux" id="Ofe-XU-RvD"/>
+                        <outlet property="scanButton" destination="aRA-wZ-kg8" id="CJF-QJ-YyI"/>
+                        <outlet property="wooshLabel" destination="53o-tN-Nve" id="uwt-Wa-cGO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="10" sceneMemberID="firstResponder"/>
@@ -143,13 +157,19 @@
         <class className="FirstViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/FirstViewController.h"/>
             <relationships>
-                <relationship kind="action" name="scanOrClearPhoto:"/>
+                <relationship kind="action" name="clearPhoto:"/>
+                <relationship kind="action" name="makeOffer:"/>
+                <relationship kind="action" name="scanForOffers:"/>
                 <relationship kind="action" name="selectPhotographButtonTapped:"/>
                 <relationship kind="outlet" name="activityView" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="cameraButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="clearButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="flexibleSpace" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="imgView" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="mainToolbar" candidateClass="UIToolbar"/>
-                <relationship kind="outlet" name="offerButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="offerButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="scanButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="wooshLabel" candidateClass="UIBarButtonItem"/>
             </relationships>
         </class>
         <class className="NSLayoutConstraint" superclassName="NSObject">

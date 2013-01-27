@@ -15,15 +15,24 @@
 @interface FirstViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate, NSURLConnectionDelegate, CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *clearButton;
+
+// note that all six bar buttons below must be marked as 'strong' so that they are not auto-dereferenced
+// when we remove them from the items array of the main toolbar
+
+// toolbar buttons that are dispplayed when in 'scan' mode
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *scanButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *cameraButton;
+
+// toolbar buttons that are displayed when in 'offer' mode
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *clearButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *offerButton;
+
+// toolbar items that are always displayed
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *flexibleSpace;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *wooshLabel;
+
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityView;
 @property (weak, nonatomic) IBOutlet UIToolbar *mainToolbar;
-
-//@property (weak, nonatomic) IBOutlet UIBarButtonItem *cameraItem;
-//@property (weak, nonatomic) IBOutlet UIBarButtonItem *wooshLabel;
-//@property (weak, nonatomic) IBOutlet UIBarButtonItem *clearItem;
-
-@property (weak, nonatomic) IBOutlet UIButton *offerButton;
 
 @property NSMutableData *receivedData;
 
@@ -33,8 +42,9 @@
 @property (strong, nonatomic) NSMutableArray *lastDeviceMotions;
 
 -(IBAction) selectPhotographButtonTapped:(id)sender;
--(IBAction) scanOrClearPhoto:(id)sender;
+-(IBAction) scanForOffers:(id)sender;
+-(IBAction) clearPhoto:(id)sender;
 
--(void) makeOffer:(id)sender;
+-(IBAction) makeOffer:(id)sender;
 
 @end

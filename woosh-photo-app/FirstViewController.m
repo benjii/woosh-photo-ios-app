@@ -42,9 +42,7 @@ int last_action = LAST_ACTION_NONE;
 @implementation FirstViewController
 
 @synthesize receivedData;
-@synthesize offerButton;
 
-@synthesize clearButton;
 @synthesize activityView;
 @synthesize mainToolbar;
 
@@ -58,19 +56,19 @@ int last_action = LAST_ACTION_NONE;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-#if (TARGET_IPHONE_SIMULATOR)
-    // if we are running in the simiulator then overlay an 'offer' button on the UIImage view
-    [self.offerButton setFrame:CGRectMake(230, 370, 80, 33)];
-    [self.offerButton addTarget:self action:@selector(makeOffer:) forControlEvents:UIControlEventTouchUpInside];
-    [self.offerButton setHidden:YES];
-#endif
+//#if (TARGET_IPHONE_SIMULATOR)
+//    // if we are running in the simiulator then overlay an 'offer' button on the UIImage view
+//    [self.offerButton setFrame:CGRectMake(230, 370, 80, 33)];
+//    [self.offerButton addTarget:self action:@selector(makeOffer:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.offerButton setHidden:YES];
+//#endif
 
     [self.activityView setHidden:YES];
     
     // ensure that the view is initialised correctly
     mode = MODE_ACCEPT;
-    self.clearButton.enabled = NO;
-    
+    [self.mainToolbar setItems:[NSArray arrayWithObjects:self.cameraButton, self.flexibleSpace, self.wooshLabel, self.flexibleSpace, self.scanButton, nil]];
+        
     // start the location manager
     self.locationManager = [[CLLocationManager alloc] init];
     
@@ -210,25 +208,27 @@ int last_action = LAST_ACTION_NONE;
     self.imgView.image = chosenImage;
     
     // display the offer button
-#if (TARGET_IPHONE_SIMULATOR)
-    [self.offerButton setHidden:NO];
-#endif
+//#if (TARGET_IPHONE_SIMULATOR)
+//    [self.offerButton setHidden:NO];
+//#endif
     
-    // make sure that the UIImageView is displaying correctly
-    [self.imgView bringSubviewToFront:self.offerButton];
+//    // make sure that the UIImageView is displaying correctly
+//    [self.imgView bringSubviewToFront:self.offerButton];
     
     // set the mode to 'offer' - the user has a photo selected and can make an offer
     mode = MODE_OFFER;
-    self.clearButton.enabled = YES;
+    [self.mainToolbar setItems:[NSArray arrayWithObjects:self.offerButton, self.flexibleSpace, self.wooshLabel, self.flexibleSpace, self.clearButton, nil]];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void) makeOffer:(id)sender {
-
     
     if ([[Woosh woosh] ping]) {
 
+        // disable the offer button so that the user can't tap it again
+        [self.offerButton setEnabled:NO];
+        
         // if the network is reachable then continue
         if (self.imgView.image != nil) {
             
@@ -318,49 +318,47 @@ int last_action = LAST_ACTION_NONE;
     
 }
 
--(IBAction) scanOrClearPhoto:(id)sender {
+-(IBAction) scanForOffers:(id)sender {
     
-    if (mode == MODE_OFFER) {
-    
-        self.imgView.image = nil;
+    [self.activityView setHidden:NO];
+    [self.activityView startAnimating];
         
-        // the user cleared the offer - move to 'accept' mode
-        mode = MODE_ACCEPT;
-        self.clearButton.enabled = NO;
-        [self.offerButton setHidden:YES];
+    // scan for offers at the current location
+    request_type = REQUEST_TYPE_SCAN;
 
+    // reset the response data
+    self.receivedData = [NSMutableData data];
+        
+    if ([[Woosh woosh] ping]) {
+        
+        [[Woosh woosh] scan:self];
+        
     } else {
-
-        [self.activityView setHidden:NO];
-        [self.activityView startAnimating];
-        
-        // scan for offers at the current location
-        request_type = REQUEST_TYPE_SCAN;
-
-        // reset the response data
-        self.receivedData = [NSMutableData data];
-        
-        if ([[Woosh woosh] ping]) {
-        
-            [[Woosh woosh] scan:self];
-
-        } else {
             
-            [self.activityView stopAnimating];
-            [self.activityView setHidden:YES];
+        [self.activityView stopAnimating];
+        [self.activityView setHidden:YES];
 
-            UIAlertView *connectionAlert = [[UIAlertView alloc] initWithTitle:@"Connection Error!"
-                                                                      message:@"The Woosh app was not able to connect to the Woosh servers at this time. Sorry 'bout that, but please try again soon."
-                                                                     delegate:nil
-                                                            cancelButtonTitle:@"OK"
-                                                            otherButtonTitles:nil];
-            [connectionAlert show];
+        UIAlertView *connectionAlert = [[UIAlertView alloc] initWithTitle:@"Connection Error!"
+                                                                  message:@"The Woosh app was not able to connect to the Woosh servers at this time. Sorry 'bout that, but please try again soon."
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:nil];
+        [connectionAlert show];
        
-        }
-    
     }
     
 }
+
+-(IBAction) clearPhoto:(id)sender {
+    
+    self.imgView.image = nil;
+    
+    // the user cleared the offer - move to 'accept' mode
+    mode = MODE_ACCEPT;
+    [self.mainToolbar setItems:[NSArray arrayWithObjects:self.cameraButton, self.flexibleSpace, self.wooshLabel, self.flexibleSpace, self.scanButton, nil]];
+
+}
+
 
 //
 // everything below here is asynchronous HTTP request processing, including handling authentication challenges
@@ -374,9 +372,6 @@ int last_action = LAST_ACTION_NONE;
 
     } else if (request_type == REQUEST_TYPE_SCAN) {
         
-//        NSString* newStr = [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding];
-//        NSLog(@"%@", newStr);
-
         // render the response into an array for processing and pass back to the caller
         NSError *jsonErr = nil;
         NSArray *availableOffers = [NSJSONSerialization JSONObjectWithData:self.receivedData
@@ -484,7 +479,10 @@ int last_action = LAST_ACTION_NONE;
             
             // the user cleared the offer - move to 'accept' mode
             mode = MODE_ACCEPT;
-            self.clearButton.enabled = NO;
+            [self.mainToolbar setItems:[NSArray arrayWithObjects:self.cameraButton, self.flexibleSpace, self.wooshLabel, self.flexibleSpace, self.scanButton, nil]];
+            
+            // the offer has been made - re-enable the offer button
+            [self.offerButton setEnabled:YES];
         }
     }
 }
@@ -535,6 +533,10 @@ int last_action = LAST_ACTION_NONE;
                                                     cancelButtonTitle:@"Bummer"
                                                     otherButtonTitles:nil];
     [connectionAlert show];
+    
+    // just in case we disabled it
+    [self.offerButton setEnabled:YES];
+
 }
 
 @end
