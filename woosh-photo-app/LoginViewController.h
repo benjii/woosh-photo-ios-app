@@ -10,4 +10,11 @@
 
 @interface LoginViewController : UIViewController
 
+@property (strong, nonatomic) IBOutlet UITextField *usernameField;
+@property (strong, nonatomic) IBOutlet UITextField *passwordField;
+
+
+- (IBAction) loginTapped:(id)sender;
+- (IBAction) signupTapped:(id)sender;
+
 @end

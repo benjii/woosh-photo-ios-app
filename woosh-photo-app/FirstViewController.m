@@ -9,6 +9,8 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #import "FirstViewController.h"
+#import "LoginViewController.h"
+
 #import "Woosh.h"
 
 
@@ -55,14 +57,7 @@ int last_action = LAST_ACTION_NONE;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-//#if (TARGET_IPHONE_SIMULATOR)
-//    // if we are running in the simiulator then overlay an 'offer' button on the UIImage view
-//    [self.offerButton setFrame:CGRectMake(230, 370, 80, 33)];
-//    [self.offerButton addTarget:self action:@selector(makeOffer:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.offerButton setHidden:YES];
-//#endif
-
+        
     [self.activityView setHidden:YES];
     
     // ensure that the view is initialised correctly
@@ -87,7 +82,19 @@ int last_action = LAST_ACTION_NONE;
     {
         [self processDeviceMotion:motion error:error];
     }];
-    
+        
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+
+    // if the system properties array is empty at this point then pop up the login view to capture user authentication credentials
+    if ([[[Woosh woosh] systemProperties] count] == 0) {
+        LoginViewController *loginView = [[LoginViewController alloc] init];
+        
+        [self presentViewController:loginView animated:YES completion:^{ }];
+    }
+
 }
 
 - (void) processDeviceMotion:(CMDeviceMotion *)motion error:(NSError *)error {
@@ -438,10 +445,7 @@ int last_action = LAST_ACTION_NONE;
         NSDictionary *respDict = [NSJSONSerialization JSONObjectWithData:self.receivedData
                                                                  options:NSJSONReadingMutableContainers
                                                                    error:&error];
-        
-//        NSString* newStr = [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding];
-//        NSLog(@"%@", newStr);
-        
+                
         // grab the new card ID from the response
         NSString *newCardId = [respDict objectForKey:@"id"];
 

@@ -15,23 +15,9 @@
                             <imageView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IvD-Nt-aNt">
                                 <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="458" id="bP4-Cq-805"/>
+                                    <constraint firstAttribute="height" constant="510" id="guB-ZQ-fqQ"/>
                                 </constraints>
                             </imageView>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9o-0i-pNd">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="33" id="IJj-Fm-bfx"/>
-                                    <constraint firstAttribute="width" constant="115" id="XSd-1s-8Rm"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Offer">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="9qT-ni-IuM">
                                 <items>
                                     <barButtonItem systemItem="camera" id="qZG-uJ-p7X">
@@ -63,16 +49,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="N9o-0i-pNd" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="2Ee-s2-wbC"/>
                             <constraint firstItem="IvD-Nt-aNt" firstAttribute="trailing" secondItem="16" secondAttribute="trailing" type="default" id="3KF-hU-afc"/>
                             <constraint firstItem="9qT-ni-IuM" firstAttribute="trailing" secondItem="16" secondAttribute="trailing" type="default" id="5CE-HZ-QEP"/>
-                            <constraint firstAttribute="trailing" secondItem="N9o-0i-pNd" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="JBZ-Wh-6bZ"/>
-                            <constraint firstItem="IvD-Nt-aNt" firstAttribute="bottom" secondItem="16" secondAttribute="bottom" type="default" id="WFL-J0-nuy"/>
                             <constraint firstItem="9qT-ni-IuM" firstAttribute="top" secondItem="16" secondAttribute="top" type="default" id="bzJ-Oh-WcK"/>
                             <constraint firstItem="bvk-1Q-CZQ" firstAttribute="centerY" secondItem="16" secondAttribute="centerY" type="default" id="cyJ-td-4HJ"/>
                             <constraint firstItem="bvk-1Q-CZQ" firstAttribute="centerX" secondItem="9qT-ni-IuM" secondAttribute="centerX" type="default" id="fLY-Zf-tx6"/>
                             <constraint firstItem="9qT-ni-IuM" firstAttribute="leading" secondItem="16" secondAttribute="leading" type="default" id="gRH-l0-EjG"/>
                             <constraint firstItem="IvD-Nt-aNt" firstAttribute="leading" secondItem="16" secondAttribute="leading" type="default" id="qCg-kw-uak"/>
+                            <constraint firstItem="IvD-Nt-aNt" firstAttribute="top" secondItem="9qT-ni-IuM" secondAttribute="bottom" type="default" id="uUO-hz-5Pl"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Woosh" image="first.png" id="7"/>

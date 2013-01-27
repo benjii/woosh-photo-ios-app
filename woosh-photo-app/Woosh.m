@@ -53,7 +53,6 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 
 - (BOOL) ping {
     
-    // the first thing that we do is create a new Woosh card
 	NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
     NSString *pingEndpoint = [endpoint stringByAppendingPathComponent:@"ping"];
     
