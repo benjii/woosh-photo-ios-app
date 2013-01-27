@@ -173,9 +173,9 @@ int last_action = LAST_ACTION_NONE;
             }
             
         } else {
-            
+
+            // log the last action as NONE, which clears the way for a new action
             last_action = LAST_ACTION_NONE;
-//            NSLog(@"none");
             
         }
     

@@ -33,6 +33,9 @@
 		B5B73FCF16929105008A8BBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B73F9C16929105008A8BBC /* Foundation.framework */; };
 		B5B73FD716929105008A8BBC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B5B73FD516929105008A8BBC /* InfoPlist.strings */; };
 		B5B73FDA16929105008A8BBC /* woosh_photo_appTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B73FD916929105008A8BBC /* woosh_photo_appTests.m */; };
+		B5B8189816B58D2F007E962F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B8189616B58D2F007E962F /* LoginViewController.m */; };
+		B5B8189916B58D2F007E962F /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5B8189716B58D2F007E962F /* LoginViewController.xib */; };
+		B5B8189D16B58F3E007E962F /* woosh background.png in Resources */ = {isa = PBXBuildFile; fileRef = B5B8189C16B58F3E007E962F /* woosh background.png */; };
 		B5CAAA8F16A1900F0015CD67 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5CAAA8E16A1900F0015CD67 /* AssetsLibrary.framework */; };
 		B5E3AB31169293F30076A99E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5E3AB30169293F30076A99E /* CoreLocation.framework */; };
 		B5F8E1951699FB03000FF293 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F8E1941699FB03000FF293 /* NSData+Base64.m */; };
@@ -83,6 +86,10 @@
 		B5B73FD616929105008A8BBC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B5B73FD816929105008A8BBC /* woosh_photo_appTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = woosh_photo_appTests.h; sourceTree = "<group>"; };
 		B5B73FD916929105008A8BBC /* woosh_photo_appTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = woosh_photo_appTests.m; sourceTree = "<group>"; };
+		B5B8189516B58D2F007E962F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		B5B8189616B58D2F007E962F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		B5B8189716B58D2F007E962F /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		B5B8189C16B58F3E007E962F /* woosh background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "woosh background.png"; sourceTree = "<group>"; };
 		B5CAAA8E16A1900F0015CD67 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		B5E3AB30169293F30076A99E /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		B5F8E1931699FB03000FF293 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -163,6 +170,7 @@
 			children = (
 				B5F8E18E1699FA69000FF293 /* Util */,
 				B54922E816973694002C9438 /* Global */,
+				B5B8189B16B58D37007E962F /* Views */,
 				B5B73FA916929105008A8BBC /* AppDelegate.h */,
 				B5B73FAA16929105008A8BBC /* AppDelegate.m */,
 				B5B73FB216929105008A8BBC /* MainStoryboard_iPhone.storyboard */,
@@ -183,6 +191,7 @@
 		B5B73FA116929105008A8BBC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B5B8189C16B58F3E007E962F /* woosh background.png */,
 				B5B73FA216929105008A8BBC /* woosh-photo-app-Info.plist */,
 				B5B73FA316929105008A8BBC /* InfoPlist.strings */,
 				B5B73FA616929105008A8BBC /* main.m */,
@@ -213,6 +222,16 @@
 				B5B73FD516929105008A8BBC /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B5B8189B16B58D37007E962F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B5B8189516B58D2F007E962F /* LoginViewController.h */,
+				B5B8189616B58D2F007E962F /* LoginViewController.m */,
+				B5B8189716B58D2F007E962F /* LoginViewController.xib */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		B5F8E18E1699FA69000FF293 /* Util */ = {
@@ -307,6 +326,8 @@
 				B5B73FC516929105008A8BBC /* second@2x.png in Resources */,
 				B525B8DB16B456710011D811 /* woosh-icon-standard.png in Resources */,
 				B525B8DE16B4567C0011D811 /* woosh-icon-retina.png in Resources */,
+				B5B8189916B58D2F007E962F /* LoginViewController.xib in Resources */,
+				B5B8189D16B58F3E007E962F /* woosh background.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,6 +368,7 @@
 				B5B73FC116929105008A8BBC /* SecondViewController.m in Sources */,
 				B54922EC169736A9002C9438 /* Woosh.m in Sources */,
 				B5F8E1951699FB03000FF293 /* NSData+Base64.m in Sources */,
+				B5B8189816B58D2F007E962F /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

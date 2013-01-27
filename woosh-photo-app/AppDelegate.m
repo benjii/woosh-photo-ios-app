@@ -9,13 +9,13 @@
 #import "AppDelegate.h"
 
 #import "Woosh.h"
+#import "LoginViewController.h"
 
 
 @implementation AppDelegate
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
+    
     NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
     NSURL *systemPropertiesPath = [documentPath URLByAppendingPathComponent:@"woosh.plist"];
     
