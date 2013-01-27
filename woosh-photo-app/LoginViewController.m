@@ -37,41 +37,37 @@
     NSString *password = self.passwordField.text;
     
     // perform checks on user input
-    if (username == nil || [username compare:@""] == NSOrderedSame || [username length] < 4) {
+    if (username == nil || [username compare:@""] == NSOrderedSame) {
         [[[UIAlertView alloc] initWithTitle:@"Invalid Username"
-                                    message:@"You must choose a username that is greater than 4 characters in length."
+                                    message:@"To log in you must provide a username."
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil] show];
         return;
     }
 
-    if (password == nil || [password compare:@""] == NSOrderedSame || [password length] < 6) {
+    if (password == nil || [password compare:@""] == NSOrderedSame) {
         [[[UIAlertView alloc] initWithTitle:@"Invalid Password"
-                                    message:@"You must choose a username that is greater than 6 characters in length."
+                                    message:@"To log in you must provide a password."
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil] show];
         return;
     }
 
-    // if all input is valid then continue
+    // if all input is valid then attempt an authenticated action
+    NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
+    NSString *authEndpoint = [endpoint stringByAppendingPathComponent:@"authenticate"];
+    
+    NSMutableURLRequest *authReq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:authEndpoint]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:60.0];
 
-    NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-    NSURL *systemPropertiesPath = [documentPath URLByAppendingPathComponent:@"woosh.plist"];
-        
-    NSMutableDictionary *props = [[Woosh woosh] systemProperties];
-        
-    // set the username and password on the system properties dictionary
-    [props setObject:username forKey:@"username"];
-    [props setObject:password forKey:@"password"];
-        
-    // flush the system properties file to disk
-    [props writeToURL:systemPropertiesPath atomically:NO];
+    // reset the response data
+    self.receivedData = [NSMutableData data];
 
-    // dismiss the login view - the user is free to being using the app
-    [self dismissModalViewControllerAnimated:YES];
-
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:authReq delegate:self startImmediately:NO];
+    [conn start];
 }
 
 - (IBAction) signupTapped:(id)sender {
@@ -81,22 +77,65 @@
     [self presentViewController:signupView animated:YES completion:^{ }];
 }
 
-//	NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
-//    NSString *signupEndpoint = [endpoint stringByAppendingPathComponent:@"signup"];
-//
-//    NSMutableURLRequest *signupReq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:signupEndpoint]
-//                                                             cachePolicy:NSURLRequestUseProtocolCachePolicy
-//                                                         timeoutInterval:60.0];
-//
-//    NSURLResponse *signupResp;
-//    NSError *signupErr;
-//    NSData *signupResponseData = [NSURLConnection sendSynchronousRequest:signupReq returningResponse:&signupResp error:&signupErr];
-//
-//    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:signupResponseData
-//                                                             options:NSJSONReadingMutableContainers
-//                                                               error:nil];
-//
-//    NSString *status = [jsonDict objectForKey:@"status"];
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+
+    // if all is OK then save the users authentication credentials
+    NSString *username = self.usernameField.text;
+    NSString *password = self.passwordField.text;
+    
+    
+    NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    NSURL *systemPropertiesPath = [documentPath URLByAppendingPathComponent:@"woosh.plist"];
+    
+    NSMutableDictionary *props = [[Woosh woosh] systemProperties];
+    
+    // set the username and password on the system properties dictionary
+    [props setObject:username forKey:@"username"];
+    [props setObject:password forKey:@"password"];
+    
+    // flush the system properties file to disk
+    [props writeToURL:systemPropertiesPath atomically:NO];
+    
+    // dismiss the login view - the user is free to being using the app
+    [self dismissModalViewControllerAnimated:YES];
+
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+    
+    // deal with the authentication challenge
+    
+    if ([challenge previousFailureCount] > 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Authentication Error"
+                                                        message:@"Invalid credentials provided."
+                                                       delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+        
+    } else {
+        
+        // we answer the challenge with the username and password provided by the user at login
+        NSString *username = self.usernameField.text;
+        NSString *password = self.passwordField.text;
+        
+        NSURLCredential *cred = [[NSURLCredential alloc] initWithUser:username password:password                                                                            persistence:NSURLCredentialPersistenceForSession];
+        
+        [[challenge sender] useCredential:cred forAuthenticationChallenge:challenge];
+    }
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    [self.receivedData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    [self.receivedData appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    NSLog(@"Connection failed! Error - %@ %@",
+          [error localizedDescription],
+          [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoginViewController : UIViewController
+@interface LoginViewController : UIViewController<NSURLConnectionDelegate>
 
 @property (strong, nonatomic) IBOutlet UITextField *usernameField;
 @property (strong, nonatomic) IBOutlet UITextField *passwordField;
+
+@property NSMutableData *receivedData;
 
 
 - (IBAction) loginTapped:(id)sender;
