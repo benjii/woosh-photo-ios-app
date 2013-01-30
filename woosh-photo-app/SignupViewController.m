@@ -117,12 +117,15 @@
 
         NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
         NSURL *systemPropertiesPath = [documentPath URLByAppendingPathComponent:@"woosh.plist"];
-        
+
+        NSString *invitationKey = [jsonDict objectForKey:@"invitationKey"];
+
         NSMutableDictionary *props = [[Woosh woosh] systemProperties];
         
         // set the username and password on the system properties dictionary
         [props setObject:username forKey:@"username"];
         [props setObject:password forKey:@"password"];
+        [props setObject:invitationKey forKey:@"invitationKey"];
         
         // flush the system properties file to disk
         [props writeToURL:systemPropertiesPath atomically:NO];

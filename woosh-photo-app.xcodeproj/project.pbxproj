@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B525B8DB16B456710011D811 /* woosh-icon-standard.png in Resources */ = {isa = PBXBuildFile; fileRef = B525B8DA16B456710011D811 /* woosh-icon-standard.png */; };
 		B525B8DE16B4567C0011D811 /* woosh-icon-retina.png in Resources */ = {isa = PBXBuildFile; fileRef = B525B8DD16B4567C0011D811 /* woosh-icon-retina.png */; };
+		B52C7A6316B9D2F6003923C7 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B52C7A6216B9D2F6003923C7 /* SettingsViewController.m */; };
 		B54922EC169736A9002C9438 /* Woosh.m in Sources */ = {isa = PBXBuildFile; fileRef = B54922EB169736A9002C9438 /* Woosh.m */; };
 		B5527ABB16B5BAE700A7FD85 /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5527AB916B5BAE700A7FD85 /* SignupViewController.m */; };
 		B5527ABC16B5BAE700A7FD85 /* SignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5527ABA16B5BAE700A7FD85 /* SignupViewController.xib */; };
@@ -56,6 +57,8 @@
 /* Begin PBXFileReference section */
 		B525B8DA16B456710011D811 /* woosh-icon-standard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "woosh-icon-standard.png"; path = "../woosh-icon-standard.png"; sourceTree = "<group>"; };
 		B525B8DD16B4567C0011D811 /* woosh-icon-retina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "woosh-icon-retina.png"; path = "../woosh-icon-retina.png"; sourceTree = "<group>"; };
+		B52C7A6116B9D2F6003923C7 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		B52C7A6216B9D2F6003923C7 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		B54922EA169736A9002C9438 /* Woosh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Woosh.h; sourceTree = "<group>"; };
 		B54922EB169736A9002C9438 /* Woosh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Woosh.m; sourceTree = "<group>"; };
 		B5527AB816B5BAE700A7FD85 /* SignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupViewController.h; sourceTree = "<group>"; };
@@ -186,6 +189,8 @@
 				B5B73FBD16929105008A8BBC /* first@2x.png */,
 				B5B73FBF16929105008A8BBC /* SecondViewController.h */,
 				B5B73FC016929105008A8BBC /* SecondViewController.m */,
+				B52C7A6116B9D2F6003923C7 /* SettingsViewController.h */,
+				B52C7A6216B9D2F6003923C7 /* SettingsViewController.m */,
 				B5B73FC216929105008A8BBC /* second.png */,
 				B5B73FC416929105008A8BBC /* second@2x.png */,
 				B5B73FA116929105008A8BBC /* Supporting Files */,
@@ -379,6 +384,7 @@
 				B5F8E1951699FB03000FF293 /* NSData+Base64.m in Sources */,
 				B5B8189816B58D2F007E962F /* LoginViewController.m in Sources */,
 				B5527ABB16B5BAE700A7FD85 /* SignupViewController.m in Sources */,
+				B52C7A6316B9D2F6003923C7 /* SettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

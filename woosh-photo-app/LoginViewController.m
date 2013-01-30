@@ -83,15 +83,20 @@
     NSString *username = self.usernameField.text;
     NSString *password = self.passwordField.text;
     
-    
     NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
     NSURL *systemPropertiesPath = [documentPath URLByAppendingPathComponent:@"woosh.plist"];
     
+    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:self.receivedData
+                                                             options:NSJSONReadingMutableContainers
+                                                               error:nil];
+    NSString *invitationKey = [jsonDict objectForKey:@"invitationKey"];
+
     NSMutableDictionary *props = [[Woosh woosh] systemProperties];
     
     // set the username and password on the system properties dictionary
     [props setObject:username forKey:@"username"];
     [props setObject:password forKey:@"password"];
+    [props setObject:invitationKey forKey:@"invitationKey"];
     
     // flush the system properties file to disk
     [props writeToURL:systemPropertiesPath atomically:NO];

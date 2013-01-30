@@ -58,7 +58,7 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
     
     NSMutableURLRequest *pingReq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:pingEndpoint]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                            timeoutInterval:1.0];
+                                                            timeoutInterval:5.0];
     
     NSURLResponse *pingResp;
     NSError *pingErr;
