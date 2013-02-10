@@ -126,25 +126,81 @@
                                     <navigationItem title="Settings" id="C40-0t-lfa"/>
                                 </items>
                             </navigationBar>
-                            <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" bouncesZoom="NO" editable="NO" text="This is where you can look at your settings" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="qg0-RP-3Cl">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Invitation Key" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7PR-Sx-FGh">
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="88" id="gNX-ze-sPK"/>
+                                    <constraint firstAttribute="width" constant="161" id="oQ5-4O-iNs"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" size="system"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textView>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="&lt;key>" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Brc-B4-2Sv">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="51" id="Tha-6D-VjM"/>
+                                    <constraint firstAttribute="width" constant="209" id="saO-OK-2Lq"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Use this key to invite other people to Woosh" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XUf-KY-PtY">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="IUo-N0-arO"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="italicSystem" pointSize="12"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Use this button to forget your current login. You will be prompted to provide login credentials when you next use Woosh." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="JVE-Kh-gVY">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="57" id="Gxz-Pg-bMM"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="italicSystem" pointSize="12"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ps-KO-hXs">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="ViF-0L-pTg"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Sign Out">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="signOutButtonTapped:" destination="Q9w-55-zEs" eventType="touchUpInside" id="WmI-Yy-0g7"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="qg0-RP-3Cl" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="Ajx-9M-KJt"/>
-                            <constraint firstItem="qg0-RP-3Cl" firstAttribute="top" secondItem="pus-f2-MUp" secondAttribute="top" constant="214" id="DsL-RK-eCr"/>
-                            <constraint firstItem="qg0-RP-3Cl" firstAttribute="leading" secondItem="pus-f2-MUp" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="Fl2-4h-WVU"/>
+                            <constraint firstItem="JVE-Kh-gVY" firstAttribute="leading" secondItem="pus-f2-MUp" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="A68-B8-xEm"/>
+                            <constraint firstItem="XUf-KY-PtY" firstAttribute="centerX" secondItem="Brc-B4-2Sv" secondAttribute="centerX" type="default" id="BCl-lr-yvO"/>
+                            <constraint firstItem="XUf-KY-PtY" firstAttribute="leading" secondItem="pus-f2-MUp" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="EHE-br-dzo"/>
+                            <constraint firstItem="JVE-Kh-gVY" firstAttribute="top" secondItem="0ps-KO-hXs" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="IlG-wG-tRp"/>
+                            <constraint firstItem="q8S-gt-G4Q" firstAttribute="trailing" secondItem="pus-f2-MUp" secondAttribute="trailing" type="default" id="LkH-ap-dPI"/>
                             <constraint firstItem="q8S-gt-G4Q" firstAttribute="leading" secondItem="pus-f2-MUp" secondAttribute="leading" type="default" id="Lnu-Vu-Byb"/>
-                            <constraint firstItem="q8S-gt-G4Q" firstAttribute="trailing" secondItem="pus-f2-MUp" secondAttribute="trailing" type="default" id="NsX-Iv-rmN"/>
+                            <constraint firstItem="XUf-KY-PtY" firstAttribute="top" secondItem="Brc-B4-2Sv" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="MEw-Om-fFy"/>
+                            <constraint firstAttribute="trailing" secondItem="JVE-Kh-gVY" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="Ngg-ex-wx4"/>
                             <constraint firstItem="q8S-gt-G4Q" firstAttribute="top" secondItem="pus-f2-MUp" secondAttribute="top" type="default" id="QWE-VJ-Kc3"/>
+                            <constraint firstAttribute="trailing" secondItem="0ps-KO-hXs" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="SWN-lh-z29"/>
+                            <constraint firstItem="Brc-B4-2Sv" firstAttribute="centerX" secondItem="7PR-Sx-FGh" secondAttribute="centerX" type="default" id="SdZ-wO-jlV"/>
+                            <constraint firstAttribute="trailing" secondItem="XUf-KY-PtY" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="cuN-XP-maP"/>
+                            <constraint firstItem="0ps-KO-hXs" firstAttribute="leading" secondItem="pus-f2-MUp" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="mcD-HV-lfd"/>
+                            <constraint firstAttribute="bottom" secondItem="JVE-Kh-gVY" secondAttribute="bottom" constant="39" id="nh3-wC-UK2"/>
+                            <constraint firstItem="7PR-Sx-FGh" firstAttribute="top" secondItem="pus-f2-MUp" secondAttribute="top" constant="85" id="pBS-r8-Cn2"/>
+                            <constraint firstItem="Brc-B4-2Sv" firstAttribute="top" secondItem="7PR-Sx-FGh" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="sbh-NK-9aQ"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="settings" image="second.png" id="gPf-LW-4tp"/>
+                    <connections>
+                        <outlet property="invitationKeyLabel" destination="Brc-B4-2Sv" id="kOw-ay-WQy"/>
+                        <outlet property="signOutButton" destination="0ps-KO-hXs" id="cgi-Ad-TXQ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="50Y-eQ-veL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -203,6 +259,11 @@
         </class>
         <class className="SettingsViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="signOutButtonTapped:"/>
+                <relationship kind="outlet" name="invitationKeyLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="signOutButton" candidateClass="UIButton"/>
+            </relationships>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

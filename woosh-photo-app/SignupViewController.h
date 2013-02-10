@@ -14,6 +14,7 @@
 @property (strong, nonatomic) IBOutlet UITextField *passwordField;
 @property (strong, nonatomic) IBOutlet UITextField *confirmPasswordField;
 @property (strong, nonatomic) IBOutlet UITextField *emailField;
+@property (strong, nonatomic) IBOutlet UITextField *invitationKeyField;
 
 
 - (IBAction) cancelTapped:(id)sender;

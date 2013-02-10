@@ -73,7 +73,7 @@ int last_action = LAST_ACTION_NONE;
     
     // start the motion manager
     self.motionManager = [[CMMotionManager alloc] init];
-    self.motionManager.deviceMotionUpdateInterval = 0.25;  // second
+    self.motionManager.deviceMotionUpdateInterval = 0.15;  // second
     self.lastDeviceMotions = [NSMutableArray arrayWithCapacity:3];
 
     // start monitoring for device motion updates

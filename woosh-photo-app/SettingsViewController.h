@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SettingsViewController : UIViewController
+@interface SettingsViewController : UIViewController<UIAlertViewDelegate>
+
+@property (strong, nonatomic) IBOutlet UILabel *invitationKeyLabel;
+@property (strong, nonatomic) IBOutlet UIButton *signOutButton;
+
+-(IBAction) signOutButtonTapped:(id)sender;
 
 @end

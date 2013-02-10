@@ -34,6 +34,7 @@
     NSString *password = self.passwordField.text;
     NSString *confirmPassword = self.confirmPasswordField.text;
     NSString *email = self.emailField.text;
+    NSString *invitationKey = self.invitationKeyField.text;
 
     // check that the username is OK
     if (username == nil || [username compare:@""] == NSOrderedSame || [username length] < 4) {
@@ -76,10 +77,20 @@
         return;
     }
 
+    // check that an invitation key was provided
+    if (invitationKey == nil || [invitationKey compare:@""] == NSOrderedSame) {
+        [[[UIAlertView alloc] initWithTitle:@"Invitation Key Required"
+                                    message:@"During the Woosh ramp-up period you must provide an Invitation Key to be able to sign up."
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
+        return;
+    }
+
     // if all input is valid then perform the sign-up
     NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
     NSString *signupEndpoint = [endpoint stringByAppendingPathComponent:@"signup"];
-    NSString *fullRequest = [NSString stringWithFormat:@"%@?username=%@&password=%@&email=%@", signupEndpoint, username, password, email];
+    NSString *fullRequest = [NSString stringWithFormat:@"%@?username=%@&password=%@&email=%@&invitationKey=%@", signupEndpoint, username, password, email, invitationKey];
     
     NSMutableURLRequest *signupReq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:fullRequest]
                                                              cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -99,6 +110,15 @@
         
         [[[UIAlertView alloc] initWithTitle:@"Username Unavailable"
                                     message:@"We're sorry but that username is already in use. Please try a different one."
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
+        return;
+
+    } else if ([status compare:@"INVALID_INVITATION_KEY"] == NSOrderedSame) {
+
+        [[[UIAlertView alloc] initWithTitle:@"Invalid Invitation Key"
+                                    message:@"You did not provide a valid Invitation Key. Please try again."
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil] show];
