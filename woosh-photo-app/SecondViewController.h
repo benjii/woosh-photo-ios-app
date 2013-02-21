@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SecondViewController : UIViewController
+@interface SecondViewController : UIViewController<UITableViewDataSource, UITabBarDelegate, NSURLConnectionDataDelegate>
+
+@property (strong, nonatomic) IBOutlet UITableView *wooshCardTableView;
+
+@property NSMutableData *receivedData;
+@property NSArray *wooshCardsModel;
 
 @end

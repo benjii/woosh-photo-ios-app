@@ -22,6 +22,10 @@
     // log some interesting output
     NSLog(@"Application directory: %@", [documentPath path]);
 
+    // create the images cache directory
+    NSURL *imagesCachePath = [documentPath URLByAppendingPathComponent:@"images"];
+    [[NSFileManager defaultManager] createDirectoryAtURL:imagesCachePath withIntermediateDirectories:YES attributes:nil error:nil];
+    
     NSMutableDictionary *props = nil;
     
     if ( [[NSFileManager defaultManager] fileExistsAtPath:[systemPropertiesPath path]] ) {

@@ -12,8 +12,8 @@
 
 @property (nonatomic, weak) IBOutlet UIImageView *thumbnail;
 @property (nonatomic, weak) IBOutlet UILabel *remainingTimeLabel;
+@property (nonatomic, weak) IBOutlet UIButton *expireReofferButton;
 
-- (IBAction) reofferButtonTapped:(id)sender;
-- (IBAction) expireOfferButtonTapped:(id)sender;
+- (IBAction) expireReofferButtonTapped:(id)sender;
 
 @end

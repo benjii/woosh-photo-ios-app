@@ -156,4 +156,21 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 
 }
 
+- (NSURLConnection *) getCards:(id <NSURLConnectionDelegate>)delegate {
+
+    // construct the request URL
+	NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
+    NSString *cardsEndpoint = [endpoint stringByAppendingPathComponent:@"cards"];
+    
+    // construct the HTTP request object
+    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:cardsEndpoint]
+                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                   timeoutInterval:60.0];
+    [req setHTTPMethod:@"GET"];
+    
+    // kick off the request
+    return [[NSURLConnection alloc] initWithRequest:req delegate:delegate startImmediately:YES];
+
+}
+
 @end

@@ -29,4 +29,7 @@
 // perform a scan (an 'up woosh')
 - (NSURLConnection *) scan:(id <NSURLConnectionDelegate>)delegate;
 
+// gets the full list of cards owned by the currently authenticated user
+- (NSURLConnection *) getCards:(id <NSURLConnectionDelegate>)delegate;
+
 @end

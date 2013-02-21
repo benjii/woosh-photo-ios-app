@@ -12,6 +12,7 @@
 
 @synthesize thumbnail = _thumbnail;
 @synthesize remainingTimeLabel = _remainingTimeLabel;
+@synthesize expireReofferButton = _expireReofferButton;
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -28,12 +29,8 @@
     // Configure the view for the selected state
 }
 
-- (IBAction) reofferButtonTapped:(id)sender {
-    
-}
+- (IBAction) expireReofferButtonTapped:(id)sender; {
 
-- (IBAction) expireOfferButtonTapped:(id)sender {
-    
 }
 
 @end

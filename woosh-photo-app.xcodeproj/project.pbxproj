@@ -42,7 +42,7 @@
 		B5CAAA8F16A1900F0015CD67 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5CAAA8E16A1900F0015CD67 /* AssetsLibrary.framework */; };
 		B5D844FD16C7FADD008D190E /* iphone_delete_button.png in Resources */ = {isa = PBXBuildFile; fileRef = B5D844FC16C7FADD008D190E /* iphone_delete_button.png */; };
 		B5E3AB31169293F30076A99E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5E3AB30169293F30076A99E /* CoreLocation.framework */; };
-		B5EA2E0716D2B369007E6B14 /* WooshCardTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5EA2E0616D2B369007E6B14 /* WooshCardTableViewController.xib */; };
+		B5EA2E0716D2B369007E6B14 /* WooshCardTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5EA2E0616D2B369007E6B14 /* WooshCardTableViewCell.xib */; };
 		B5EA2E0A16D2B5E5007E6B14 /* WooshCardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B5EA2E0916D2B5E5007E6B14 /* WooshCardTableViewCell.m */; };
 		B5F8E1951699FB03000FF293 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F8E1941699FB03000FF293 /* NSData+Base64.m */; };
 /* End PBXBuildFile section */
@@ -104,7 +104,7 @@
 		B5CAAA8E16A1900F0015CD67 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		B5D844FC16C7FADD008D190E /* iphone_delete_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_delete_button.png; sourceTree = "<group>"; };
 		B5E3AB30169293F30076A99E /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		B5EA2E0616D2B369007E6B14 /* WooshCardTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WooshCardTableViewController.xib; path = ../WooshCardTableViewController.xib; sourceTree = "<group>"; };
+		B5EA2E0616D2B369007E6B14 /* WooshCardTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WooshCardTableViewCell.xib; path = ../WooshCardTableViewCell.xib; sourceTree = "<group>"; };
 		B5EA2E0816D2B5E5007E6B14 /* WooshCardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WooshCardTableViewCell.h; sourceTree = "<group>"; };
 		B5EA2E0916D2B5E5007E6B14 /* WooshCardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WooshCardTableViewCell.m; sourceTree = "<group>"; };
 		B5F8E1931699FB03000FF293 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -251,7 +251,7 @@
 				B5527AB816B5BAE700A7FD85 /* SignupViewController.h */,
 				B5527AB916B5BAE700A7FD85 /* SignupViewController.m */,
 				B5527ABA16B5BAE700A7FD85 /* SignupViewController.xib */,
-				B5EA2E0616D2B369007E6B14 /* WooshCardTableViewController.xib */,
+				B5EA2E0616D2B369007E6B14 /* WooshCardTableViewCell.xib */,
 				B5EA2E0816D2B5E5007E6B14 /* WooshCardTableViewCell.h */,
 				B5EA2E0916D2B5E5007E6B14 /* WooshCardTableViewCell.m */,
 			);
@@ -354,7 +354,7 @@
 				B5B8189D16B58F3E007E962F /* woosh background.png in Resources */,
 				B5527ABC16B5BAE700A7FD85 /* SignupViewController.xib in Resources */,
 				B5D844FD16C7FADD008D190E /* iphone_delete_button.png in Resources */,
-				B5EA2E0716D2B369007E6B14 /* WooshCardTableViewController.xib in Resources */,
+				B5EA2E0716D2B369007E6B14 /* WooshCardTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
