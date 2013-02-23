@@ -173,4 +173,23 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 
 }
 
+- (NSURLConnection *) deleteCard:(NSString *)cardId delegate:(id <NSURLConnectionDelegate>)delegate {
+
+    // construct the request URL
+	NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
+    NSString *scanEndpoint = [endpoint stringByAppendingPathComponent:@"card"];
+    NSString *fullUrl = [scanEndpoint stringByAppendingFormat:@"/%@", cardId];
+    
+    // construct the HTTP request object
+    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:fullUrl]
+                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                   timeoutInterval:60.0];
+    [req setHTTPMethod:@"DELETE"];
+    
+    // kick off the request
+    return [[NSURLConnection alloc] initWithRequest:req delegate:delegate startImmediately:YES];
+
+}
+
+
 @end

@@ -245,6 +245,8 @@ int last_action = LAST_ACTION_NONE;
             // convert the raw image data into a PNG (use JPEG instead?)
             NSData *jpeg = UIImageJPEGRepresentation(self.imgView.image, 0.0);
             
+            // TODO place the image in the local cache
+            
             // we do two things here - create the card and then offer it
             // the card creation is started here and the offer is made then the new card ID is received in the response (within the delegate)
             request_type = REQUEST_TYPE_CREATE_CARD;
@@ -452,8 +454,9 @@ int last_action = LAST_ACTION_NONE;
         // now make an offer on the card (in this app it's automatic to make an offer immediately after creating a card)
         request_type = REQUEST_TYPE_MAKE_OFFER;
         self.receivedData = [NSMutableData data];
-        [[Woosh woosh] makeOffer:newCardId latitude:[[Woosh woosh] latitude] longitude:[[Woosh woosh] longitude] delegate:self];
         
+        [[Woosh woosh] makeOffer:newCardId latitude:[[Woosh woosh] latitude] longitude:[[Woosh woosh] longitude] delegate:self];
+                
     } else if (request_type == REQUEST_TYPE_MAKE_OFFER) {
         
         NSError *error = nil;

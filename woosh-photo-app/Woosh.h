@@ -32,4 +32,7 @@
 // gets the full list of cards owned by the currently authenticated user
 - (NSURLConnection *) getCards:(id <NSURLConnectionDelegate>)delegate;
 
+// removes a card from the Woosh servers
+- (NSURLConnection *) deleteCard:(NSString *)cardId delegate:(id <NSURLConnectionDelegate>)delegate;
+
 @end

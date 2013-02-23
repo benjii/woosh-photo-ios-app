@@ -23,6 +23,15 @@
 @synthesize wooshCardsModel;
 
 
+// request type constants
+static const int REQUEST_TYPE_NONE = -1;
+
+static const int REQUEST_TYPE_LIST_CARDS = 0;
+static const int REQUEST_TYPE_DELETE_CARD = 1;
+
+int req_type = REQUEST_TYPE_NONE;
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -37,6 +46,7 @@
     self.receivedData = [NSMutableData data];
     
     // retrieve the full set of user cards from the Woosh servers
+    req_type = REQUEST_TYPE_LIST_CARDS;
     [[Woosh woosh] getCards:self];
 }
 
@@ -62,8 +72,13 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSLog(@"User hit the delete button");
-        // TODO make a call to the Woosh servers to delete the card
+        
+        NSString *cardId = [[self.wooshCardsModel objectAtIndex:indexPath.row] objectForKey:@"id"];
+
+        // make the call to the server to delete the card
+        req_type = REQUEST_TYPE_DELETE_CARD;
+        [[Woosh woosh] deleteCard:cardId delegate:self];
+        
     }
     
 }
@@ -155,14 +170,29 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
 
-    NSError *jsonErr = nil;
-    self.wooshCardsModel = [NSJSONSerialization JSONObjectWithData:self.receivedData
-                                                           options:NSJSONReadingMutableContainers
-                                                             error:&jsonErr];
+    if (req_type == REQUEST_TYPE_NONE) {
+        
+        // do nothing
+        
+    } else if (req_type == REQUEST_TYPE_LIST_CARDS) {
 
-//    NSLog(@"%@", [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding]);
+        NSError *jsonErr = nil;
+        self.wooshCardsModel = [NSJSONSerialization JSONObjectWithData:self.receivedData
+                                                               options:NSJSONReadingMutableContainers
+                                                                 error:&jsonErr];
+        
+        //    NSLog(@"%@", [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding]);
+        
+        [self.wooshCardTableView reloadData];
 
-    [self.wooshCardTableView reloadData];
+    } else if (req_type == REQUEST_TYPE_DELETE_CARD) {
+        
+        // refresh the list of card from the servers
+        req_type = REQUEST_TYPE_LIST_CARDS;
+        [[Woosh woosh] getCards:self];
+
+    }
+    
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
