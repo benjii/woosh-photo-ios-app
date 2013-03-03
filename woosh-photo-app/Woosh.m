@@ -18,6 +18,8 @@
 
 static Woosh *instance;
 
+static NSDateFormatter *dateTimeFormatter;
+
 static int RANDOM_CARD_NAME_LENGTH = 8;
 static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 
@@ -30,6 +32,9 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 			// create the singleton instance
 			instance = [[Woosh alloc] init];
             
+            dateTimeFormatter = [[NSDateFormatter alloc] init];
+			[dateTimeFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSz"];
+
         }
 	}
 	
@@ -49,6 +54,10 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 	CFRelease(uuidObj);
 	
 	return uuidString;
+}
+
+- (NSString *) dateAsDateTimeString:(NSDate *)date {
+	return [dateTimeFormatter stringFromDate:date];
 }
 
 - (BOOL) ping {
@@ -136,6 +145,24 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
     [newOfferReq setHTTPBody:postData];
 
     return [[NSURLConnection alloc] initWithRequest:newOfferReq delegate:delegate startImmediately:YES];
+}
+
+- (NSURLConnection *) expireOffer:(NSString *)offerId delegate:(id <NSURLConnectionDelegate>)delegate {
+ 
+    // construct the request URL
+	NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
+    NSString *scanEndpoint = [endpoint stringByAppendingPathComponent:@"offer/expire"];
+    NSString *fullUrl = [scanEndpoint stringByAppendingFormat:@"/%@", offerId];
+    
+    // construct the HTTP request object
+    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:fullUrl]
+                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                   timeoutInterval:60.0];
+    [req setHTTPMethod:@"POST"];
+    
+    // kick off the request
+    return [[NSURLConnection alloc] initWithRequest:req delegate:delegate startImmediately:YES];
+
 }
 
 - (NSURLConnection *) scan:(id <NSURLConnectionDelegate>)delegate {

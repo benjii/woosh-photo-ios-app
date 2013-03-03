@@ -25,7 +25,7 @@
                                             <action selector="selectPhotographButtonTapped:" destination="2" id="2mX-EO-nk0"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Offer" id="x3H-wN-5Ux">
+                                    <barButtonItem title="Woosh" id="x3H-wN-5Ux">
                                         <connections>
                                             <action selector="makeOffer:" destination="2" id="Sud-i8-2Mj"/>
                                         </connections>
@@ -104,7 +104,13 @@
                             </tableView>
                             <navigationBar contentMode="scaleToFill" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="6tH-hD-eZ9">
                                 <items>
-                                    <navigationItem title="Offer History" id="OT7-T4-pU0"/>
+                                    <navigationItem title="Offer History" id="OT7-T4-pU0">
+                                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="PcL-kz-7uk">
+                                            <connections>
+                                                <action selector="refreshButtonTapped:" destination="3" id="Ra6-rG-wIo"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
                         </subviews>
@@ -272,6 +278,7 @@
         <class className="SecondViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SecondViewController.h"/>
             <relationships>
+                <relationship kind="action" name="refreshButtonTapped:"/>
                 <relationship kind="outlet" name="wooshCardTableView" candidateClass="UITableView"/>
             </relationships>
         </class>
@@ -287,7 +294,9 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/WooshCardTableViewCell.h"/>
             <relationships>
                 <relationship kind="action" name="expireReofferButtonTapped:"/>
+                <relationship kind="outlet" name="cardId" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="expireReofferButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="lastOfferId" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="remainingTimeLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="thumbnail" candidateClass="UIImageView"/>
             </relationships>

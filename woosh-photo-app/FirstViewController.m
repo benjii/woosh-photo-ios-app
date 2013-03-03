@@ -245,8 +245,6 @@ int last_action = LAST_ACTION_NONE;
             // convert the raw image data into a PNG (use JPEG instead?)
             NSData *jpeg = UIImageJPEGRepresentation(self.imgView.image, 0.0);
             
-            // TODO place the image in the local cache
-            
             // we do two things here - create the card and then offer it
             // the card creation is started here and the offer is made then the new card ID is received in the response (within the delegate)
             request_type = REQUEST_TYPE_CREATE_CARD;
@@ -420,7 +418,10 @@ int last_action = LAST_ACTION_NONE;
                 NSError *error = nil;
                 NSData *photographData = [NSURLConnection sendSynchronousRequest:photoDownloadReq
                                                            returningResponse:&resp
-                                                                       error:&error];                
+                                                                       error:&error];
+                                
+                // TODO place the image in the local cache
+                
                 // save it to the camera roll
                 ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
                 [library writeImageDataToSavedPhotosAlbum:photographData

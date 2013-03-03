@@ -8,11 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WooshCardTableViewCell : UITableViewCell
+@interface WooshCardTableViewCell : UITableViewCell<NSURLConnectionDataDelegate>
 
 @property (nonatomic, weak) IBOutlet UIImageView *thumbnail;
 @property (nonatomic, weak) IBOutlet UILabel *remainingTimeLabel;
 @property (nonatomic, weak) IBOutlet UIButton *expireReofferButton;
+
+@property (nonatomic, strong) NSString *cardId;
+@property (nonatomic, strong) NSString *lastOfferId;
+@property (nonatomic) BOOL active;
+
+
+//@property (nonatomic, strong) UITableView *parent;
+
+@property NSMutableData *receivedData;
 
 - (IBAction) expireReofferButtonTapped:(id)sender;
 
