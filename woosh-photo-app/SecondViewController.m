@@ -142,7 +142,7 @@ int req_type = REQUEST_TYPE_NONE;
             
                 NSTimeInterval interval = [offerEnd timeIntervalSinceNow];
                 NSInteger time = interval;
-                cell.remainingTimeLabel.text = [NSString stringWithFormat:@"%d:%d remaining for offer", time / 60, time % 60];
+                cell.remainingTimeLabel.text = [NSString stringWithFormat:@"%d:%02d remaining for offer", time / 60, time % 60];
                 
             } else {
                 
@@ -209,10 +209,7 @@ int req_type = REQUEST_TYPE_NONE;
         cell.expireReofferButton.titleLabel.text = @"Unavailable";
 
     }
-    
-//    cell.expireReofferButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-//    cell.expireReofferButton.titleLabel.text = @"Re-offer";
-    
+        
     return cell;
 }
 

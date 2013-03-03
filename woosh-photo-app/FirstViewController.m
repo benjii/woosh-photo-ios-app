@@ -161,7 +161,19 @@ int last_action = LAST_ACTION_NONE;
                 
                 if ( [[Woosh woosh] ping] ) {
 
-                    [[Woosh woosh] createCardWithPhoto:@"default" photograph:jpeg delegate:self];
+                    // write the JPEG to the local image cache
+                    NSString *photographId = [Woosh uuid];
+                    
+                    NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+                    NSURL *imagePath = [[documentPath URLByAppendingPathComponent:@"images"] URLByAppendingPathComponent:photographId];
+                    
+                    [[NSFileManager defaultManager] createFileAtPath:[imagePath path] contents:jpeg attributes:nil];
+
+                    // create the new Woosh card
+                    [[Woosh woosh] createCardWithPhoto:@"default"
+                                          photographId:photographId
+                                            photograph:jpeg
+                                              delegate:self];
 
                 } else {
                     
@@ -251,7 +263,19 @@ int last_action = LAST_ACTION_NONE;
             
             self.receivedData = [NSMutableData data];
             
-            [[Woosh woosh] createCardWithPhoto:@"default" photograph:jpeg delegate:self];
+            // write the JPEG to the local image cache
+            NSString *photographId = [Woosh uuid];
+            
+            NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+            NSURL *imagePath = [[documentPath URLByAppendingPathComponent:@"images"] URLByAppendingPathComponent:photographId];
+            
+            [[NSFileManager defaultManager] createFileAtPath:[imagePath path] contents:jpeg attributes:nil];
+
+            // create the new Woosh card
+            [[Woosh woosh] createCardWithPhoto:@"default"
+                                  photographId:photographId
+                                    photograph:jpeg
+                                      delegate:self];
             
         }
 
@@ -419,9 +443,7 @@ int last_action = LAST_ACTION_NONE;
                 NSData *photographData = [NSURLConnection sendSynchronousRequest:photoDownloadReq
                                                            returningResponse:&resp
                                                                        error:&error];
-                                
-                // TODO place the image in the local cache
-                
+                                                
                 // save it to the camera roll
                 ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
                 [library writeImageDataToSavedPhotosAlbum:photographData

@@ -53,7 +53,8 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 	NSString *uuidString = (__bridge NSString *) CFUUIDCreateString(nil, uuidObj);
 	CFRelease(uuidObj);
 	
-	return uuidString;
+    // convert to lower case to adhere to the Woosh standard to UUIDs (there is no other functional reason)
+	return [uuidString lowercaseString];
 }
 
 - (NSString *) dateAsDateTimeString:(NSDate *)date {
@@ -78,7 +79,10 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 }
 
 // utility method for making an offer withg a single photograph
-- (NSURLConnection *) createCardWithPhoto:(NSString *)name photograph:(NSData *)photograph delegate:(id <NSURLConnectionDelegate>)delegate {
+- (NSURLConnection *) createCardWithPhoto:(NSString *)name
+                             photographId:(NSString *)photographId
+                               photograph:(NSData *)photograph
+                                 delegate:(id <NSURLConnectionDelegate>)delegate {
     
     // the first thing that we do is create a new Woosh card
 	NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
@@ -89,9 +93,16 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
                                                           timeoutInterval:60.0];
 
     // construct the dictionary to express the new Woosh card - this will be converted to a JSON payload for transport
+    
+    // note that we do something that looks a little unusual here in that we supply the UUID for the binary object
+    // normally we would defer this function to the server (and this is in fact the case for every other object type)
+    // but because we need to cache images locally by ID, we must generate the ID here and then pass it to the server
+    // (which will then use it as the identifer for the binary, thereby matching with the ID used by the client)
+    
     NSDictionary *cardDataDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                                         @"default", @"name",
                                         @"BINARY", @"type",
+                                        photographId, @"binaryId",
                                         [photograph base64EncodedString], @"value",
                                         nil];
         
