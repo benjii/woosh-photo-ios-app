@@ -28,7 +28,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    self.usernameField.delegate = self;
+    self.passwordField.delegate = self;
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return NO;
 }
 
 - (IBAction) loginTapped:(id)sender {
@@ -102,7 +113,7 @@
     [props writeToURL:systemPropertiesPath atomically:NO];
     
     // dismiss the login view - the user is free to being using the app
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:^{ }];
 
 }
 

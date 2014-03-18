@@ -31,7 +31,6 @@
 		B5B73FC116929105008A8BBC /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B73FC016929105008A8BBC /* SecondViewController.m */; };
 		B5B73FC316929105008A8BBC /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = B5B73FC216929105008A8BBC /* second.png */; };
 		B5B73FC516929105008A8BBC /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B5B73FC416929105008A8BBC /* second@2x.png */; };
-		B5B73FCD16929105008A8BBC /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B73FCC16929105008A8BBC /* SenTestingKit.framework */; };
 		B5B73FCE16929105008A8BBC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B73F9A16929105008A8BBC /* UIKit.framework */; };
 		B5B73FCF16929105008A8BBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B73F9C16929105008A8BBC /* Foundation.framework */; };
 		B5B73FD716929105008A8BBC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B5B73FD516929105008A8BBC /* InfoPlist.strings */; };
@@ -91,8 +90,7 @@
 		B5B73FC016929105008A8BBC /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		B5B73FC216929105008A8BBC /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
 		B5B73FC416929105008A8BBC /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
-		B5B73FCB16929105008A8BBC /* woosh-photo-appTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "woosh-photo-appTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5B73FCC16929105008A8BBC /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		B5B73FCB16929105008A8BBC /* woosh-photo-appTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "woosh-photo-appTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5B73FD416929105008A8BBC /* woosh-photo-appTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "woosh-photo-appTests-Info.plist"; sourceTree = "<group>"; };
 		B5B73FD616929105008A8BBC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B5B73FD816929105008A8BBC /* woosh_photo_appTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = woosh_photo_appTests.h; sourceTree = "<group>"; };
@@ -129,7 +127,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5B73FCD16929105008A8BBC /* SenTestingKit.framework in Frameworks */,
 				B5B73FCE16929105008A8BBC /* UIKit.framework in Frameworks */,
 				B5B73FCF16929105008A8BBC /* Foundation.framework in Frameworks */,
 			);
@@ -161,7 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				B5B73F9616929105008A8BBC /* woosh-photo-app.app */,
-				B5B73FCB16929105008A8BBC /* woosh-photo-appTests.octest */,
+				B5B73FCB16929105008A8BBC /* woosh-photo-appTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -175,7 +172,6 @@
 				B5B73F9A16929105008A8BBC /* UIKit.framework */,
 				B5B73F9C16929105008A8BBC /* Foundation.framework */,
 				B5B73F9E16929105008A8BBC /* CoreGraphics.framework */,
-				B5B73FCC16929105008A8BBC /* SenTestingKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -303,8 +299,8 @@
 			);
 			name = "woosh-photo-appTests";
 			productName = "woosh-photo-appTests";
-			productReference = B5B73FCB16929105008A8BBC /* woosh-photo-appTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productReference = B5B73FCB16929105008A8BBC /* woosh-photo-appTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -312,6 +308,7 @@
 		B5B73F8D16929105008A8BBC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastTestingUpgradeCheck = 0510;
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = Luminos;
 			};
@@ -514,7 +511,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "woosh-photo-app/woosh-photo-app-Prefix.pch";
 				INFOPLIST_FILE = "woosh-photo-app/woosh-photo-app-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -528,7 +525,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "woosh-photo-app/woosh-photo-app-Prefix.pch";
 				INFOPLIST_FILE = "woosh-photo-app/woosh-photo-app-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -541,15 +538,15 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/woosh-photo-app.app/woosh-photo-app";
 				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"\\\"$(SDKROOT)/Developer/Library/Frameworks\\\"",
+					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "woosh-photo-app/woosh-photo-app-Prefix.pch";
 				INFOPLIST_FILE = "woosh-photo-appTests/woosh-photo-appTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
@@ -558,15 +555,15 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/woosh-photo-app.app/woosh-photo-app";
 				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"\\\"$(SDKROOT)/Developer/Library/Frameworks\\\"",
+					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "woosh-photo-app/woosh-photo-app-Prefix.pch";
 				INFOPLIST_FILE = "woosh-photo-appTests/woosh-photo-appTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};

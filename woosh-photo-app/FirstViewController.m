@@ -456,7 +456,7 @@ int last_action = LAST_ACTION_NONE;
 
             // tell the user what we just did
             UIAlertView *savedPhotosAlert = [[UIAlertView alloc] initWithTitle:@"Success!"
-                                                                       message:[NSString stringWithFormat:@"%d offer(s) were found in your proximity and have been saved to your photo library.", [offers count]]
+                                                                       message:[NSString stringWithFormat:@"%ld offer(s) were found in your proximity and have been saved to your photo library.", (unsigned long)[offers count]]
                                                                       delegate:nil
                                                              cancelButtonTitle:@"OK!"
                                                              otherButtonTitles: nil];

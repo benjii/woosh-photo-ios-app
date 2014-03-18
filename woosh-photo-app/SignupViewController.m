@@ -15,17 +15,14 @@
 
 @implementation SignupViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
 - (IBAction) signupTapped:(id)sender {
@@ -163,7 +160,7 @@
 }
 
 - (IBAction) cancelTapped:(id)sender {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:^{ }];
 }
 
 - (void)didReceiveMemoryWarning {
