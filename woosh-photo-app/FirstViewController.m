@@ -97,6 +97,10 @@ int last_action = LAST_ACTION_NONE;
 
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
 - (void) processDeviceMotion:(CMDeviceMotion *)motion error:(NSError *)error {
 
     if ([self.lastDeviceMotions count] == 3) {

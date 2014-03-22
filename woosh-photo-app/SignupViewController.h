@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SignupViewController : UIViewController
+@interface SignupViewController : UIViewController<UITextFieldDelegate>
 
 @property (strong, nonatomic) IBOutlet UITextField *usernameField;
 @property (strong, nonatomic) IBOutlet UITextField *passwordField;

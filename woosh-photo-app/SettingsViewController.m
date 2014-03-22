@@ -42,6 +42,10 @@
     self.signOutButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
 -(IBAction) signOutButtonTapped:(id)sender {
     
     UIAlertView *confirmSignOutAlert = [[UIAlertView alloc] initWithTitle:@"Are You Sure?"

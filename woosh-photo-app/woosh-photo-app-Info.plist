@@ -35,10 +35,6 @@
 	<string>1.1.1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>ServerEndpoint</key>
-	<string>http://192.168.1.100:8080/woosh/m/</string>
-	<key>AlternateServerEndpoint</key>
-	<string>http://54.246.111.151:8080/woosh/m/</string>
 	<key>UIMainStoryboardFile</key>
 	<string>MainStoryboard_iPhone</string>
 	<key>UIMainStoryboardFile~ipad</key>
@@ -68,5 +64,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>ServerEndpoint</key>
+	<string>http://192.168.1.100:8080/woosh/m/</string>
+	<key>AlternateServerEndpoint</key>
+	<string>http://54.246.111.151:8080/woosh/m/</string>
 </dict>
 </plist>

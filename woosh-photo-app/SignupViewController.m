@@ -21,6 +21,11 @@
     // Do any additional setup after loading the view from its nib.
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return NO;
+}
+
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }

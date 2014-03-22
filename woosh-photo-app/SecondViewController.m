@@ -50,9 +50,8 @@ int req_type = REQUEST_TYPE_NONE;
     [[Woosh woosh] getCards:self];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
 - (IBAction) refreshButtonTapped:(id)sender {
@@ -287,6 +286,11 @@ int req_type = REQUEST_TYPE_NONE;
                                                     cancelButtonTitle:@"Bummer"
                                                     otherButtonTitles:nil];
     [connectionAlert show];    
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 @end
