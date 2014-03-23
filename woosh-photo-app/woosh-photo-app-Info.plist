@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AlternateServerEndpoint</key>
+	<string>http://54.246.111.151:8080/woosh/m/</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -14,13 +16,14 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
+				<string>woosh-icon-retina</string>
 				<string>woosh-icon-standard.png</string>
 				<string>woosh-icon-retina.png</string>
 			</array>
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.luminos.woosh</string>
+	<string>io.woosh.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -28,13 +31,15 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.1</string>
+	<string>0.1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.1.1</string>
+	<string>0.1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>ServerEndpoint</key>
+	<string>http://192.168.1.100:8080/woosh/m/</string>
 	<key>UIMainStoryboardFile</key>
 	<string>MainStoryboard_iPhone</string>
 	<key>UIMainStoryboardFile~ipad</key>
@@ -64,9 +69,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>ServerEndpoint</key>
-	<string>http://192.168.1.100:8080/woosh/m/</string>
-	<key>AlternateServerEndpoint</key>
-	<string>http://54.246.111.151:8080/woosh/m/</string>
 </dict>
 </plist>
