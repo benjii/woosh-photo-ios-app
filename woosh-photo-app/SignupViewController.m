@@ -23,8 +23,8 @@
     // Do any additional setup after loading the view from its nib.
 }
 
-- (void) viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
 
     // if all input is valid then attempt an authenticated action
     NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
@@ -39,6 +39,11 @@
     
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:pingReq delegate:self startImmediately:NO];
     [conn start];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

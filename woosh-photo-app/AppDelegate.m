@@ -14,6 +14,9 @@
 
 @implementation AppDelegate
 
+@synthesize receivedData;
+
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
@@ -47,41 +50,25 @@
         // this both instantiates the Woosh services and sets it's system properties
         [[Woosh woosh] setSystemProperties:props];
 
-        // popping up the login view controller is now down elsewhere
-        
-//        // if the properties file does not exist then neither will authentication credentials
-//        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Secure Service" message:@"You must login to use Woosh." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Login", nil];
-//        
-//        alert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
-//        
-//        [alert show];
     }
-        
+    
+    // if all input is valid then attempt an authenticated action
+    NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
+    NSString *pingEndpoint = [endpoint stringByAppendingPathComponent:@"ping"];
+    
+    NSMutableURLRequest *pingReq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:pingEndpoint]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:60.0];
+    
+    // reset the response data
+    self.receivedData = [NSMutableData data];
+    
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:pingReq delegate:self startImmediately:NO];
+    [conn start];
+    
     // Override point for customization after application launch.
     return YES;
 }
-
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-//    
-//    if (buttonIndex == 0) {
-//        NSString *username = [[alertView textFieldAtIndex:0] text];
-//        NSString *password = [[alertView textFieldAtIndex:1] text];
-//        
-//        NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-//        NSURL *systemPropertiesPath = [documentPath URLByAppendingPathComponent:@"woosh.plist"];
-//        
-//        NSMutableDictionary *props = [[Woosh woosh] systemProperties];
-//        
-//        // set the username and password on the system properties dictionary
-//        [props setObject:username forKey:@"username"];
-//        [props setObject:password forKey:@"password"];
-//        
-//        // flush the system properties file to disk
-//        [props writeToURL:systemPropertiesPath atomically:NO];
-//        
-//        // TODO now that we are authenitcated, check to see that we have all of the users published cards
-//    }
-//}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -109,6 +96,39 @@
     
     [[[Woosh woosh] systemProperties] writeToFile:systemPropertiesPath atomically:YES];
     
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSError *jsonErr = nil;
+    NSDictionary *pingResponse = [NSJSONSerialization JSONObjectWithData:self.receivedData
+                                                                 options:NSJSONReadingMutableContainers
+                                                                   error:&jsonErr];
+        
+    NSString *motd = [pingResponse objectForKey:@"motd"];
+        
+    if ( ! [motd isEqual:[NSNull null]]) {
+        if (motd != nil && [motd compare:@""] != NSOrderedSame) {
+            [[[UIAlertView alloc] initWithTitle:@"Message Of The Day"
+                                        message:[NSString stringWithFormat:@"%@", motd]
+                                       delegate:nil
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil] show];
+        }
+    }
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    [self.receivedData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    [self.receivedData appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    NSLog(@"Connection failed! Error - %@ %@",
+          [error localizedDescription],
+          [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
 }
 
 @end

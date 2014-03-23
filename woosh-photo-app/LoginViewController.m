@@ -18,19 +18,13 @@
 
 @implementation LoginViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.usernameField.delegate = self;
     self.passwordField.delegate = self;
+    
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -76,7 +70,7 @@
 
     // reset the response data
     self.receivedData = [NSMutableData data];
-
+    
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:authReq delegate:self startImmediately:NO];
     [conn start];
 }
@@ -101,7 +95,7 @@
                                                              options:NSJSONReadingMutableContainers
                                                                error:nil];
     NSString *invitationKey = [jsonDict objectForKey:@"invitationKey"];
-
+    
     NSMutableDictionary *props = [[Woosh woosh] systemProperties];
     
     // set the username and password on the system properties dictionary
