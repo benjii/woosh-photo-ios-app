@@ -47,7 +47,9 @@ int req_type = REQUEST_TYPE_NONE;
     
     // retrieve the full set of user cards from the Woosh servers
     req_type = REQUEST_TYPE_LIST_CARDS;
-    [[Woosh woosh] getCards:self];
+
+    NSURLConnection * conn = [[Woosh woosh] getCards:self];
+    [conn start];
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -56,10 +58,14 @@ int req_type = REQUEST_TYPE_NONE;
 
 - (IBAction) refreshButtonTapped:(id)sender {
 
+    // initialise the buffer to hold server response data
+    self.receivedData = [NSMutableData data];
+
     // retrieve the full set of user cards from the Woosh servers
     req_type = REQUEST_TYPE_LIST_CARDS;
-    [[Woosh woosh] getCards:self];
-
+    
+    NSURLConnection * conn = [[Woosh woosh] getCards:self];
+    [conn start];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

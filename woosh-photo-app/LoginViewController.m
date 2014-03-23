@@ -25,6 +25,10 @@
     self.usernameField.delegate = self;
     self.passwordField.delegate = self;
     
+    [self.navigationBar setBackgroundImage:[UIImage new]
+                             forBarMetrics:UIBarMetricsDefault];
+    self.navigationBar.shadowImage = [UIImage new];
+    self.navigationBar.translucent = YES;
 }
 
 - (BOOL)prefersStatusBarHidden {

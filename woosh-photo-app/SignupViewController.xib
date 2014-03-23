@@ -10,9 +10,10 @@
                 <outlet property="confirmPasswordField" destination="50" id="74"/>
                 <outlet property="emailField" destination="57" id="75"/>
                 <outlet property="invitationKeyField" destination="97" id="105"/>
+                <outlet property="navigationBar" destination="MYU-ga-mDO" id="2Yb-7k-2iV"/>
                 <outlet property="passwordField" destination="37" id="73"/>
                 <outlet property="remainingSlotsLabel" destination="pGa-7a-6TX" id="CcG-QB-wOT"/>
-                <outlet property="signupButton" destination="90" id="Cb7-Y2-lR8"/>
+                <outlet property="signupButton" destination="mhw-WS-tpl" id="LOb-JU-QlS"/>
                 <outlet property="usernameField" destination="36" id="72"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
@@ -26,6 +27,15 @@
                     <rect key="frame" x="0.0" y="0.0" width="321" height="568"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Woosh is currently in invitation-only mode. Limited sign-ups are available." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="APg-hs-TiR">
+                    <rect key="frame" x="21" y="482" width="280" height="57"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="57" id="GOX-uS-bsY"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="italicSystem" pointSize="12"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="your desired user name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="36">
                     <rect key="frame" x="20" y="64" width="250" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -62,28 +72,6 @@
                         <outlet property="delegate" destination="-1" id="Sdh-JY-wgC"/>
                     </connections>
                 </textField>
-                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="24">
-                    <rect key="frame" x="0.0" y="-44" width="321" height="88"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="88" id="dxz-7S-HoS"/>
-                    </constraints>
-                    <items>
-                        <barButtonItem title="Sign Up" id="90">
-                            <connections>
-                                <action selector="signupTapped:" destination="-1" id="96"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="26"/>
-                        <barButtonItem title="Woosh" style="plain" id="27"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="25"/>
-                        <barButtonItem systemItem="cancel" id="70">
-                            <connections>
-                                <action selector="cancelTapped:" destination="-1" id="71"/>
-                            </connections>
-                        </barButtonItem>
-                    </items>
-                </toolbar>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="invitation key" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="97">
                     <rect key="frame" x="20" y="220" width="250" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -124,7 +112,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;remaining slots>" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="9" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="pGa-7a-6TX">
-                    <rect key="frame" x="20" y="495" width="280" height="53"/>
+                    <rect key="frame" x="20" y="452" width="280" height="53"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="53" id="NWs-Dq-VVr"/>
@@ -133,6 +121,24 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MYU-ga-mDO">
+                    <rect key="frame" x="1" y="0.0" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <items>
+                        <navigationItem title="Woosh" id="tHN-P0-sfd">
+                            <barButtonItem key="leftBarButtonItem" title="Cancel" id="xhQ-eX-Mn0">
+                                <connections>
+                                    <action selector="cancelTapped:" destination="-1" id="NWl-J9-cZD"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem key="rightBarButtonItem" title="Sign Up" id="mhw-WS-tpl">
+                                <connections>
+                                    <action selector="signupTapped:" destination="-1" id="XEv-JM-8El"/>
+                                </connections>
+                            </barButtonItem>
+                        </navigationItem>
+                    </items>
+                </navigationBar>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
@@ -141,30 +147,32 @@
                 <constraint firstItem="57" firstAttribute="top" secondItem="50" secondAttribute="bottom" constant="10" id="22j-e6-KAS"/>
                 <constraint firstItem="Ook-Rh-Rsi" firstAttribute="leading" secondItem="57" secondAttribute="trailing" constant="8" symbolic="YES" id="3TY-1t-VyT"/>
                 <constraint firstItem="10" firstAttribute="top" secondItem="1" secondAttribute="top" id="7qo-oC-G0O"/>
+                <constraint firstItem="10" firstAttribute="trailing" secondItem="MYU-ga-mDO" secondAttribute="trailing" id="9F7-In-syY"/>
                 <constraint firstItem="97" firstAttribute="leading" secondItem="57" secondAttribute="leading" id="EdT-IU-5r9"/>
+                <constraint firstItem="10" firstAttribute="centerX" secondItem="pGa-7a-6TX" secondAttribute="centerX" id="F8T-ko-hQ8"/>
+                <constraint firstItem="APg-hs-TiR" firstAttribute="leading" secondItem="pGa-7a-6TX" secondAttribute="leading" constant="1" id="FlC-Ep-AF4"/>
                 <constraint firstItem="50" firstAttribute="top" secondItem="37" secondAttribute="bottom" constant="8" symbolic="YES" id="GsM-19-KLT"/>
                 <constraint firstItem="cWJ-Su-BM6" firstAttribute="leading" secondItem="36" secondAttribute="trailing" constant="8" symbolic="YES" id="HFk-Gj-UDO"/>
+                <constraint firstAttribute="bottom" secondItem="APg-hs-TiR" secondAttribute="bottom" constant="29" id="KxB-iN-x12"/>
                 <constraint firstItem="97" firstAttribute="top" secondItem="57" secondAttribute="bottom" constant="8" symbolic="YES" id="LUm-yB-HDD"/>
                 <constraint firstItem="37" firstAttribute="centerY" secondItem="uMp-kB-0Yp" secondAttribute="centerY" id="Nhs-08-zAp"/>
                 <constraint firstItem="50" firstAttribute="leading" secondItem="57" secondAttribute="leading" id="Ohr-af-uwY"/>
-                <constraint firstItem="36" firstAttribute="top" secondItem="24" secondAttribute="bottom" constant="20" id="SgJ-YD-el4"/>
                 <constraint firstItem="pGa-7a-6TX" firstAttribute="trailing" secondItem="Ook-Rh-Rsi" secondAttribute="trailing" id="U4q-5t-dJB"/>
                 <constraint firstItem="50" firstAttribute="trailing" secondItem="37" secondAttribute="trailing" id="Ujf-7x-oed"/>
                 <constraint firstItem="uMp-kB-0Yp" firstAttribute="leading" secondItem="cWJ-Su-BM6" secondAttribute="leading" id="X4c-zH-AnR"/>
+                <constraint firstItem="10" firstAttribute="top" secondItem="MYU-ga-mDO" secondAttribute="top" id="Z97-sR-FqM"/>
                 <constraint firstItem="pGa-7a-6TX" firstAttribute="leading" secondItem="97" secondAttribute="leading" id="eBL-aH-ijQ"/>
                 <constraint firstItem="57" firstAttribute="trailing" secondItem="97" secondAttribute="trailing" id="gfg-Gk-nUg"/>
                 <constraint firstItem="uMp-kB-0Yp" firstAttribute="leading" secondItem="37" secondAttribute="trailing" constant="8" symbolic="YES" id="hAP-dr-VjG"/>
                 <constraint firstItem="37" firstAttribute="leading" secondItem="50" secondAttribute="leading" id="hWb-ca-4nv"/>
+                <constraint firstItem="MYU-ga-mDO" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="1" id="him-yB-nlV"/>
                 <constraint firstItem="36" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="ikB-qt-90s"/>
-                <constraint firstItem="24" firstAttribute="top" secondItem="1" secondAttribute="top" constant="-44" id="k6Q-1L-qvW"/>
                 <constraint firstItem="Ook-Rh-Rsi" firstAttribute="leading" secondItem="uMp-kB-0Yp" secondAttribute="leading" id="lC3-TS-AmE"/>
-                <constraint firstItem="10" firstAttribute="trailing" secondItem="24" secondAttribute="trailing" id="mlV-Zf-Ddg"/>
                 <constraint firstItem="Ook-Rh-Rsi" firstAttribute="centerY" secondItem="57" secondAttribute="centerY" id="p56-7q-b0d"/>
-                <constraint firstItem="24" firstAttribute="leading" secondItem="10" secondAttribute="leading" id="q7F-Sa-6Az"/>
                 <constraint firstAttribute="bottom" secondItem="10" secondAttribute="bottom" id="su7-WT-bqQ"/>
-                <constraint firstItem="24" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="ttu-aj-Xwg"/>
                 <constraint firstItem="37" firstAttribute="leading" secondItem="36" secondAttribute="leading" id="vJr-1h-WjW"/>
-                <constraint firstAttribute="bottom" secondItem="pGa-7a-6TX" secondAttribute="bottom" constant="20" symbolic="YES" id="wgm-kA-iwi"/>
+                <constraint firstItem="36" firstAttribute="top" secondItem="MYU-ga-mDO" secondAttribute="bottom" constant="20" id="vLs-60-WlD"/>
+                <constraint firstAttribute="bottom" secondItem="pGa-7a-6TX" secondAttribute="bottom" constant="63" id="wgm-kA-iwi"/>
                 <constraint firstAttribute="trailing" secondItem="50" secondAttribute="trailing" constant="50" id="zBN-pz-TXX"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

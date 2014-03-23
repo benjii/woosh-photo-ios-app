@@ -10,6 +10,8 @@
 
 @interface LoginViewController : UIViewController<NSURLConnectionDelegate, UITextFieldDelegate>
 
+@property (strong, nonatomic) IBOutlet UINavigationBar *navigationBar;
+
 @property (strong, nonatomic) IBOutlet UITextField *usernameField;
 @property (strong, nonatomic) IBOutlet UITextField *passwordField;
 
