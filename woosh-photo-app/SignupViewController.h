@@ -16,8 +16,19 @@
 @property (strong, nonatomic) IBOutlet UITextField *emailField;
 @property (strong, nonatomic) IBOutlet UITextField *invitationKeyField;
 
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *signupButton;
+
+@property (strong, nonatomic) IBOutlet UILabel *remainingSlotsLabel;
+
 
 - (IBAction) cancelTapped:(id)sender;
 - (IBAction) signupTapped:(id)sender;
+
+- (IBAction) helpUsernameTapped:(id)sender;
+- (IBAction) helpPasswordTapped:(id)sender;
+- (IBAction) helpOtherTapped:(id)sender;
+
+@property NSMutableData *receivedData;
+
 
 @end

@@ -21,28 +21,16 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18">
-                    <rect key="frame" x="201" y="349" width="119" height="40"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="119" id="27"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                    <state key="normal" title="Log In"/>
-                    <connections>
-                        <action selector="loginTapped:" destination="-1" eventType="touchUpInside" id="68"/>
-                    </connections>
-                </button>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="user name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="36">
-                    <rect key="frame" x="20" y="131" width="280" height="30"/>
+                    <rect key="frame" x="20" y="96" width="280" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                 </textField>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="password" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="45">
-                    <rect key="frame" x="20" y="198" width="280" height="30"/>
+                    <rect key="frame" x="20" y="134" width="280" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocorrectionType="no" secureTextEntry="YES"/>
                 </textField>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Don't have an account?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="52">
@@ -69,30 +57,16 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="82"/>
-                        <barButtonItem title="Woosh Login" style="plain" id="81"/>
+                        <barButtonItem width="115" style="plain" systemItem="fixedSpace" id="82"/>
+                        <barButtonItem title="Woosh" style="plain" id="81"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="83"/>
+                        <barButtonItem title="Log In" id="4Yq-Y8-aTs">
+                            <connections>
+                                <action selector="loginTapped:" destination="-1" id="f2Q-j2-xg1"/>
+                            </connections>
+                        </barButtonItem>
                     </items>
                 </toolbar>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yQb-9c-XDa">
-                    <rect key="frame" x="20" y="102" width="108" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="108" id="a7U-41-b9Y"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fWf-gp-ioZ">
-                    <rect key="frame" x="20" y="169" width="121" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="121" id="Ahe-WG-JB9"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
@@ -102,25 +76,19 @@
                 <constraint firstItem="4" firstAttribute="trailing" secondItem="1" secondAttribute="trailing" id="24"/>
                 <constraint firstItem="36" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="41"/>
                 <constraint firstAttribute="trailing" secondItem="36" secondAttribute="trailing" constant="20" symbolic="YES" id="44"/>
-                <constraint firstItem="45" firstAttribute="top" secondItem="36" secondAttribute="bottom" constant="37" id="46"/>
+                <constraint firstItem="45" firstAttribute="top" secondItem="36" secondAttribute="bottom" constant="8" id="46"/>
                 <constraint firstItem="45" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="47"/>
                 <constraint firstAttribute="trailing" secondItem="45" secondAttribute="trailing" constant="20" symbolic="YES" id="49"/>
-                <constraint firstItem="18" firstAttribute="centerX" secondItem="45" secondAttribute="centerX" constant="100.5" id="51"/>
                 <constraint firstItem="52" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="58"/>
                 <constraint firstAttribute="trailing" secondItem="52" secondAttribute="trailing" constant="20" symbolic="YES" id="59"/>
                 <constraint firstItem="60" firstAttribute="top" secondItem="52" secondAttribute="bottom" constant="8" symbolic="YES" id="62"/>
                 <constraint firstAttribute="bottom" secondItem="60" secondAttribute="bottom" constant="20" id="63"/>
                 <constraint firstAttribute="trailing" secondItem="60" secondAttribute="trailing" constant="20" symbolic="YES" id="64"/>
                 <constraint firstItem="60" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="66"/>
-                <constraint firstItem="18" firstAttribute="top" secondItem="1" secondAttribute="top" constant="349" id="67"/>
                 <constraint firstItem="72" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="75"/>
                 <constraint firstItem="72" firstAttribute="top" secondItem="1" secondAttribute="top" id="76"/>
                 <constraint firstItem="72" firstAttribute="trailing" secondItem="1" secondAttribute="trailing" id="77"/>
-                <constraint firstItem="36" firstAttribute="top" secondItem="1" secondAttribute="top" constant="131" id="84"/>
-                <constraint firstItem="yQb-9c-XDa" firstAttribute="leading" secondItem="fWf-gp-ioZ" secondAttribute="leading" id="Nxf-37-GZJ"/>
-                <constraint firstItem="36" firstAttribute="top" secondItem="yQb-9c-XDa" secondAttribute="bottom" constant="8" symbolic="YES" id="SHv-bU-2bv"/>
-                <constraint firstItem="yQb-9c-XDa" firstAttribute="leading" secondItem="36" secondAttribute="leading" id="iDt-MQ-gbb"/>
-                <constraint firstItem="fWf-gp-ioZ" firstAttribute="top" secondItem="36" secondAttribute="bottom" constant="8" symbolic="YES" id="mQI-Tm-29k"/>
+                <constraint firstItem="36" firstAttribute="top" secondItem="1" secondAttribute="top" constant="96" id="84"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>

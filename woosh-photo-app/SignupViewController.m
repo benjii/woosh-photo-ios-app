@@ -15,10 +15,30 @@
 
 @implementation SignupViewController
 
+@synthesize receivedData;
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+
+    // if all input is valid then attempt an authenticated action
+    NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
+    NSString *pingEndpoint = [endpoint stringByAppendingPathComponent:@"ping"];
+    
+    NSMutableURLRequest *pingReq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:pingEndpoint]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:60.0];
+    
+    // reset the response data
+    self.receivedData = [NSMutableData data];
+    
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:pingReq delegate:self startImmediately:NO];
+    [conn start];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -30,6 +50,18 @@
     return YES;
 }
 
+- (IBAction) helpUsernameTapped:(id)sender {
+    [[[UIAlertView alloc] initWithTitle:@"Username" message:@"You can choose any username that is more than 8 characters long." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+}
+
+- (IBAction) helpPasswordTapped:(id)sender {
+    [[[UIAlertView alloc] initWithTitle:@"Password" message:@"Please set your password of 6 characters or more and confirm it." delegate:nil cancelButtonTitle:@"Got it!" otherButtonTitles:nil] show];
+}
+
+- (IBAction) helpOtherTapped:(id)sender {
+    [[[UIAlertView alloc] initWithTitle:@"Other" message:@"Please provide your email address and your key (Woosh in invite-only at the moment)!" delegate:nil cancelButtonTitle:@"Fair Enough!" otherButtonTitles:nil] show];    
+}
+
 - (IBAction) signupTapped:(id)sender {
  
     NSString *username = self.usernameField.text;
@@ -39,9 +71,9 @@
     NSString *invitationKey = self.invitationKeyField.text;
 
     // check that the username is OK
-    if (username == nil || [username compare:@""] == NSOrderedSame || [username length] < 4) {
+    if (username == nil || [username compare:@""] == NSOrderedSame || [username length] < 8) {
         [[[UIAlertView alloc] initWithTitle:@"Invalid Username"
-                                    message:@"You must choose a username that is greater than 4 characters in length."
+                                    message:@"You must choose a username that is greater than 8 characters in length."
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil] show];
@@ -166,6 +198,61 @@
 
 - (IBAction) cancelTapped:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^{ }];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    
+    NSError *jsonErr = nil;
+    NSDictionary *pingResponse = [NSJSONSerialization JSONObjectWithData:self.receivedData
+                                                            options:NSJSONReadingMutableContainers
+                                                              error:&jsonErr];
+
+    int remainingSlots = [[pingResponse objectForKey:@"remainingUserSlots"] intValue];
+
+    if (remainingSlots <= 0) {
+        self.remainingSlotsLabel.text = [NSString stringWithFormat:@"Sorry! There are no more sign-up slots available."];
+        self.signupButton.enabled = NO;
+    } else {
+        self.remainingSlotsLabel.text = [NSString stringWithFormat:@"There are %d sign-up slots remaining", remainingSlots];
+        self.signupButton.enabled = YES;
+    }
+
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+    
+    // deal with the authentication challenge
+    
+    if ([challenge previousFailureCount] > 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Authentication Error"
+                                                        message:@"Invalid credentials provided."
+                                                       delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+        
+    } else {
+        
+        // we answer the challenge with the username and password provided by the user at login
+        NSString *username = self.usernameField.text;
+        NSString *password = self.passwordField.text;
+        
+        NSURLCredential *cred = [[NSURLCredential alloc] initWithUser:username password:password                                                                            persistence:NSURLCredentialPersistenceForSession];
+        
+        [[challenge sender] useCredential:cred forAuthenticationChallenge:challenge];
+    }
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    [self.receivedData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    [self.receivedData appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    NSLog(@"Connection failed! Error - %@ %@",
+          [error localizedDescription],
+          [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
 }
 
 - (void)didReceiveMemoryWarning {
