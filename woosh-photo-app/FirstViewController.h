@@ -15,11 +15,12 @@
 @interface FirstViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate, NSURLConnectionDelegate, CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
+@property (weak, nonatomic) IBOutlet UINavigationItem *navigationItem;
 
 // note that all six bar buttons below must be marked as 'strong' so that they are not auto-dereferenced
 // when we remove them from the items array of the main toolbar
 
-// toolbar buttons that are dispplayed when in 'scan' mode
+// toolbar buttons that are displayed when in 'scan' mode
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *scanButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cameraButton;
 

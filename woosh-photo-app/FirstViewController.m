@@ -45,8 +45,9 @@ int last_action = LAST_ACTION_NONE;
 
 @synthesize receivedData;
 
+@synthesize navigationItem;
 @synthesize activityView;
-@synthesize mainToolbar;
+//@synthesize mainToolbar;
 
 @synthesize locationManager;
 @synthesize motionManager;
@@ -62,8 +63,31 @@ int last_action = LAST_ACTION_NONE;
     
     // ensure that the view is initialised correctly
     mode = MODE_ACCEPT;
-    [self.mainToolbar setItems:[NSArray arrayWithObjects:self.cameraButton, self.flexibleSpace, self.wooshLabel, self.flexibleSpace, self.scanButton, nil]];
-        
+    
+    // create all of the required buttons
+    self.scanButton = [[UIBarButtonItem alloc] initWithTitle:@"Scan"
+                                                       style:UIBarButtonItemStylePlain
+                                                      target:self
+                                                      action:@selector(scanForOffers:)];
+    
+    self.cameraButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
+                                                                      target:self
+                                                                      action:@selector(selectPhotographButtonTapped:)];
+    
+    self.clearButton = [[UIBarButtonItem alloc] initWithTitle:@"Clear"
+                                                        style:UIBarButtonItemStylePlain
+                                                       target:self
+                                                       action:@selector(clearPhoto:)];
+    
+    self.offerButton = [[UIBarButtonItem alloc] initWithTitle:@"Offer"
+                                                        style:UIBarButtonItemStylePlain
+                                                       target:self
+                                                       action:@selector(makeOffer:)];
+    
+    // configure the main toolbar
+    self.navigationItem.leftBarButtonItem = self.cameraButton;
+    self.navigationItem.rightBarButtonItem = self.scanButton;
+    
     // start the location manager
     self.locationManager = [[CLLocationManager alloc] init];
     
@@ -240,8 +264,11 @@ int last_action = LAST_ACTION_NONE;
     
     // set the mode to 'offer' - the user has a photo selected and can make an offer
     mode = MODE_OFFER;
-    [self.mainToolbar setItems:[NSArray arrayWithObjects:self.offerButton, self.flexibleSpace, self.wooshLabel, self.flexibleSpace, self.clearButton, nil]];
     
+    // configure the main toolbar
+    self.navigationItem.leftBarButtonItem = self.offerButton;
+    self.navigationItem.rightBarButtonItem = self.clearButton;
+
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -390,8 +417,11 @@ int last_action = LAST_ACTION_NONE;
     
     // the user cleared the offer - move to 'accept' mode
     mode = MODE_ACCEPT;
-    [self.mainToolbar setItems:[NSArray arrayWithObjects:self.cameraButton, self.flexibleSpace, self.wooshLabel, self.flexibleSpace, self.scanButton, nil]];
-
+    
+    // configure the main toolbar
+    self.navigationItem.leftBarButtonItem = self.cameraButton;
+    self.navigationItem.rightBarButtonItem = self.scanButton;
+    
 }
 
 
@@ -513,7 +543,10 @@ int last_action = LAST_ACTION_NONE;
             
             // the user cleared the offer - move to 'accept' mode
             mode = MODE_ACCEPT;
-            [self.mainToolbar setItems:[NSArray arrayWithObjects:self.cameraButton, self.flexibleSpace, self.wooshLabel, self.flexibleSpace, self.scanButton, nil]];
+            
+            // configure the main toolbar
+            self.navigationItem.leftBarButtonItem = self.cameraButton;
+            self.navigationItem.rightBarButtonItem = self.scanButton;
             
             // the offer has been made - re-enable the offer button
             [self.offerButton setEnabled:YES];

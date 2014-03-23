@@ -17,66 +17,34 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="IvD-Nt-aNt">
-                                <rect key="frame" x="0.0" y="44" width="320" height="510"/>
+                            <navigationBar contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kg2-Gr-IdJ">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Woosh" id="Kpm-dS-bfL"/>
+                                </items>
+                            </navigationBar>
+                            <imageView contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IvD-Nt-aNt">
+                                <rect key="frame" x="0.0" y="44" width="320" height="472"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                             </imageView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="9qT-ni-IuM">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <items>
-                                    <barButtonItem systemItem="camera" id="qZG-uJ-p7X">
-                                        <connections>
-                                            <action selector="selectPhotographButtonTapped:" destination="2" id="2mX-EO-nk0"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem title="Woosh" id="x3H-wN-5Ux">
-                                        <connections>
-                                            <action selector="makeOffer:" destination="2" id="Sud-i8-2Mj"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="SW8-ZG-vY5"/>
-                                    <barButtonItem title="Woosh" style="plain" id="53o-tN-Nve"/>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="SoO-ad-xdX"/>
-                                    <barButtonItem title="Scan" id="aRA-wZ-kg8">
-                                        <connections>
-                                            <action selector="scanForOffers:" destination="2" id="z59-25-FYe"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem title="Clear" id="gug-wQ-Fxk">
-                                        <connections>
-                                            <action selector="clearPhoto:" destination="2" id="0MK-Ip-ee6"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                            </toolbar>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="bvk-1Q-CZQ">
-                                <rect key="frame" x="142" y="266" width="37" height="37"/>
+                                <rect key="frame" x="142" y="265" width="37" height="37"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="IvD-Nt-aNt" firstAttribute="leading" secondItem="9qT-ni-IuM" secondAttribute="leading" id="24c-RR-xLA"/>
-                            <constraint firstAttribute="trailing" secondItem="9qT-ni-IuM" secondAttribute="trailing" id="4dd-ly-OJJ"/>
-                            <constraint firstItem="bvk-1Q-CZQ" firstAttribute="centerY" secondItem="16" secondAttribute="centerY" id="FIz-ux-X61"/>
-                            <constraint firstItem="9qT-ni-IuM" firstAttribute="top" secondItem="16" secondAttribute="top" id="I99-bt-Vdh"/>
-                            <constraint firstItem="IvD-Nt-aNt" firstAttribute="trailing" secondItem="9qT-ni-IuM" secondAttribute="trailing" id="MWq-25-sxl"/>
-                            <constraint firstItem="IvD-Nt-aNt" firstAttribute="top" secondItem="9qT-ni-IuM" secondAttribute="bottom" id="Sxp-PP-zKi"/>
-                            <constraint firstItem="9qT-ni-IuM" firstAttribute="leading" secondItem="16" secondAttribute="leading" id="Ws2-F0-nea"/>
-                            <constraint firstItem="bvk-1Q-CZQ" firstAttribute="centerX" secondItem="9qT-ni-IuM" secondAttribute="centerX" id="fLY-Zf-tx6"/>
-                            <constraint firstAttribute="bottom" secondItem="IvD-Nt-aNt" secondAttribute="bottom" constant="14" id="pm8-eV-MPj"/>
+                            <constraint firstItem="bvk-1Q-CZQ" firstAttribute="centerX" secondItem="16" secondAttribute="centerX" id="IQ3-z6-4C5"/>
+                            <constraint firstItem="bvk-1Q-CZQ" firstAttribute="centerX" secondItem="kg2-Gr-IdJ" secondAttribute="centerX" id="Pxd-WQ-kck"/>
+                            <constraint firstItem="bvk-1Q-CZQ" firstAttribute="centerX" secondItem="IvD-Nt-aNt" secondAttribute="centerX" id="QVN-mE-oba"/>
+                            <constraint firstItem="bvk-1Q-CZQ" firstAttribute="top" secondItem="mrJ-hl-BLc" secondAttribute="bottom" constant="201" id="lql-Y9-m9a"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Woosh" image="first.png" id="7"/>
                     <connections>
                         <outlet property="activityView" destination="bvk-1Q-CZQ" id="hUZ-9y-VpA"/>
-                        <outlet property="cameraButton" destination="qZG-uJ-p7X" id="CUE-1o-V4g"/>
-                        <outlet property="clearButton" destination="gug-wQ-Fxk" id="zqx-UF-b1M"/>
-                        <outlet property="flexibleSpace" destination="SW8-ZG-vY5" id="2JB-KH-tzS"/>
                         <outlet property="imgView" destination="IvD-Nt-aNt" id="W3w-kM-dgN"/>
-                        <outlet property="mainToolbar" destination="9qT-ni-IuM" id="glA-r2-HxW"/>
-                        <outlet property="offerButton" destination="x3H-wN-5Ux" id="Ofe-XU-RvD"/>
-                        <outlet property="scanButton" destination="aRA-wZ-kg8" id="CJF-QJ-YyI"/>
-                        <outlet property="wooshLabel" destination="53o-tN-Nve" id="uwt-Wa-cGO"/>
+                        <outlet property="navigationItem" destination="Kpm-dS-bfL" id="X7S-ng-I5M"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="10" sceneMemberID="firstResponder"/>
