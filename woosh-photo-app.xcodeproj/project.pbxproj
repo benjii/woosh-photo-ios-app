@@ -13,6 +13,7 @@
 		B54922EC169736A9002C9438 /* Woosh.m in Sources */ = {isa = PBXBuildFile; fileRef = B54922EB169736A9002C9438 /* Woosh.m */; };
 		B5527ABB16B5BAE700A7FD85 /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5527AB916B5BAE700A7FD85 /* SignupViewController.m */; };
 		B5527ABC16B5BAE700A7FD85 /* SignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5527ABA16B5BAE700A7FD85 /* SignupViewController.xib */; };
+		B57330AA18E0929E003DA719 /* ViewPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B57330A918E0929E003DA719 /* ViewPhotoViewController.m */; };
 		B5A360AA16958A2400AE9B92 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A360A916958A2400AE9B92 /* CoreMotion.framework */; };
 		B5B73F9B16929105008A8BBC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B73F9A16929105008A8BBC /* UIKit.framework */; };
 		B5B73F9D16929105008A8BBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B73F9C16929105008A8BBC /* Foundation.framework */; };
@@ -66,6 +67,8 @@
 		B5527AB816B5BAE700A7FD85 /* SignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupViewController.h; sourceTree = "<group>"; };
 		B5527AB916B5BAE700A7FD85 /* SignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignupViewController.m; sourceTree = "<group>"; };
 		B5527ABA16B5BAE700A7FD85 /* SignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignupViewController.xib; sourceTree = "<group>"; };
+		B57330A818E0929E003DA719 /* ViewPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewPhotoViewController.h; sourceTree = "<group>"; };
+		B57330A918E0929E003DA719 /* ViewPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewPhotoViewController.m; sourceTree = "<group>"; };
 		B5A360A916958A2400AE9B92 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		B5B73F9616929105008A8BBC /* woosh-photo-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "woosh-photo-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5B73F9A16929105008A8BBC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -250,6 +253,8 @@
 				B5EA2E0616D2B369007E6B14 /* WooshCardTableViewCell.xib */,
 				B5EA2E0816D2B5E5007E6B14 /* WooshCardTableViewCell.h */,
 				B5EA2E0916D2B5E5007E6B14 /* WooshCardTableViewCell.m */,
+				B57330A818E0929E003DA719 /* ViewPhotoViewController.h */,
+				B57330A918E0929E003DA719 /* ViewPhotoViewController.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -397,6 +402,7 @@
 				B5B73FC116929105008A8BBC /* SecondViewController.m in Sources */,
 				B54922EC169736A9002C9438 /* Woosh.m in Sources */,
 				B5F8E1951699FB03000FF293 /* NSData+Base64.m in Sources */,
+				B57330AA18E0929E003DA719 /* ViewPhotoViewController.m in Sources */,
 				B5B8189816B58D2F007E962F /* LoginViewController.m in Sources */,
 				B5527ABB16B5BAE700A7FD85 /* SignupViewController.m in Sources */,
 				B52C7A6316B9D2F6003923C7 /* SettingsViewController.m in Sources */,

@@ -55,6 +55,46 @@
             </objects>
             <point key="canvasLocation" x="829" y="-486"/>
         </scene>
+        <!--View Photo View Controller-->
+        <scene sceneID="wFT-nv-azg">
+            <objects>
+                <viewController id="Hn4-j0-fLh" customClass="ViewPhotoViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5jh-1G-B5p"/>
+                        <viewControllerLayoutGuide type="bottom" id="2GI-we-dbB"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="OYg-AO-NBX">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Spo-h5-uTr">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="74"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Your Photo" prompt="This photo is also available in your Photo Gallery" id="lz9-Wr-x8S">
+                                        <barButtonItem key="rightBarButtonItem" title="Close" id="q0N-xy-AI6">
+                                            <connections>
+                                                <action selector="closeButtonTapped:" destination="Hn4-j0-fLh" id="ffu-o7-bLZ"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pqf-pL-aTK">
+                                <rect key="frame" x="0.0" y="74" width="320" height="494"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="pqf-pL-aTK" id="ZFt-6P-laC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="k5w-TV-Lpl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1559" y="128"/>
+        </scene>
         <!--Second View Controller - History-->
         <scene sceneID="13">
             <objects>
@@ -112,6 +152,7 @@
                     <tabBarItem key="tabBarItem" systemItem="history" id="6"/>
                     <connections>
                         <outlet property="wooshCardTableView" destination="CsJ-vH-5vm" id="hVY-AE-3tr"/>
+                        <segue destination="Hn4-j0-fLh" kind="modal" identifier="ViewPhotograph" id="hCg-0V-6Nc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="12" sceneMemberID="firstResponder"/>

@@ -500,8 +500,8 @@ int last_action = LAST_ACTION_NONE;
             [self.activityView setHidden:YES];
 
             // tell the user what we just did
-            UIAlertView *savedPhotosAlert = [[UIAlertView alloc] initWithTitle:@"Success!"
-                                                                       message:[NSString stringWithFormat:@"%ld offer(s) were found in your proximity and have been saved to your photo library.", (unsigned long)[offers count]]
+            UIAlertView *savedPhotosAlert = [[UIAlertView alloc] initWithTitle:@"Photos Added To Gallery"
+                                                                       message:[NSString stringWithFormat:@"%ld photo(s) were found in your proximity and have been saved to your Photo Gallery.", (unsigned long)[offers count]]
                                                                       delegate:nil
                                                              cancelButtonTitle:@"OK!"
                                                              otherButtonTitles: nil];
@@ -542,7 +542,7 @@ int last_action = LAST_ACTION_NONE;
             [self.activityView setHidden:YES];
 
             UIAlertView *confirmationAlert = [[UIAlertView alloc] initWithTitle:@"Success!"
-                                                                        message:@"Your offer is now available to others within your proximity."
+                                                                        message:@"Your photo is now available to others within your proximity."
                                                                        delegate:nil
                                                               cancelButtonTitle:@"Sweet!"
                                                               otherButtonTitles:nil];
@@ -612,7 +612,7 @@ int last_action = LAST_ACTION_NONE;
     [self.activityView setHidden:YES];
     
     UIAlertView *connectionAlert = [[UIAlertView alloc] initWithTitle:@"Oops!"
-                                                              message:@"We tried to post your offer to the Woosh servers but we were unable to at this time. But we are sure that this is a temporary glitch, so please try again soon."
+                                                              message:@"We tried to post your photo to the Woosh servers but we were unable to at this time. But we are sure that this is a temporary glitch, so please try again soon."
                                                              delegate:nil
                                                     cancelButtonTitle:@"Bummer"
                                                     otherButtonTitles:nil];

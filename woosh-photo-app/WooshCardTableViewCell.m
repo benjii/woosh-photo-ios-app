@@ -69,6 +69,7 @@ int cell_request_type = REQUEST_TYPE_NONE;
     if (cell_request_type == REQUEST_TYPE_EXPIRE_OFFER) {
         
 //        self.expireReofferButton.titleLabel.text = @"Re-offer";
+        [self.timer invalidate];
         self.remainingTimeLabel.text = @"No time remaining";
 
     } else if (cell_request_type == REQUEST_TYPE_MAKE_OFFER) {

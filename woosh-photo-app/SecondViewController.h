@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ViewPhotoViewController.h"
 
 @interface SecondViewController : UIViewController<UITableViewDataSource, UITabBarDelegate, NSURLConnectionDataDelegate>
 

@@ -100,6 +100,38 @@ int req_type = REQUEST_TYPE_NONE;
     
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSDictionary *cardDict = [self.wooshCardsModel objectAtIndex:indexPath.row];
+    NSDictionary *dataDict = [[cardDict objectForKey:@"data"] objectAtIndex:0];
+    NSString *binaryId = [dataDict objectForKey:@"binaryId"];
+    
+    NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    NSURL *imagePath = [[documentPath URLByAppendingPathComponent:@"images"] URLByAppendingPathComponent:binaryId];
+
+    if ( [[NSFileManager defaultManager] fileExistsAtPath:[imagePath path]] ) {
+        
+        // load the image from the local image cache
+        NSLog(@"Locally cached image found - displaying...");
+        
+        // segue out to the read-only version of the message composer
+        [self performSegueWithIdentifier:@"ViewPhotograph" sender:self];
+    }
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    ViewPhotoViewController *vc = [segue destinationViewController];
+    if ([[segue identifier] isEqualToString:@"ViewPhotograph"]) {
+        
+        NSIndexPath *path = [self.wooshCardTableView indexPathForSelectedRow];
+        WooshCardTableViewCell *cell = (WooshCardTableViewCell *)[self.wooshCardTableView cellForRowAtIndexPath:path];
+        
+        vc.photograph = cell.thumbnail.image;
+    }
+
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *wooshCardTableIdentifier = @"WooshCardTableItem";
     
