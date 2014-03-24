@@ -135,6 +135,7 @@ int req_type = REQUEST_TYPE_NONE;
         cell.expireButton.hidden = YES;
         cell.reofferButton.hidden = YES;
         cell.readOnlyNotificationLabel.hidden = NO;
+        cell.backgroundColor = [UIColor colorWithWhite:0.90 alpha:1.0];
         
         // load data
         if ([dataArry isKindOfClass:[NSArray class]]) {
@@ -217,11 +218,8 @@ int req_type = REQUEST_TYPE_NONE;
 
                     cell.expireButton.hidden = NO;
                     cell.reofferButton.hidden = YES;
-                    
-//                    NSTimeInterval interval = [offerEndDate timeIntervalSinceNow];
-//                    NSInteger time = interval;
-//                    cell.remainingTimeLabel.text = [NSString stringWithFormat:@"%d:%02d remaining for offer", time / 60, (int)time % 60];
-                    
+                    cell.backgroundColor = [UIColor colorWithRed:0 green:255 blue:0 alpha:0.05];
+
                     cell.offerEnd = offerEnd;
                     [[NSRunLoop mainRunLoop] addTimer:cell.timer forMode:NSRunLoopCommonModes];
 
@@ -231,6 +229,7 @@ int req_type = REQUEST_TYPE_NONE;
                     
                     cell.expireButton.hidden = YES;
                     cell.reofferButton.hidden = NO;
+                    cell.backgroundColor = [UIColor colorWithRed:255 green:0 blue:0 alpha:0.05];
 
                     cell.remainingTimeLabel.text = @"No time remaining";
                     
@@ -266,11 +265,7 @@ int req_type = REQUEST_TYPE_NONE;
   
                         cell.expireButton.hidden = NO;
                         cell.reofferButton.hidden = YES;
-
-//                        NSTimeInterval interval = [offerEndDate timeIntervalSinceNow];
-//                        NSInteger time = interval;
-//                        
-//                        cell.remainingTimeLabel.text = [NSString stringWithFormat:@"%d:%02d remaining for offer", time / 60, (int)time % 60];
+                        cell.backgroundColor = [UIColor colorWithRed:0 green:255 blue:0 alpha:0.05];
 
                         cell.offerEnd = offerEnd;
                         [[NSRunLoop mainRunLoop] addTimer:cell.timer forMode:NSRunLoopCommonModes];
@@ -281,6 +276,7 @@ int req_type = REQUEST_TYPE_NONE;
 
                         cell.expireButton.hidden = YES;
                         cell.reofferButton.hidden = NO;
+                        cell.backgroundColor = [UIColor colorWithRed:255 green:0 blue:0 alpha:0.05];
                         
                         cell.remainingTimeLabel.text = @"No time remaining";
                         

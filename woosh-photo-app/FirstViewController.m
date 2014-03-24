@@ -255,14 +255,6 @@ int last_action = LAST_ACTION_NONE;
 
     self.imgView.image = chosenImage;
     
-    // display the offer button
-//#if (TARGET_IPHONE_SIMULATOR)
-//    [self.offerButton setHidden:NO];
-//#endif
-    
-//    // make sure that the UIImageView is displaying correctly
-//    [self.imgView bringSubviewToFront:self.offerButton];
-    
     // set the mode to 'offer' - the user has a photo selected and can make an offer
     mode = MODE_OFFER;
     
@@ -483,16 +475,6 @@ int last_action = LAST_ACTION_NONE;
                     [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:acceptOfferEndpoint]]
                                           returningResponse:&resp
                                                       error:&error];
-
-//                    NSMutableURLRequest *acceptOfferReq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:acceptOfferEndpoint]
-//                                                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-//                                                                              timeoutInterval:60.0];
-//                    
-//                    // reset the response data
-//                    self.receivedData = [NSMutableData data];
-//                    
-//                    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:acceptOfferReq delegate:self startImmediately:NO];
-//                    [conn start];
                     
                     // download the photo (card) that is associated with the offer
                     NSString *url = [[[[offer objectForKey:@"offeredCard"] objectForKey:@"data"] objectAtIndex:0] objectForKey:@"value"];
@@ -501,8 +483,6 @@ int last_action = LAST_ACTION_NONE;
                                                                   timeoutInterval:60.0];
                     
                     // download the photo
-//                    NSURLResponse *resp = nil;
-//                    NSError *error = nil;
                     NSData *photographData = [NSURLConnection sendSynchronousRequest:photoDownloadReq
                                                                    returningResponse:&resp
                                                                                error:&error];
