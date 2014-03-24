@@ -11,6 +11,8 @@
 #import <CoreMotion/CoreMotion.h>
 #import <CoreLocation/CoreLocation.h>
 
+#import "AppDelegate.h"
+
 
 @interface FirstViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate, NSURLConnectionDelegate, CLLocationManagerDelegate>
 
@@ -21,19 +23,19 @@
 // when we remove them from the items array of the main toolbar
 
 // toolbar buttons that are displayed when in 'scan' mode
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *scanButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *cameraButton;
+@property (strong, nonatomic) UIBarButtonItem *scanButton;
+@property (strong, nonatomic) UIBarButtonItem *cameraButton;
 
 // toolbar buttons that are displayed when in 'offer' mode
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *clearButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *offerButton;
+@property (strong, nonatomic) UIBarButtonItem *clearButton;
+@property (strong, nonatomic) UIBarButtonItem *offerButton;
 
 // toolbar items that are always displayed
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *flexibleSpace;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *wooshLabel;
+//@property (strong, nonatomic) IBOutlet UIBarButtonItem *flexibleSpace;
+//@property (strong, nonatomic) IBOutlet UIBarButtonItem *wooshLabel;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityView;
-@property (weak, nonatomic) IBOutlet UIToolbar *mainToolbar;
+//@property (weak, nonatomic) IBOutlet UIToolbar *mainToolbar;
 
 @property NSMutableData *receivedData;
 

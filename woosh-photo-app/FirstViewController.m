@@ -48,7 +48,6 @@ int last_action = LAST_ACTION_NONE;
 
 @synthesize navigationItem;
 @synthesize activityView;
-//@synthesize mainToolbar;
 
 @synthesize locationManager;
 @synthesize motionManager;
@@ -84,7 +83,7 @@ int last_action = LAST_ACTION_NONE;
                                                         style:UIBarButtonItemStylePlain
                                                        target:self
                                                        action:@selector(makeOffer:)];
-    
+ 
     // configure the main toolbar
     self.navigationItem.leftBarButtonItem = self.cameraButton;
     self.navigationItem.rightBarButtonItem = self.scanButton;
@@ -458,12 +457,13 @@ int last_action = LAST_ACTION_NONE;
             // procoess each offer
             for (int count = 0; count < [offers count]; count++) {
                 NSDictionary *offer = [offers objectAtIndex:count];
-                
-                NSLog(@"%@", offer);
-                
+
+                // figure out if the offer is auto-accept
                 int isAutoAccept = [[[[offer objectForKey:@"offeredCard"] objectForKey:@"lastOffer"] objectForKey:@"autoAccept"] intValue];
 
                 if ( isAutoAccept == YES ) {
+                    
+                    // if the offer is auto-accept then make the required server calls (and download the photo)
                     NSString *offerId = [offer objectForKey:@"offerId"];
 
                     // send a message to the Woosh servers to accept the offer
@@ -506,6 +506,9 @@ int last_action = LAST_ACTION_NONE;
                                                              cancelButtonTitle:@"OK!"
                                                              otherButtonTitles: nil];
             [savedPhotosAlert show];
+
+            // push to the offer history view
+            [self.tabBarController setSelectedIndex:1];
         }
 
     } else if (request_type == REQUEST_TYPE_CREATE_CARD) {

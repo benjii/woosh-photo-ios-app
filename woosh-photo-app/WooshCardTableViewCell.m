@@ -68,7 +68,6 @@ int cell_request_type = REQUEST_TYPE_NONE;
     // the offer is now expired, so update this cell to reflect that
     if (cell_request_type == REQUEST_TYPE_EXPIRE_OFFER) {
         
-//        self.expireReofferButton.titleLabel.text = @"Re-offer";
         [self.timer invalidate];
         self.remainingTimeLabel.text = @"No time remaining";
 
