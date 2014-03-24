@@ -111,6 +111,11 @@ int req_type = REQUEST_TYPE_NONE;
     }
     
     cell.parentView = self;
+    cell.timer = [NSTimer timerWithTimeInterval:1.0
+                                         target:cell
+                                       selector:@selector(remainingTimeDidTick:)
+                                       userInfo:nil
+                                        repeats:YES];
     
     // to populate the cell we;
     //  1. determine if this card orginated from this user
@@ -213,10 +218,13 @@ int req_type = REQUEST_TYPE_NONE;
                     cell.expireButton.hidden = NO;
                     cell.reofferButton.hidden = YES;
                     
-                    NSTimeInterval interval = [offerEndDate timeIntervalSinceNow];
-                    NSInteger time = interval;
-                    cell.remainingTimeLabel.text = [NSString stringWithFormat:@"%d:%02d remaining for offer", time / 60, (int)time % 60];
+//                    NSTimeInterval interval = [offerEndDate timeIntervalSinceNow];
+//                    NSInteger time = interval;
+//                    cell.remainingTimeLabel.text = [NSString stringWithFormat:@"%d:%02d remaining for offer", time / 60, (int)time % 60];
                     
+                    cell.offerEnd = offerEnd;
+                    [[NSRunLoop mainRunLoop] addTimer:cell.timer forMode:NSRunLoopCommonModes];
+
                 } else {
                     
                     NSLog(@"Offer is expired (ended at %@) - setting UI to allow user to re-offer it.", [[Woosh woosh] dateAsDateTimeString:offerEndDate]);
@@ -259,11 +267,14 @@ int req_type = REQUEST_TYPE_NONE;
                         cell.expireButton.hidden = NO;
                         cell.reofferButton.hidden = YES;
 
-                        NSTimeInterval interval = [offerEndDate timeIntervalSinceNow];
-                        NSInteger time = interval;
-                        
-                        cell.remainingTimeLabel.text = [NSString stringWithFormat:@"%d:%02d remaining for offer", time / 60, (int)time % 60];
-                        
+//                        NSTimeInterval interval = [offerEndDate timeIntervalSinceNow];
+//                        NSInteger time = interval;
+//                        
+//                        cell.remainingTimeLabel.text = [NSString stringWithFormat:@"%d:%02d remaining for offer", time / 60, (int)time % 60];
+
+                        cell.offerEnd = offerEnd;
+                        [[NSRunLoop mainRunLoop] addTimer:cell.timer forMode:NSRunLoopCommonModes];
+
                     } else {
                         
                         NSLog(@"Offer is expired (ended at %@) - setting UI to allow user to re-offer it.", [[Woosh woosh] dateAsDateTimeString:offerEndDate]);

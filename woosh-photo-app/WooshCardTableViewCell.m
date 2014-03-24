@@ -16,6 +16,7 @@
 @synthesize expireButton = _expireButton;
 @synthesize reofferButton = _reofferButton;
 @synthesize parentView = _parentView;
+@synthesize timer = _timer;
 
 @synthesize cardId;
 @synthesize lastOfferId;
@@ -51,8 +52,6 @@ int cell_request_type = REQUEST_TYPE_NONE;
     // expire the current offer on the card
     cell_request_type = REQUEST_TYPE_EXPIRE_OFFER;
     [[Woosh woosh] expireOffer:self.lastOfferId delegate:self];
-    
-    [self.parentView refreshCards];
 }
 
 - (IBAction) reofferButtonTapped:(id)sender {
@@ -61,8 +60,6 @@ int cell_request_type = REQUEST_TYPE_NONE;
     // re-offer the card
     cell_request_type = REQUEST_TYPE_MAKE_OFFER;
     [[Woosh woosh] makeOffer:cardId latitude:[[Woosh woosh] latitude] longitude:[[Woosh woosh] longitude] delegate:self];
-    
-    [self.parentView refreshCards];
 }
 
 // everything below here is for handling the connection
@@ -93,7 +90,25 @@ int cell_request_type = REQUEST_TYPE_NONE;
             [confirmationAlert show];
         }
     }
+
+    [self.parentView refreshCards];
     
+}
+
+- (void) remainingTimeDidTick:(NSTimer*) theTimer {
+    NSDate *offerEndDate = [NSDate dateWithTimeIntervalSince1970:self.offerEnd / 1000];
+    NSTimeInterval interval = [offerEndDate timeIntervalSinceNow];
+    NSInteger time = interval;
+    
+    if (time <= 0) {
+        
+        // stop the timer
+        [self.timer invalidate];
+        [self.parentView refreshCards];
+        
+    } else {
+        self.remainingTimeLabel.text = [NSString stringWithFormat:@"%d:%02d remaining for offer", time / 60, (int)time % 60];
+    }
     
 }
 

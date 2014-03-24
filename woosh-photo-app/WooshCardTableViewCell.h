@@ -25,6 +25,9 @@
 @property (nonatomic, strong) NSString *lastOfferId;
 @property (nonatomic) BOOL active;
 
+@property (nonatomic) double offerEnd;
+@property (nonatomic) NSTimer *timer;
+
 
 //@property (nonatomic, strong) UITableView *parent;
 
