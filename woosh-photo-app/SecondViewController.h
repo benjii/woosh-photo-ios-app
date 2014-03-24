@@ -15,6 +15,7 @@
 @property NSMutableData *receivedData;
 @property NSArray *wooshCardsModel;
 
+- (void) refreshCards;
 - (IBAction) refreshButtonTapped:(id)sender;
 
 @end

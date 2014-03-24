@@ -7,12 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SecondViewController.h"
 
 @interface WooshCardTableViewCell : UITableViewCell<NSURLConnectionDataDelegate>
 
+@property (nonatomic, weak) IBOutlet SecondViewController *parentView;
+
 @property (nonatomic, weak) IBOutlet UIImageView *thumbnail;
 @property (nonatomic, weak) IBOutlet UILabel *remainingTimeLabel;
-@property (nonatomic, weak) IBOutlet UIButton *expireReofferButton;
+
+@property (nonatomic, weak) IBOutlet UIButton *expireButton;
+@property (nonatomic, weak) IBOutlet UIButton *reofferButton;
+
+@property (nonatomic, weak) IBOutlet UILabel *readOnlyNotificationLabel;
 
 @property (nonatomic, strong) NSString *cardId;
 @property (nonatomic, strong) NSString *lastOfferId;
@@ -23,6 +30,7 @@
 
 @property NSMutableData *receivedData;
 
-- (IBAction) expireReofferButtonTapped:(id)sender;
+- (IBAction) expireButtonTapped:(id)sender;
+- (IBAction) reofferButtonTapped:(id)sender;
 
 @end

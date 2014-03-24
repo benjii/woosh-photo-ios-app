@@ -17,57 +17,63 @@
                         <rect key="frame" x="17" y="8" width="70" height="70"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="70" id="17"/>
+                            <constraint firstAttribute="width" constant="70" id="GIM-F9-dFs"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Remaining:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="28">
                         <rect key="frame" x="94" y="8" width="214" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="214" id="86"/>
-                            <constraint firstAttribute="height" constant="28" id="92"/>
+                            <constraint firstAttribute="height" constant="28" id="h2R-V0-IPJ"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="47">
-                        <rect key="frame" x="94" y="44" width="194" height="34"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="This offer was received from another Woosh user and therefore can not be re-offered." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="213" translatesAutoresizingMaskIntoConstraints="NO" id="Pmp-Zu-zWd">
+                        <rect key="frame" x="95" y="8" width="213" height="70"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="34" id="85"/>
-                            <constraint firstAttribute="width" constant="194" id="88"/>
-                        </constraints>
-                        <state key="normal" title="Expire / Re-Offer">
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5TM-VI-61e">
+                        <rect key="frame" x="95" y="35" width="213" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <state key="normal" title="Expire">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>
-                            <action selector="expireReofferButtonTapped:" destination="2" eventType="touchUpInside" id="89"/>
+                            <action selector="expireButtonTapped:" destination="2" eventType="touchUpInside" id="6KV-f7-YAP"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XeU-7g-GVx">
+                        <rect key="frame" x="95" y="35" width="213" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <state key="normal" title="Offer Again">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="reofferButtonTapped:" destination="2" eventType="touchUpInside" id="ka6-XR-Qad"/>
                         </connections>
                     </button>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="3" secondAttribute="bottom" constant="7" id="QaI-KN-gRi"/>
+                    <constraint firstItem="28" firstAttribute="leading" secondItem="3" secondAttribute="trailing" constant="7" id="Qp9-Ui-qQv"/>
+                    <constraint firstItem="28" firstAttribute="top" secondItem="3" secondAttribute="top" id="fY6-i4-RuX"/>
+                    <constraint firstAttribute="trailing" secondItem="28" secondAttribute="trailing" constant="12" id="gne-1u-kvj"/>
+                    <constraint firstItem="3" firstAttribute="top" secondItem="Uyj-8O-CaV" secondAttribute="top" constant="8" id="kxM-8h-bdk"/>
+                    <constraint firstItem="3" firstAttribute="leading" secondItem="Uyj-8O-CaV" secondAttribute="leading" constant="17" id="x8j-DM-1CF"/>
+                </constraints>
             </tableViewCellContentView>
-            <constraints>
-                <constraint firstItem="28" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="94" id="0By-fU-sQ5"/>
-                <constraint firstItem="47" firstAttribute="top" secondItem="28" secondAttribute="bottom" constant="8" symbolic="YES" id="94a-VQ-Fm7"/>
-                <constraint firstItem="3" firstAttribute="centerY" secondItem="2" secondAttribute="centerY" id="HZe-I0-TWM"/>
-                <constraint firstItem="28" firstAttribute="leading" secondItem="47" secondAttribute="leading" id="Ucs-il-8Bn"/>
-                <constraint firstItem="3" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="17" id="W44-5i-M4P"/>
-                <constraint firstItem="28" firstAttribute="top" secondItem="3" secondAttribute="top" id="chJ-2c-pXs"/>
-                <constraint firstItem="3" firstAttribute="bottom" secondItem="47" secondAttribute="bottom" id="foo-6g-ekd"/>
-            </constraints>
             <connections>
-                <outlet property="expireReofferButton" destination="47" id="90"/>
+                <outlet property="expireButton" destination="5TM-VI-61e" id="5Fn-pP-BVL"/>
+                <outlet property="readOnlyNotificationLabel" destination="Pmp-Zu-zWd" id="mwm-79-GuW"/>
                 <outlet property="remainingTimeLabel" destination="28" id="80"/>
+                <outlet property="reofferButton" destination="XeU-7g-GVx" id="KFj-4V-tTB"/>
                 <outlet property="thumbnail" destination="3" id="79"/>
             </connections>
         </tableViewCell>
-        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="100">
-            <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-            <nil key="highlightedColor"/>
-        </label>
     </objects>
 </document>

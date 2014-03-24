@@ -56,16 +56,21 @@ int req_type = REQUEST_TYPE_NONE;
     return YES;
 }
 
-- (IBAction) refreshButtonTapped:(id)sender {
+- (void) refreshCards {
 
     // initialise the buffer to hold server response data
     self.receivedData = [NSMutableData data];
-
+    
     // retrieve the full set of user cards from the Woosh servers
     req_type = REQUEST_TYPE_LIST_CARDS;
     
     NSURLConnection * conn = [[Woosh woosh] getCards:self];
     [conn start];
+
+}
+
+- (IBAction) refreshButtonTapped:(id)sender {
+    [self refreshCards];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -105,114 +110,183 @@ int req_type = REQUEST_TYPE_NONE;
         cell = [nib objectAtIndex:0];
     }
     
-    // reset the cell
-    cell.expireReofferButton.titleLabel.text = @"";
-
+    cell.parentView = self;
+    
     // to populate the cell we;
-    //    1. look in persistent storage for the image (if not found then download it)
-    //    2. determine if the card is on offer (by looking at the offer end time)
-    //    3. if the offer is expired then show the 're-offer' button
-    //    4. if the offer is not expired then show the 'expire' button, which will immediately invalidate the offer
+    //  1. determine if this card orginated from this user
+    //  2. if so, they may manipulate it (i.e.: re-offer / expire it)
+    //  3. if not then the offer can not be manipulated (but the user can view it)
     
     NSDictionary *cardDict = [self.wooshCardsModel objectAtIndex:indexPath.row];
     id dataArry = [cardDict objectForKey:@"data"];
+
+    NSDictionary *fromOffer = [cardDict objectForKey:@"fromOffer"];
     
-    // determine if the card is currently under offer
-    NSDate *offerEnd = [NSDate dateWithTimeIntervalSince1970:[[cardDict objectForKey:@"lastOfferEnd"] doubleValue] / 1000];
-    BOOL active = [offerEnd compare:[NSDate date]] == NSOrderedDescending;
-
-    cell.cardId = [cardDict objectForKey:@"id"];
-    cell.lastOfferId = [cardDict objectForKey:@"lastOfferId"];
-    cell.active = active;
-
-    if ([dataArry isKindOfClass:[NSArray class]]) {
-
-        NSDictionary *dataDict = [[cardDict objectForKey:@"data"] objectAtIndex:0];
-        NSString *binaryId = [dataDict objectForKey:@"binaryId"];
-   
-        NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-        NSURL *imagePath = [[documentPath URLByAppendingPathComponent:@"images"] URLByAppendingPathComponent:binaryId];
+    if ( ! [fromOffer isEqual:[NSNull null]]) {
+        // a 'from offer' is present which means that the card did not originate from here
+        // make the cell read-only
         
-        if ( [[NSFileManager defaultManager] fileExistsAtPath:[imagePath path]] ) {
+        cell.remainingTimeLabel.hidden = YES;
+        cell.expireButton.hidden = YES;
+        cell.reofferButton.hidden = YES;
+        cell.readOnlyNotificationLabel.hidden = NO;
+        
+        // load data
+        if ([dataArry isKindOfClass:[NSArray class]]) {
             
-            // load the image from the local image cache
-            NSLog(@"Locally cached image found - loading...");
-            cell.thumbnail.image = [UIImage imageWithContentsOfFile:[imagePath path]];
+            NSDictionary *dataDict = [[cardDict objectForKey:@"data"] objectAtIndex:0];
+            NSString *binaryId = [dataDict objectForKey:@"binaryId"];
             
-            cell.expireReofferButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-            if (active) {
+            NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+            NSURL *imagePath = [[documentPath URLByAppendingPathComponent:@"images"] URLByAppendingPathComponent:binaryId];
+            
+            if ( [[NSFileManager defaultManager] fileExistsAtPath:[imagePath path]] ) {
                 
-                NSLog(@"Offer is active (ends at %@) - setting UI to allow user to expire it.", [[Woosh woosh] dateAsDateTimeString:offerEnd]);
-                cell.expireReofferButton.titleLabel.text = @"Expire";
-            
-                NSTimeInterval interval = [offerEnd timeIntervalSinceNow];
-                NSInteger time = interval;
-                cell.remainingTimeLabel.text = [NSString stringWithFormat:@"%f:%02d remaining for offer", time / 60.0, (int)time % 60];
+                // load the image from the local image cache
+                NSLog(@"Locally cached image found - loading...");
+                cell.thumbnail.image = [UIImage imageWithContentsOfFile:[imagePath path]];
                 
             } else {
+                NSURL *remoteUrl = [NSURL URLWithString:[dataDict objectForKey:@"value"]];
                 
-                NSLog(@"Offer is expired (ended at %@) - setting UI to allow user to re-offer it.", [[Woosh woosh] dateAsDateTimeString:offerEnd]);
-                cell.expireReofferButton.titleLabel.text = @"Re-offer";
-                cell.remainingTimeLabel.text = @"No time remaining";
-
-            }
-
-        } else {
-            NSURL *remoteUrl = [NSURL URLWithString:[dataDict objectForKey:@"value"]];
-            
-            // download the image to the local cache
-            NSLog(@"No locally cached image found - downloading...");
-            NSData *imageData = [NSData dataWithContentsOfURL:remoteUrl];
-            
-            if (imageData == nil) {
-
-                NSLog(@"Warning! Could not download image from S3. Tagging image as unavailable.");
-
-                // write an empty image to the cache - it's missing
-                [[NSFileManager defaultManager] createFileAtPath:[imagePath path] contents:[NSData data] attributes:nil];
-
-                cell.remainingTimeLabel.text = @"Card Missing!";
+                // download the image to the local cache
+                NSLog(@"No locally cached image found - downloading...");
+                NSData *imageData = [NSData dataWithContentsOfURL:remoteUrl];
                 
-                cell.expireReofferButton.enabled = NO;
-                cell.expireReofferButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-                cell.expireReofferButton.titleLabel.text = @"Unavailable";
-                
-            } else {
-                
-                NSLog(@"Downloaded image from S3 - storing in local cache.");
-                [imageData writeToURL:imagePath atomically:YES];
-                
-                cell.expireReofferButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-                if (active) {
+                if (imageData == nil) {
                     
-                    NSLog(@"Offer is active (ends at %@) - setting UI to allow user to expire it.", [[Woosh woosh] dateAsDateTimeString:offerEnd]);
-                    cell.expireReofferButton.titleLabel.text = @"Expire";
-                
-                    NSTimeInterval interval = [offerEnd timeIntervalSinceNow];
-                    NSInteger time = interval;
-                    cell.remainingTimeLabel.text = [NSString stringWithFormat:@"%f:%02d remaining for offer", time / 60.0, (int)time % 60];
-
+                    NSLog(@"Warning! Could not download image from S3. Tagging image as unavailable.");
+                    
+                    // write an empty image to the cache - it's missing
+                    [[NSFileManager defaultManager] createFileAtPath:[imagePath path] contents:[NSData data] attributes:nil];
+                    
+                    cell.remainingTimeLabel.text = @"Card Missing!";
+                    
                 } else {
                     
-                    NSLog(@"Offer is expired (ended at %@) - setting UI to allow user to re-offer it.", [[Woosh woosh] dateAsDateTimeString:offerEnd]);
-                    cell.expireReofferButton.titleLabel.text = @"Re-offer";
-                    cell.remainingTimeLabel.text = @"No time remaining";
-
+                    NSLog(@"Downloaded image from S3 - storing in local cache.");
+                    [imageData writeToURL:imagePath atomically:YES];
+                    
                 }
                 
+                cell.thumbnail.image = [UIImage imageWithContentsOfFile:[imagePath path]];
             }
-            
-            cell.thumbnail.image = [UIImage imageWithContentsOfFile:[imagePath path]];
         }
-
-    } else {
-
-        cell.remainingTimeLabel.text = @"Card Missing!";
         
-        cell.expireReofferButton.enabled = NO;
-        cell.expireReofferButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-        cell.expireReofferButton.titleLabel.text = @"Unavailable";
+    } else {
+        
+        // there was no 'from offer' present so this offer must have originated with this user
+        // therefore they are allowed to manipulate it
 
+        cell.remainingTimeLabel.hidden = NO;
+        cell.expireButton.hidden = NO;
+        cell.reofferButton.hidden = NO;
+        cell.readOnlyNotificationLabel.hidden = YES;
+
+        double offerEnd = [[[cardDict objectForKey:@"lastOffer"] objectForKey:@"offerEnd"] doubleValue];
+        NSDate *offerEndDate = [NSDate dateWithTimeIntervalSince1970:offerEnd / 1000];
+        BOOL active = [offerEndDate compare:[NSDate date]] == NSOrderedDescending;
+        
+        cell.cardId = [cardDict objectForKey:@"id"];
+        cell.lastOfferId = [[cardDict objectForKey:@"lastOffer"] objectForKey:@"id"];
+        cell.active = active;
+
+        // load data
+        if ([dataArry isKindOfClass:[NSArray class]]) {
+            
+            NSDictionary *dataDict = [[cardDict objectForKey:@"data"] objectAtIndex:0];
+            NSString *binaryId = [dataDict objectForKey:@"binaryId"];
+            
+            NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+            NSURL *imagePath = [[documentPath URLByAppendingPathComponent:@"images"] URLByAppendingPathComponent:binaryId];
+            
+            if ( [[NSFileManager defaultManager] fileExistsAtPath:[imagePath path]] ) {
+                
+                // load the image from the local image cache
+                NSLog(@"Locally cached image found - loading...");
+                cell.thumbnail.image = [UIImage imageWithContentsOfFile:[imagePath path]];
+                
+                if (active) {
+                    
+                    NSLog(@"Offer is active (ends at %@) - setting UI to allow user to expire it.", [[Woosh woosh] dateAsDateTimeString:offerEndDate]);
+
+                    cell.expireButton.hidden = NO;
+                    cell.reofferButton.hidden = YES;
+                    
+                    NSTimeInterval interval = [offerEndDate timeIntervalSinceNow];
+                    NSInteger time = interval;
+                    cell.remainingTimeLabel.text = [NSString stringWithFormat:@"%d:%02d remaining for offer", time / 60, (int)time % 60];
+                    
+                } else {
+                    
+                    NSLog(@"Offer is expired (ended at %@) - setting UI to allow user to re-offer it.", [[Woosh woosh] dateAsDateTimeString:offerEndDate]);
+                    
+                    cell.expireButton.hidden = YES;
+                    cell.reofferButton.hidden = NO;
+
+                    cell.remainingTimeLabel.text = @"No time remaining";
+                    
+                }
+                
+            } else {
+                NSURL *remoteUrl = [NSURL URLWithString:[dataDict objectForKey:@"value"]];
+                
+                // download the image to the local cache
+                NSLog(@"No locally cached image found - downloading...");
+                NSData *imageData = [NSData dataWithContentsOfURL:remoteUrl];
+                
+                if (imageData == nil) {
+                    
+                    NSLog(@"Warning! Could not download image from S3. Tagging image as unavailable.");
+                    
+                    // write an empty image to the cache - it's missing
+                    [[NSFileManager defaultManager] createFileAtPath:[imagePath path] contents:[NSData data] attributes:nil];
+                    
+                    cell.remainingTimeLabel.text = @"Card Missing!";
+                    
+                    cell.expireButton.hidden = YES;
+                    cell.reofferButton.hidden = YES;
+                    
+                } else {
+                    
+                    NSLog(@"Downloaded image from S3 - storing in local cache.");
+                    [imageData writeToURL:imagePath atomically:YES];
+                    
+                    if (active) {
+                        
+                        NSLog(@"Offer is active (ends at %@) - setting UI to allow user to expire it.", [[Woosh woosh] dateAsDateTimeString:offerEndDate]);
+  
+                        cell.expireButton.hidden = NO;
+                        cell.reofferButton.hidden = YES;
+
+                        NSTimeInterval interval = [offerEndDate timeIntervalSinceNow];
+                        NSInteger time = interval;
+                        
+                        cell.remainingTimeLabel.text = [NSString stringWithFormat:@"%d:%02d remaining for offer", time / 60, (int)time % 60];
+                        
+                    } else {
+                        
+                        NSLog(@"Offer is expired (ended at %@) - setting UI to allow user to re-offer it.", [[Woosh woosh] dateAsDateTimeString:offerEndDate]);
+
+                        cell.expireButton.hidden = YES;
+                        cell.reofferButton.hidden = NO;
+                        
+                        cell.remainingTimeLabel.text = @"No time remaining";
+                        
+                    }
+                }
+                
+                cell.thumbnail.image = [UIImage imageWithContentsOfFile:[imagePath path]];
+            }
+        
+        } else {
+            
+            cell.remainingTimeLabel.text = @"Card Missing!";
+
+            cell.expireButton.hidden = YES;
+            cell.reofferButton.hidden = YES;
+            
+        }
     }
         
     return cell;

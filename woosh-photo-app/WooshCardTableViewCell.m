@@ -13,7 +13,9 @@
 
 @synthesize thumbnail = _thumbnail;
 @synthesize remainingTimeLabel = _remainingTimeLabel;
-@synthesize expireReofferButton = _expireReofferButton;
+@synthesize expireButton = _expireButton;
+@synthesize reofferButton = _reofferButton;
+@synthesize parentView = _parentView;
 
 @synthesize cardId;
 @synthesize lastOfferId;
@@ -43,24 +45,24 @@ int cell_request_type = REQUEST_TYPE_NONE;
     // Configure the view for the selected state
 }
 
-- (IBAction) expireReofferButtonTapped:(id)sender; {
-    
+- (IBAction) expireButtonTapped:(id)sender {
     self.receivedData = [NSMutableData data];
     
-    if (self.active) {
-        
-        // expire the current offer on the card
-        cell_request_type = REQUEST_TYPE_EXPIRE_OFFER;
-        [[Woosh woosh] expireOffer:self.lastOfferId delegate:self];
-        
-    } else {
-        
-        // re-offer the card
-        cell_request_type = REQUEST_TYPE_MAKE_OFFER;
-        [[Woosh woosh] makeOffer:cardId latitude:[[Woosh woosh] latitude] longitude:[[Woosh woosh] longitude] delegate:self];
+    // expire the current offer on the card
+    cell_request_type = REQUEST_TYPE_EXPIRE_OFFER;
+    [[Woosh woosh] expireOffer:self.lastOfferId delegate:self];
     
-    }
+    [self.parentView refreshCards];
+}
+
+- (IBAction) reofferButtonTapped:(id)sender {
+    self.receivedData = [NSMutableData data];
     
+    // re-offer the card
+    cell_request_type = REQUEST_TYPE_MAKE_OFFER;
+    [[Woosh woosh] makeOffer:cardId latitude:[[Woosh woosh] latitude] longitude:[[Woosh woosh] longitude] delegate:self];
+    
+    [self.parentView refreshCards];
 }
 
 // everything below here is for handling the connection
@@ -69,7 +71,7 @@ int cell_request_type = REQUEST_TYPE_NONE;
     // the offer is now expired, so update this cell to reflect that
     if (cell_request_type == REQUEST_TYPE_EXPIRE_OFFER) {
         
-        self.expireReofferButton.titleLabel.text = @"Re-offer";
+//        self.expireReofferButton.titleLabel.text = @"Re-offer";
         self.remainingTimeLabel.text = @"No time remaining";
 
     } else if (cell_request_type == REQUEST_TYPE_MAKE_OFFER) {
