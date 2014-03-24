@@ -30,6 +30,7 @@ static const int REQUEST_TYPE_NONE = -1;
 static const int REQUEST_TYPE_SCAN = 0;
 static const int REQUEST_TYPE_CREATE_CARD = 1;
 static const int REQUEST_TYPE_MAKE_OFFER = 2;
+static const int REQUEST_TYPE_ACCEPT_OFFER = 3;
 
 int request_type = REQUEST_TYPE_NONE;
 
@@ -465,24 +466,54 @@ int last_action = LAST_ACTION_NONE;
             // procoess each offer
             for (int count = 0; count < [offers count]; count++) {
                 NSDictionary *offer = [offers objectAtIndex:count];
-        
-                NSString *url = [[[[offer objectForKey:@"offeredCard"] objectForKey:@"data"] objectAtIndex:0] objectForKey:@"value"];
-                NSURLRequest *photoDownloadReq = [NSURLRequest requestWithURL:[NSURL URLWithString:url]
-                                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                              timeoutInterval:60.0];
+                
+                NSLog(@"%@", offer);
+                
+                int isAutoAccept = [[[[offer objectForKey:@"offeredCard"] objectForKey:@"lastOffer"] objectForKey:@"autoAccept"] intValue];
 
-                // download the photo
-                NSURLResponse *resp = nil;
-                NSError *error = nil;
-                NSData *photographData = [NSURLConnection sendSynchronousRequest:photoDownloadReq
-                                                           returningResponse:&resp
-                                                                       error:&error];
-                                                
-                // save it to the camera roll
-                ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-                [library writeImageDataToSavedPhotosAlbum:photographData
-                                                 metadata:nil
-                                          completionBlock:nil];
+                if ( isAutoAccept == YES ) {
+                    NSString *offerId = [offer objectForKey:@"offerId"];
+
+                    // send a message to the Woosh servers to accept the offer
+                    NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
+                    NSString *acceptOfferEndpoint = [endpoint stringByAppendingPathComponent:[NSString stringWithFormat:@"offer/accept/%@", offerId]];
+
+                    NSURLResponse *resp = nil;
+                    NSError *error = nil;
+                    [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:acceptOfferEndpoint]]
+                                          returningResponse:&resp
+                                                      error:&error];
+
+//                    NSMutableURLRequest *acceptOfferReq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:acceptOfferEndpoint]
+//                                                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
+//                                                                              timeoutInterval:60.0];
+//                    
+//                    // reset the response data
+//                    self.receivedData = [NSMutableData data];
+//                    
+//                    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:acceptOfferReq delegate:self startImmediately:NO];
+//                    [conn start];
+                    
+                    // download the photo (card) that is associated with the offer
+                    NSString *url = [[[[offer objectForKey:@"offeredCard"] objectForKey:@"data"] objectAtIndex:0] objectForKey:@"value"];
+                    NSURLRequest *photoDownloadReq = [NSURLRequest requestWithURL:[NSURL URLWithString:url]
+                                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                                  timeoutInterval:60.0];
+                    
+                    // download the photo
+//                    NSURLResponse *resp = nil;
+//                    NSError *error = nil;
+                    NSData *photographData = [NSURLConnection sendSynchronousRequest:photoDownloadReq
+                                                                   returningResponse:&resp
+                                                                               error:&error];
+                    
+                    // save it to the camera roll
+                    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+                    [library writeImageDataToSavedPhotosAlbum:photographData
+                                                     metadata:nil
+                                              completionBlock:nil];
+                }
+                
             }
             
             [self.activityView stopAnimating];
@@ -495,7 +526,6 @@ int last_action = LAST_ACTION_NONE;
                                                              cancelButtonTitle:@"OK!"
                                                              otherButtonTitles: nil];
             [savedPhotosAlert show];
-            
         }
 
     } else if (request_type == REQUEST_TYPE_CREATE_CARD) {
@@ -550,7 +580,14 @@ int last_action = LAST_ACTION_NONE;
             
             // the offer has been made - re-enable the offer button
             [self.offerButton setEnabled:YES];
+
+        } else if (request_type == REQUEST_TYPE_ACCEPT_OFFER) {
+            
+            // do nothing - we simply tell the Woosh servers that the user accepted the offer, nothing more
+            NSLog(@"Offer acceptance sent to the Woosh servers.");
+            
         }
+        
     }
 }
 
