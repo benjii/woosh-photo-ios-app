@@ -237,7 +237,7 @@
                             <constraint firstItem="XUf-KY-PtY" firstAttribute="top" secondItem="Brc-B4-2Sv" secondAttribute="bottom" constant="8" symbolic="YES" id="w0R-Sz-BCq"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="settings" image="second.png" id="gPf-LW-4tp"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="second.png" id="gPf-LW-4tp"/>
                     <connections>
                         <outlet property="invitationKeyLabel" destination="Brc-B4-2Sv" id="kOw-ay-WQy"/>
                         <outlet property="signOutButton" destination="0ps-KO-hXs" id="cgi-Ad-TXQ"/>

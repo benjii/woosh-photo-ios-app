@@ -240,7 +240,7 @@ int last_action = LAST_ACTION_NONE;
     
     // store the location in the Woosh service singleton
     [[Woosh woosh] setLatitude:mostRecentLocation.coordinate.latitude];
-    [[Woosh woosh] setLatitude:mostRecentLocation.coordinate.longitude];
+    [[Woosh woosh] setLongitude:mostRecentLocation.coordinate.longitude];
     
 }
 
@@ -258,8 +258,8 @@ int last_action = LAST_ACTION_NONE;
     mode = MODE_OFFER;
     
     // configure the main toolbar
-    self.navigationItem.leftBarButtonItem = self.offerButton;
-    self.navigationItem.rightBarButtonItem = self.clearButton;
+    self.navigationItem.rightBarButtonItem = self.offerButton;
+    self.navigationItem.leftBarButtonItem = self.clearButton;
 
     [self dismissViewControllerAnimated:YES completion:nil];
 }

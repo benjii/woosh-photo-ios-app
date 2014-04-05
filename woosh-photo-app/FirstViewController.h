@@ -30,12 +30,7 @@
 @property (strong, nonatomic) UIBarButtonItem *clearButton;
 @property (strong, nonatomic) UIBarButtonItem *offerButton;
 
-// toolbar items that are always displayed
-//@property (strong, nonatomic) IBOutlet UIBarButtonItem *flexibleSpace;
-//@property (strong, nonatomic) IBOutlet UIBarButtonItem *wooshLabel;
-
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityView;
-//@property (weak, nonatomic) IBOutlet UIToolbar *mainToolbar;
 
 @property NSMutableData *receivedData;
 

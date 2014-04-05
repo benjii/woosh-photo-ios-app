@@ -69,7 +69,7 @@ int cell_request_type = REQUEST_TYPE_NONE;
     if (cell_request_type == REQUEST_TYPE_EXPIRE_OFFER) {
         
         [self.timer invalidate];
-        self.remainingTimeLabel.text = @"No time remaining";
+        self.remainingTimeLabel.text = @"Offer Is Expired";
 
     } else if (cell_request_type == REQUEST_TYPE_MAKE_OFFER) {
         
@@ -107,7 +107,7 @@ int cell_request_type = REQUEST_TYPE_NONE;
         [self.parentView refreshCards];
         
     } else {
-        self.remainingTimeLabel.text = [NSString stringWithFormat:@"%d:%02d remaining for offer", time / 60, (int)time % 60];
+        self.remainingTimeLabel.text = [NSString stringWithFormat:@"%d:%02d remaining for offer", (int)time / 60, (int)time % 60];
     }
     
 }
