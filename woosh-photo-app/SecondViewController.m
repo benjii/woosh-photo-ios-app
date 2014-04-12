@@ -128,6 +128,7 @@ int req_type = REQUEST_TYPE_NONE;
         WooshCardTableViewCell *cell = (WooshCardTableViewCell *)[self.wooshCardTableView cellForRowAtIndexPath:path];
         
         vc.photograph = cell.thumbnail.image;
+        vc.offerId = cell.fromOfferId;
     }
 
 }
@@ -157,9 +158,9 @@ int req_type = REQUEST_TYPE_NONE;
     NSDictionary *cardDict = [self.wooshCardsModel objectAtIndex:indexPath.row];
     id dataArry = [cardDict objectForKey:@"data"];
 
-    NSDictionary *fromOffer = [cardDict objectForKey:@"fromOffer"];
+//    NSDictionary *fromOffer = [cardDict objectForKey:@"fromOffer"];
     
-    if ( ! [fromOffer isEqual:[NSNull null]]) {
+    if ( [[cardDict objectForKey:@"fromOffer"] isKindOfClass:[NSDictionary class]] ) {
         // a 'from offer' is present which means that the card did not originate from here
         // make the cell read-only
         
@@ -167,6 +168,7 @@ int req_type = REQUEST_TYPE_NONE;
         cell.expireButton.hidden = YES;
         cell.reofferButton.hidden = YES;
         cell.readOnlyNotificationLabel.hidden = NO;
+        cell.fromOfferId = [[cardDict objectForKey:@"fromOffer"] objectForKey:@"id"];
         cell.backgroundColor = [UIColor colorWithWhite:0.90 alpha:1.0];
         
         // load data

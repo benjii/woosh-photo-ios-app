@@ -22,8 +22,13 @@
 @property (nonatomic, weak) IBOutlet UILabel *readOnlyNotificationLabel;
 
 @property (nonatomic, strong) NSString *cardId;
-@property (nonatomic, strong) NSString *lastOfferId;
 @property (nonatomic) BOOL active;
+
+// set if the user owns this offer - this is the ID for the last offer made
+@property (nonatomic, strong) NSString *lastOfferId;
+
+// set if the offer came from another user
+@property (nonatomic, strong) NSString *fromOfferId;
 
 @property (nonatomic) double offerEnd;
 @property (nonatomic) NSTimer *timer;

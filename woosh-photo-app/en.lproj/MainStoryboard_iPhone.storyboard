@@ -62,6 +62,11 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="Your Photo" prompt="This photo is also available in your Photo Gallery" id="lz9-Wr-x8S">
+                                        <barButtonItem key="leftBarButtonItem" title="Report" id="PIX-d1-fYb">
+                                            <connections>
+                                                <action selector="reportButtonTapped:" destination="Hn4-j0-fLh" id="ifn-N5-R2n"/>
+                                            </connections>
+                                        </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" title="Close" id="q0N-xy-AI6">
                                             <connections>
                                                 <action selector="closeButtonTapped:" destination="Hn4-j0-fLh" id="ffu-o7-bLZ"/>
@@ -161,7 +166,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" misplaced="YES" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="q8S-gt-G4Q">
+                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q8S-gt-G4Q">
                                 <rect key="frame" x="1" y="0.0" width="320" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="320" id="6EZ-AR-voU"/>
@@ -170,13 +175,13 @@
                                     <navigationItem title="Settings" id="C40-0t-lfa"/>
                                 </items>
                             </navigationBar>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="Invitation Key" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7PR-Sx-FGh">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Invitation Key" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7PR-Sx-FGh">
                                 <rect key="frame" x="80" y="143" width="161" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="&lt;key>" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Brc-B4-2Sv">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="&lt;key>" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Brc-B4-2Sv">
                                 <rect key="frame" x="56" y="172" width="209" height="51"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="51" id="eSE-ig-aeu"/>
@@ -248,7 +253,7 @@
                             <constraint firstItem="AyD-fA-7Sd" firstAttribute="trailing" secondItem="7PR-Sx-FGh" secondAttribute="trailing" constant="20" id="Kyp-7p-xfV"/>
                             <constraint firstItem="0ps-KO-hXs" firstAttribute="trailing" secondItem="XUf-KY-PtY" secondAttribute="trailing" id="Pjz-cS-pOZ"/>
                             <constraint firstAttribute="trailing" secondItem="AyD-fA-7Sd" secondAttribute="trailing" constant="59" id="RAW-6F-jhR"/>
-                            <constraint firstItem="q8S-gt-G4Q" firstAttribute="leading" secondItem="pus-f2-MUp" secondAttribute="leading" id="Rfg-3D-MqF"/>
+                            <constraint firstItem="q8S-gt-G4Q" firstAttribute="leading" secondItem="pus-f2-MUp" secondAttribute="leading" constant="1" id="Rfg-3D-MqF"/>
                             <constraint firstAttribute="trailing" secondItem="8DG-fX-aA5" secondAttribute="trailing" constant="35" id="S8L-Xd-oo8"/>
                             <constraint firstItem="Brc-B4-2Sv" firstAttribute="centerX" secondItem="pus-f2-MUp" secondAttribute="centerX" id="U6x-MG-Vsl"/>
                             <constraint firstItem="q8S-gt-G4Q" firstAttribute="top" secondItem="pus-f2-MUp" secondAttribute="top" id="VTL-PZ-K9V"/>

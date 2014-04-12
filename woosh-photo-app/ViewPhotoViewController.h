@@ -8,11 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewPhotoViewController : UIViewController
+@interface ViewPhotoViewController : UIViewController<NSURLConnectionDelegate>
 
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
 @property (nonatomic) UIImage *photograph;
 
 - (IBAction) closeButtonTapped:(id)sender;
+- (IBAction) reportButtonTapped:(id)sender;
+
+@property NSMutableData *receivedData;
+
+@property (nonatomic, strong) NSString *offerId;
 
 @end
