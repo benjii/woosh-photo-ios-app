@@ -14,5 +14,6 @@
 @property (strong, nonatomic) IBOutlet UIButton *signOutButton;
 
 -(IBAction) signOutButtonTapped:(id)sender;
+-(IBAction) viewEulaButtonTapped:(id)sender;
 
 @end

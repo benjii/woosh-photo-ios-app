@@ -57,6 +57,10 @@
     [confirmSignOutAlert show];
 }
 
+-(IBAction) viewEulaButtonTapped:(id)sender {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://woosh.io/eula"]];
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 
     if (buttonIndex == 1) {

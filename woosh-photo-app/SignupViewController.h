@@ -25,6 +25,7 @@
 
 - (IBAction) cancelTapped:(id)sender;
 - (IBAction) signupTapped:(id)sender;
+- (IBAction) viewEulaTapped:(id)sender;
 
 - (IBAction) helpUsernameTapped:(id)sender;
 - (IBAction) helpPasswordTapped:(id)sender;

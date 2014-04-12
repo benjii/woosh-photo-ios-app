@@ -71,6 +71,10 @@
     [[[UIAlertView alloc] initWithTitle:@"Other" message:@"Please provide your email address and your key (Woosh in invite-only at the moment)!" delegate:nil cancelButtonTitle:@"Fair Enough!" otherButtonTitles:nil] show];    
 }
 
+- (IBAction) viewEulaTapped:(id)sender {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://woosh.io/eula"]];
+}
+
 - (IBAction) signupTapped:(id)sender {
  
     NSString *username = self.usernameField.text;
