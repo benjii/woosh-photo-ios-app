@@ -20,7 +20,7 @@ static Woosh *instance;
 
 static NSDateFormatter *dateTimeFormatter;
 
-static int RANDOM_CARD_NAME_LENGTH = 8;
+//static int RANDOM_CARD_NAME_LENGTH = 8;
 static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 
 
@@ -41,11 +41,11 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 	return instance;
 }
 
-- (NSString *) randomAlphaString {
-    char data[RANDOM_CARD_NAME_LENGTH];
-    for (int x=0; x < RANDOM_CARD_NAME_LENGTH; data[x++] = (char)('A' + (arc4random_uniform(26))));
-    return [[NSString alloc] initWithBytes:data length:RANDOM_CARD_NAME_LENGTH encoding:NSUTF8StringEncoding];    
-}
+//- (NSString *) randomAlphaString {
+//    char data[RANDOM_CARD_NAME_LENGTH];
+//    for (int x=0; x < RANDOM_CARD_NAME_LENGTH; data[x++] = (char)('A' + (arc4random_uniform(26))));
+//    return [[NSString alloc] initWithBytes:data length:RANDOM_CARD_NAME_LENGTH encoding:NSUTF8StringEncoding];    
+//}
 
 + (NSString *) uuid {
 	CFUUIDRef uuidObj = CFUUIDCreate(nil);
@@ -107,7 +107,7 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
                                         nil];
         
     NSDictionary *cardDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    [self randomAlphaString], @"name",
+//                                    [self randomAlphaString], @"name",
                                     [NSArray arrayWithObject:cardDataDictionary], @"data",
                                     nil];
     
