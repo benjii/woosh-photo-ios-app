@@ -51,7 +51,7 @@
         [[Woosh woosh] setSystemProperties:props];
 
     }
-    
+        
     // if all input is valid then attempt an authenticated action
     NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
     NSString *pingEndpoint = [endpoint stringByAppendingPathComponent:@"ping"];

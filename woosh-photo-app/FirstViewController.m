@@ -48,6 +48,7 @@ int last_action = LAST_ACTION_NONE;
 
 @synthesize navigationItem;
 @synthesize activityView;
+@synthesize wifiWarningLabel;
 
 @synthesize locationManager;
 @synthesize motionManager;
@@ -106,7 +107,39 @@ int last_action = LAST_ACTION_NONE;
     {
         [self processDeviceMotion:motion error:error];
     }];
+
+    // set up the reachability notifier (Woosh works best when WiFi nodes are reachable)
+    Reachability* reach = [Reachability reachabilityWithHostname:@"www.google.com"];
     
+    // for the purposes of Woosh functions that rely on location we DON'T want to be considered reachable on anything but WiFi
+    reach.reachableOnWWAN = NO;
+    
+    // register with the notification centre
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityChanged:)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+    [reach startNotifier];
+
+}
+
+-(void)reachabilityChanged:(NSNotification*) note {
+    Reachability * reach = [note object];
+
+    // log the network status
+    NSLog(@"Network is reachable: %@", ([reach isReachable] ? @"YES" : @"NO") );
+
+    // record the network status in case any view needs this information
+    [Woosh woosh].networkIsReachable = [reach isReachable];
+
+    // update the UI
+    if ( [reach isReachable] ) {
+        self.wifiWarningLabel.hidden = YES;
+    } else {
+        self.wifiWarningLabel.hidden = NO;
+        [self.view bringSubviewToFront:self.wifiWarningLabel];
+    }
+
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -387,13 +420,15 @@ int last_action = LAST_ACTION_NONE;
     
     // check that location services is working (if not warn the user that Woosh won't work well)
     if ( ! [CLLocationManager locationServicesEnabled] ) {
+    
         UIAlertView *locServicesDisabledAlert = [[UIAlertView alloc] initWithTitle:@"Location Services Disabled"
-                                                                           message:@"Woosh would like to look for photos for you but it needs Location Services enabled to be able to to so. Please enable Location Services in Settings and try again."
+                                                                           message:@"Woosh would like to scan for photos but it needs Location Services enabled to be able to to so. Please enable Location Services in Settings and try again."
                                                                           delegate:nil
                                                                  cancelButtonTitle:@"OK"
                                                                  otherButtonTitles:nil];
         [locServicesDisabledAlert show];
         return;
+
     }
     
     [self.activityView setHidden:NO];
