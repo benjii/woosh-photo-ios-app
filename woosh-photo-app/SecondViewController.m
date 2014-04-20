@@ -334,7 +334,7 @@ int req_type = REQUEST_TYPE_NONE;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 80;
+    return 100;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
