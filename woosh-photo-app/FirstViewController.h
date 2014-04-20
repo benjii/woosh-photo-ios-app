@@ -10,6 +10,7 @@
 
 #import <CoreMotion/CoreMotion.h>
 #import <CoreLocation/CoreLocation.h>
+#import <SystemConfiguration/SystemConfiguration.h>
 
 #import "AppDelegate.h"
 

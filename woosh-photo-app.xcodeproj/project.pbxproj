@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B50D8E841903D40200C5BC2C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B50D8E831903D40200C5BC2C /* SystemConfiguration.framework */; };
+		B50D8E881903D73400C5BC2C /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B50D8E871903D73400C5BC2C /* Reachability.m */; };
 		B525B8DB16B456710011D811 /* woosh-icon-standard.png in Resources */ = {isa = PBXBuildFile; fileRef = B525B8DA16B456710011D811 /* woosh-icon-standard.png */; };
 		B525B8DE16B4567C0011D811 /* woosh-icon-retina.png in Resources */ = {isa = PBXBuildFile; fileRef = B525B8DD16B4567C0011D811 /* woosh-icon-retina.png */; };
 		B52C7A6316B9D2F6003923C7 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B52C7A6216B9D2F6003923C7 /* SettingsViewController.m */; };
@@ -58,6 +60,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B50D8E831903D40200C5BC2C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		B50D8E861903D73400C5BC2C /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		B50D8E871903D73400C5BC2C /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		B525B8DA16B456710011D811 /* woosh-icon-standard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "woosh-icon-standard.png"; path = "../woosh-icon-standard.png"; sourceTree = "<group>"; };
 		B525B8DD16B4567C0011D811 /* woosh-icon-retina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "woosh-icon-retina.png"; path = "../woosh-icon-retina.png"; sourceTree = "<group>"; };
 		B52C7A6116B9D2F6003923C7 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
@@ -117,6 +122,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B50D8E841903D40200C5BC2C /* SystemConfiguration.framework in Frameworks */,
 				B5CAAA8F16A1900F0015CD67 /* AssetsLibrary.framework in Frameworks */,
 				B5A360AA16958A2400AE9B92 /* CoreMotion.framework in Frameworks */,
 				B5E3AB31169293F30076A99E /* CoreLocation.framework in Frameworks */,
@@ -138,6 +144,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B50D8E851903D72100C5BC2C /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				B50D8E861903D73400C5BC2C /* Reachability.h */,
+				B50D8E871903D73400C5BC2C /* Reachability.m */,
+			);
+			name = Reachability;
+			sourceTree = "<group>";
+		};
 		B54922E816973694002C9438 /* Global */ = {
 			isa = PBXGroup;
 			children = (
@@ -169,6 +184,7 @@
 		B5B73F9916929105008A8BBC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B50D8E831903D40200C5BC2C /* SystemConfiguration.framework */,
 				B5CAAA8E16A1900F0015CD67 /* AssetsLibrary.framework */,
 				B5E3AB30169293F30076A99E /* CoreLocation.framework */,
 				B5A360A916958A2400AE9B92 /* CoreMotion.framework */,
@@ -182,8 +198,9 @@
 		B5B73FA016929105008A8BBC /* woosh-photo-app */ = {
 			isa = PBXGroup;
 			children = (
-				B5F8E18E1699FA69000FF293 /* Util */,
 				B54922E816973694002C9438 /* Global */,
+				B50D8E851903D72100C5BC2C /* Reachability */,
+				B5F8E18E1699FA69000FF293 /* Util */,
 				B5B8189B16B58D37007E962F /* Views */,
 				B5B73FA916929105008A8BBC /* AppDelegate.h */,
 				B5B73FAA16929105008A8BBC /* AppDelegate.m */,
@@ -406,6 +423,7 @@
 				B5B8189816B58D2F007E962F /* LoginViewController.m in Sources */,
 				B5527ABB16B5BAE700A7FD85 /* SignupViewController.m in Sources */,
 				B52C7A6316B9D2F6003923C7 /* SettingsViewController.m in Sources */,
+				B50D8E881903D73400C5BC2C /* Reachability.m in Sources */,
 				B5EA2E0A16D2B5E5007E6B14 /* WooshCardTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

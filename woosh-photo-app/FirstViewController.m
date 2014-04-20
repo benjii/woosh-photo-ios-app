@@ -106,7 +106,7 @@ int last_action = LAST_ACTION_NONE;
     {
         [self processDeviceMotion:motion error:error];
     }];
-        
+    
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -118,7 +118,7 @@ int last_action = LAST_ACTION_NONE;
         
         [self presentViewController:loginView animated:YES completion:^{ }];
     }
-
+    
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -266,6 +266,17 @@ int last_action = LAST_ACTION_NONE;
 
 -(void) makeOffer:(id)sender {
     
+    // check that location services is working (if not warn the user that Woosh won't work well)
+    if ( ! [CLLocationManager locationServicesEnabled] ) {
+        UIAlertView *locServicesDisabledAlert = [[UIAlertView alloc] initWithTitle:@"Location Services Disabled"
+                                                                           message:@"Woosh would like to make your photo available but it needs Location Services enabled to be able to to so. Please enable Location Services in Settings and try again."
+                                                                          delegate:nil
+                                                                 cancelButtonTitle:@"OK"
+                                                                 otherButtonTitles:nil];
+        [locServicesDisabledAlert show];
+        return;
+    }
+    
     if ([[Woosh woosh] ping]) {
 
         // disable the offer button so that the user can't tap it again
@@ -373,6 +384,17 @@ int last_action = LAST_ACTION_NONE;
 }
 
 -(IBAction) scanForOffers:(id)sender {
+    
+    // check that location services is working (if not warn the user that Woosh won't work well)
+    if ( ! [CLLocationManager locationServicesEnabled] ) {
+        UIAlertView *locServicesDisabledAlert = [[UIAlertView alloc] initWithTitle:@"Location Services Disabled"
+                                                                           message:@"Woosh would like to look for photos for you but it needs Location Services enabled to be able to to so. Please enable Location Services in Settings and try again."
+                                                                          delegate:nil
+                                                                 cancelButtonTitle:@"OK"
+                                                                 otherButtonTitles:nil];
+        [locServicesDisabledAlert show];
+        return;
+    }
     
     [self.activityView setHidden:NO];
     [self.activityView startAnimating];
