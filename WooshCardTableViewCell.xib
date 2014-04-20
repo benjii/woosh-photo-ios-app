@@ -13,7 +13,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3">
                         <rect key="frame" x="16" y="8" width="70" height="84"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
@@ -60,11 +60,11 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="3" secondAttribute="bottom" constant="7" id="QaI-KN-gRi"/>
-                    <constraint firstItem="28" firstAttribute="leading" secondItem="3" secondAttribute="trailing" constant="7" id="Qp9-Ui-qQv"/>
+                    <constraint firstItem="28" firstAttribute="leading" secondItem="3" secondAttribute="trailing" constant="8" id="Qp9-Ui-qQv"/>
                     <constraint firstItem="28" firstAttribute="top" secondItem="3" secondAttribute="top" id="fY6-i4-RuX"/>
                     <constraint firstAttribute="trailing" secondItem="28" secondAttribute="trailing" constant="12" id="gne-1u-kvj"/>
                     <constraint firstItem="3" firstAttribute="top" secondItem="Uyj-8O-CaV" secondAttribute="top" constant="8" id="kxM-8h-bdk"/>
-                    <constraint firstItem="3" firstAttribute="leading" secondItem="Uyj-8O-CaV" secondAttribute="leading" constant="17" id="x8j-DM-1CF"/>
+                    <constraint firstItem="3" firstAttribute="leading" secondItem="Uyj-8O-CaV" secondAttribute="leading" constant="16" id="x8j-DM-1CF"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

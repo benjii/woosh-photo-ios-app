@@ -17,6 +17,9 @@
 
 @synthesize receivedData;
 
+static const int MINIMUM_USERNAME_LENGTH = 4;
+static const int MINIMUM_PASSWORD_LENGTH = 6;
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -60,15 +63,27 @@
 }
 
 - (IBAction) helpUsernameTapped:(id)sender {
-    [[[UIAlertView alloc] initWithTitle:@"Username" message:@"You can choose any username that is more than 8 characters long." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    [[[UIAlertView alloc] initWithTitle:@"Username"
+                                message:[NSString stringWithFormat:@"You can choose any username that is more than %d characters long.", MINIMUM_USERNAME_LENGTH]
+                               delegate:nil
+                      cancelButtonTitle:@"OK"
+                      otherButtonTitles:nil] show];
 }
 
 - (IBAction) helpPasswordTapped:(id)sender {
-    [[[UIAlertView alloc] initWithTitle:@"Password" message:@"Please set your password of 6 characters or more and confirm it." delegate:nil cancelButtonTitle:@"Got it!" otherButtonTitles:nil] show];
+    [[[UIAlertView alloc] initWithTitle:@"Password"
+                                message:[NSString stringWithFormat:@"Your password must have a minimum length of %d characters.", MINIMUM_PASSWORD_LENGTH]
+                               delegate:nil
+                      cancelButtonTitle:@"Got it!"
+                      otherButtonTitles:nil] show];
 }
 
 - (IBAction) helpOtherTapped:(id)sender {
-    [[[UIAlertView alloc] initWithTitle:@"Other" message:@"Please provide your email address and your key (Woosh in invite-only at the moment)!" delegate:nil cancelButtonTitle:@"Fair Enough!" otherButtonTitles:nil] show];    
+    [[[UIAlertView alloc] initWithTitle:@"Other"
+                                message:@"Please provide your email address and your key (Woosh in invite-only at the moment)!"
+                               delegate:nil
+                      cancelButtonTitle:@"Fair Enough!"
+                      otherButtonTitles:nil] show];
 }
 
 - (IBAction) viewEulaTapped:(id)sender {
@@ -86,7 +101,7 @@
     // check that the username is OK
     if (username == nil || [username compare:@""] == NSOrderedSame || [username length] < 8) {
         [[[UIAlertView alloc] initWithTitle:@"Invalid Username"
-                                    message:@"You must choose a username that is greater than 8 characters in length."
+                                    message:[NSString stringWithFormat:@"You must choose a username that is at least %d characters long.", MINIMUM_USERNAME_LENGTH]
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil] show];
@@ -96,7 +111,7 @@
     // check that the password is OK
     if (password == nil || [password compare:@""] == NSOrderedSame || [password length] < 6) {
         [[[UIAlertView alloc] initWithTitle:@"Invalid Password"
-                                    message:@"You must choose a username that is greater than 6 characters in length."
+                                    message:[NSString stringWithFormat:@"You must choose a password that is at least %d characters long.", MINIMUM_PASSWORD_LENGTH]
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil] show];
