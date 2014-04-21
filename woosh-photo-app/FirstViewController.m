@@ -111,8 +111,6 @@ int last_action = LAST_ACTION_NONE;
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    [self.locationManager startUpdatingLocation];
-
     // if the system properties array is empty at this point then pop up the login view to capture user authentication credentials
     if ([[[Woosh woosh] systemProperties] count] == 0) {
         LoginViewController *loginView = [[LoginViewController alloc] init];
@@ -122,13 +120,15 @@ int last_action = LAST_ACTION_NONE;
  
     self.locationAccuracyLabel.text = @"";
     self.locationAccuracyLabel.hidden = YES;
+    self.imgView.backgroundColor = [UIColor lightGrayColor];
+
+    [self.locationManager startUpdatingLocation];
 
     if ( ! [CLLocationManager locationServicesEnabled] ) {
         self.locationAccuracyLabel.text = @"Location Services are disabled. Loction Services are required to Woosh photos.";
-        self.locationAccuracyLabel.textColor = [UIColor redColor];
         self.locationAccuracyLabel.hidden = NO;
+        self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.025];
     }
-    
 }
 
 - (void) viewDidDisappear:(BOOL)animated {
@@ -265,22 +265,40 @@ int last_action = LAST_ACTION_NONE;
     if ( ! [CLLocationManager locationServicesEnabled] ) {
 
         self.locationAccuracyLabel.text = @"Location Services are disabled. Loction Services are required to Woosh photos.";
-        self.locationAccuracyLabel.textColor = [UIColor redColor];
         self.locationAccuracyLabel.hidden = NO;
+        self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.025];
     
     } else if ( mostRecentLocation.horizontalAccuracy > 10.0f ) {
     
         self.locationAccuracyLabel.text = @"Your location accuracy may not be sufficient to allow Woosh to work optimally.";
-        self.locationAccuracyLabel.textColor = [UIColor whiteColor];
         self.locationAccuracyLabel.hidden = NO;
+        self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.8 blue:0.0 alpha:0.025];
     
     } else /* location accuracy is <= 10 metres */ {
     
         self.locationAccuracyLabel.text = @"";
         self.locationAccuracyLabel.hidden = YES;
-    
+        self.imgView.backgroundColor = [UIColor lightGrayColor];
+        
     }
     
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    
+    if ( ! [CLLocationManager locationServicesEnabled] ) {
+        
+        self.locationAccuracyLabel.text = @"Location Services are disabled. Loction Services are required to Woosh photos.";
+        self.locationAccuracyLabel.hidden = NO;
+        self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.025];
+
+    } else {
+        
+        self.locationAccuracyLabel.text = @"";
+        self.locationAccuracyLabel.hidden = YES;
+        self.imgView.backgroundColor = [UIColor lightGrayColor];        
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning {
