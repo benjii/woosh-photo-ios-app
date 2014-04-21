@@ -18,6 +18,7 @@
 @implementation SecondViewController
 
 @synthesize wooshCardTableView;
+@synthesize loadActivityView;
 
 @synthesize receivedData;
 @synthesize wooshCardsModel;
@@ -33,14 +34,13 @@ int req_type = REQUEST_TYPE_NONE;
 
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    
-	// Do any additional setup after loading the view, typically from a nib.
-    
+    [super viewDidLoad];    
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+
+    [self.loadActivityView startAnimating];
 
     // initialise the buffer to hold server response data
     self.receivedData = [NSMutableData data];
@@ -58,6 +58,8 @@ int req_type = REQUEST_TYPE_NONE;
 
 - (void) refreshCards {
 
+    [self.loadActivityView startAnimating];
+    
     // initialise the buffer to hold server response data
     self.receivedData = [NSMutableData data];
     
@@ -353,6 +355,9 @@ int req_type = REQUEST_TYPE_NONE;
             NSLog(@"%@", [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding]);
         
         [self.wooshCardTableView reloadData];
+
+        // stop the loading animation
+        [self.loadActivityView stopAnimating];
 
     } else if (req_type == REQUEST_TYPE_DELETE_CARD) {
         

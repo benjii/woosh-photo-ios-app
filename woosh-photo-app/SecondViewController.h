@@ -12,6 +12,7 @@
 @interface SecondViewController : UIViewController<UITableViewDataSource, UITabBarDelegate, NSURLConnectionDataDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *wooshCardTableView;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *loadActivityView;
 
 @property NSMutableData *receivedData;
 @property NSArray *wooshCardsModel;

@@ -109,12 +109,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ayr-m0-iI5" userLabel="Gray Activity Indicator">
+                                <rect key="frame" x="150" y="274" width="37" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="CsJ-vH-5vm">
                                 <rect key="frame" x="0.0" y="44" width="320" height="524"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="WooshCardIdentifier" id="0sw-YP-qsG" customClass="WooshCardTableViewCell">
-                                        <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0sw-YP-qsG" id="783-52-clH">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -142,17 +146,20 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="ayr-m0-iI5" firstAttribute="leading" secondItem="17" secondAttribute="leading" constant="150" id="3RO-J5-B0e"/>
                             <constraint firstItem="6tH-hD-eZ9" firstAttribute="trailing" secondItem="CsJ-vH-5vm" secondAttribute="trailing" id="D3F-sn-ChM"/>
                             <constraint firstAttribute="bottom" secondItem="CsJ-vH-5vm" secondAttribute="bottom" id="FZ6-25-Y0r"/>
                             <constraint firstItem="CsJ-vH-5vm" firstAttribute="top" secondItem="6tH-hD-eZ9" secondAttribute="bottom" id="VVD-yD-Ozf"/>
                             <constraint firstItem="6tH-hD-eZ9" firstAttribute="top" secondItem="17" secondAttribute="top" id="WaY-4C-4Jd"/>
                             <constraint firstItem="6tH-hD-eZ9" firstAttribute="leading" secondItem="17" secondAttribute="leading" id="fbL-bL-A6i"/>
+                            <constraint firstItem="RVS-k9-xBT" firstAttribute="top" secondItem="ayr-m0-iI5" secondAttribute="bottom" constant="208" id="jle-MS-3vo"/>
                             <constraint firstAttribute="trailing" secondItem="6tH-hD-eZ9" secondAttribute="trailing" id="vSG-R4-Xy9"/>
                             <constraint firstItem="6tH-hD-eZ9" firstAttribute="leading" secondItem="CsJ-vH-5vm" secondAttribute="leading" id="yyV-yP-vIk"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" systemItem="history" id="6"/>
                     <connections>
+                        <outlet property="loadActivityView" destination="ayr-m0-iI5" id="53s-Uz-VAL"/>
                         <outlet property="wooshCardTableView" destination="CsJ-vH-5vm" id="hVY-AE-3tr"/>
                         <segue destination="Hn4-j0-fLh" kind="modal" identifier="ViewPhotograph" id="hCg-0V-6Nc"/>
                     </connections>

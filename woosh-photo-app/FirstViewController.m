@@ -120,6 +120,9 @@ int last_action = LAST_ACTION_NONE;
         [self presentViewController:loginView animated:YES completion:^{ }];
     }
  
+    self.locationAccuracyLabel.text = @"";
+    self.locationAccuracyLabel.hidden = YES;
+
     if ( ! [CLLocationManager locationServicesEnabled] ) {
         self.locationAccuracyLabel.text = @"Location Services are disabled. Loction Services are required to Woosh photos.";
         self.locationAccuracyLabel.textColor = [UIColor redColor];
