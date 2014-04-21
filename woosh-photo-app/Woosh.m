@@ -15,7 +15,8 @@
 
 @synthesize latitude;
 @synthesize longitude;
-@synthesize networkIsReachable;
+@synthesize horizontalAccuracy;
+//@synthesize networkIsReachable;
 
 static Woosh *instance;
 

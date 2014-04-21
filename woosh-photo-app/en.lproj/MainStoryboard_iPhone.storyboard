@@ -35,7 +35,6 @@
                                 <rect key="frame" x="20" y="171" width="280" height="86"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -45,8 +44,8 @@
                     <connections>
                         <outlet property="activityView" destination="bvk-1Q-CZQ" id="hUZ-9y-VpA"/>
                         <outlet property="imgView" destination="IvD-Nt-aNt" id="W3w-kM-dgN"/>
+                        <outlet property="locationAccuracyLabel" destination="QyR-2l-k8V" id="R3j-gs-1RR"/>
                         <outlet property="navigationItem" destination="Kpm-dS-bfL" id="X7S-ng-I5M"/>
-                        <outlet property="wifiWarningLabel" destination="QyR-2l-k8V" id="4Rx-nE-lP1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="10" sceneMemberID="firstResponder"/>

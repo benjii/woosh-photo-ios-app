@@ -12,7 +12,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <SystemConfiguration/SystemConfiguration.h>
 
-#import "Reachability.h"
+//#import "Reachability.h"
 
 #import "AppDelegate.h"
 
@@ -21,7 +21,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigationItem;
-@property (weak, nonatomic) IBOutlet UILabel *wifiWarningLabel;
+@property (weak, nonatomic) IBOutlet UILabel *locationAccuracyLabel;
 
 // note that all six bar buttons below must be marked as 'strong' so that they are not auto-dereferenced
 // when we remove them from the items array of the main toolbar

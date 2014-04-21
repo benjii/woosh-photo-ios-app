@@ -18,7 +18,8 @@
 // the user's most recent location
 @property (nonatomic) double latitude;
 @property (nonatomic) double longitude;
-@property (nonatomic) BOOL networkIsReachable;
+@property (nonatomic) double horizontalAccuracy;
+//@property (nonatomic) BOOL networkIsReachable;
 
 - (NSString *) dateAsDateTimeString:(NSDate *)date;
 

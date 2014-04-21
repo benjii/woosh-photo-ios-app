@@ -48,7 +48,7 @@ int last_action = LAST_ACTION_NONE;
 
 @synthesize navigationItem;
 @synthesize activityView;
-@synthesize wifiWarningLabel;
+@synthesize locationAccuracyLabel;
 
 @synthesize locationManager;
 @synthesize motionManager;
@@ -94,7 +94,6 @@ int last_action = LAST_ACTION_NONE;
     
     self.locationManager.delegate = self;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    [self.locationManager startUpdatingLocation];
     
     // start the motion manager
     self.motionManager = [[CMMotionManager alloc] init];
@@ -107,43 +106,12 @@ int last_action = LAST_ACTION_NONE;
     {
         [self processDeviceMotion:motion error:error];
     }];
-
-    // set up the reachability notifier (Woosh works best when WiFi nodes are reachable)
-    Reachability* reach = [Reachability reachabilityWithHostname:@"www.google.com"];
-    
-    // for the purposes of Woosh functions that rely on location we DON'T want to be considered reachable on anything but WiFi
-    reach.reachableOnWWAN = NO;
-    
-    // register with the notification centre
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reachabilityChanged:)
-                                                 name:kReachabilityChangedNotification
-                                               object:nil];
-    [reach startNotifier];
-
-}
-
--(void)reachabilityChanged:(NSNotification*) note {
-    Reachability * reach = [note object];
-
-    // log the network status
-    NSLog(@"Network is reachable: %@", ([reach isReachable] ? @"YES" : @"NO") );
-
-    // record the network status in case any view needs this information
-    [Woosh woosh].networkIsReachable = [reach isReachable];
-
-    // update the UI
-    if ( [reach isReachable] ) {
-        self.wifiWarningLabel.hidden = YES;
-    } else {
-        self.wifiWarningLabel.hidden = NO;
-        [self.view bringSubviewToFront:self.wifiWarningLabel];
-    }
-
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+
+    [self.locationManager startUpdatingLocation];
 
     // if the system properties array is empty at this point then pop up the login view to capture user authentication credentials
     if ([[[Woosh woosh] systemProperties] count] == 0) {
@@ -151,7 +119,20 @@ int last_action = LAST_ACTION_NONE;
         
         [self presentViewController:loginView animated:YES completion:^{ }];
     }
+ 
+    if ( ! [CLLocationManager locationServicesEnabled] ) {
+        self.locationAccuracyLabel.text = @"Location Services are disabled. Loction Services are required to Woosh photos.";
+        self.locationAccuracyLabel.textColor = [UIColor redColor];
+        self.locationAccuracyLabel.hidden = NO;
+    }
     
+}
+
+- (void) viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+
+    // stop location services to conserve power
+    [self.locationManager stopUpdatingLocation];
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -274,6 +255,28 @@ int last_action = LAST_ACTION_NONE;
     // store the location in the Woosh service singleton
     [[Woosh woosh] setLatitude:mostRecentLocation.coordinate.latitude];
     [[Woosh woosh] setLongitude:mostRecentLocation.coordinate.longitude];
+    [[Woosh woosh] setHorizontalAccuracy:mostRecentLocation.horizontalAccuracy];
+
+    NSLog(@"Horizontal accuracy is %f metres", mostRecentLocation.horizontalAccuracy);
+    
+    if ( ! [CLLocationManager locationServicesEnabled] ) {
+
+        self.locationAccuracyLabel.text = @"Location Services are disabled. Loction Services are required to Woosh photos.";
+        self.locationAccuracyLabel.textColor = [UIColor redColor];
+        self.locationAccuracyLabel.hidden = NO;
+    
+    } else if ( mostRecentLocation.horizontalAccuracy > 10.0f ) {
+    
+        self.locationAccuracyLabel.text = @"Your location accuracy may not be sufficient to allow Woosh to work optimally.";
+        self.locationAccuracyLabel.textColor = [UIColor whiteColor];
+        self.locationAccuracyLabel.hidden = NO;
+    
+    } else /* location accuracy is <= 10 metres */ {
+    
+        self.locationAccuracyLabel.text = @"";
+        self.locationAccuracyLabel.hidden = YES;
+    
+    }
     
 }
 
