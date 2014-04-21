@@ -42,7 +42,7 @@ static const int LAST_ACTION_OFFER = 2;
 int last_action = LAST_ACTION_NONE;
 
 static NSString* LOCATION_SERVICES_REQUIRED = @"Location Services are disabled. Loction Services are required to Woosh photos.";
-static NSString* SUB_OPTIMAL_ACCURACY = @"Your location accuracy may not be sufficient to allow Woosh to work optimally. Acquiring location...";
+static NSString* SUB_OPTIMAL_ACCURACY = @"Your location accuracy may not be sufficient to allow Woosh to work optimally. Please wait while we acquire your location...";
 static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
 
 @implementation FirstViewController
@@ -130,7 +130,7 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
     if ( ! [CLLocationManager locationServicesEnabled] ) {
         self.locationAccuracyLabel.text = LOCATION_SERVICES_REQUIRED;
         self.locationAccuracyLabel.hidden = NO;
-        self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.025];
+        self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.05];
     }
 }
 
@@ -269,13 +269,13 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
 
         self.locationAccuracyLabel.text = LOCATION_SERVICES_REQUIRED;
         self.locationAccuracyLabel.hidden = NO;
-        self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.025];
+        self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.05];
     
     } else if ( mostRecentLocation.horizontalAccuracy > 10.0f ) {
     
         self.locationAccuracyLabel.text = SUB_OPTIMAL_ACCURACY;
         self.locationAccuracyLabel.hidden = NO;
-        self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.8 blue:0.0 alpha:0.025];
+        self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.8 blue:0.0 alpha:0.05];
     
     } else /* location accuracy is <= 10 metres */ {
     
@@ -293,7 +293,7 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
         
         self.locationAccuracyLabel.text = LOCATION_SERVICES_REQUIRED;
         self.locationAccuracyLabel.hidden = NO;
-        self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.025];
+        self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.05];
 
     } else {
         
