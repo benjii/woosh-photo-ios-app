@@ -109,9 +109,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ayr-m0-iI5" userLabel="Gray Activity Indicator">
-                                <rect key="frame" x="150" y="274" width="37" height="37"/>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ayr-m0-iI5" userLabel="Gray Activity Indicator">
+                                <rect key="frame" x="150" y="223.5" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="color" cocoaTouchSystemColor="darkTextColor"/>
                             </activityIndicatorView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="CsJ-vH-5vm">
                                 <rect key="frame" x="0.0" y="44" width="320" height="524"/>
@@ -152,7 +153,7 @@
                             <constraint firstItem="CsJ-vH-5vm" firstAttribute="top" secondItem="6tH-hD-eZ9" secondAttribute="bottom" id="VVD-yD-Ozf"/>
                             <constraint firstItem="6tH-hD-eZ9" firstAttribute="top" secondItem="17" secondAttribute="top" id="WaY-4C-4Jd"/>
                             <constraint firstItem="6tH-hD-eZ9" firstAttribute="leading" secondItem="17" secondAttribute="leading" id="fbL-bL-A6i"/>
-                            <constraint firstItem="RVS-k9-xBT" firstAttribute="top" secondItem="ayr-m0-iI5" secondAttribute="bottom" constant="208" id="jle-MS-3vo"/>
+                            <constraint firstItem="RVS-k9-xBT" firstAttribute="top" secondItem="ayr-m0-iI5" secondAttribute="bottom" constant="258.5" id="jle-MS-3vo"/>
                             <constraint firstAttribute="trailing" secondItem="6tH-hD-eZ9" secondAttribute="trailing" id="vSG-R4-Xy9"/>
                             <constraint firstItem="6tH-hD-eZ9" firstAttribute="leading" secondItem="CsJ-vH-5vm" secondAttribute="leading" id="yyV-yP-vIk"/>
                         </constraints>

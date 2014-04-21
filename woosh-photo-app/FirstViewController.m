@@ -41,6 +41,9 @@ static const int LAST_ACTION_OFFER = 2;
 
 int last_action = LAST_ACTION_NONE;
 
+static NSString* LOCATION_SERVICES_REQUIRED = @"Location Services are disabled. Loction Services are required to Woosh photos.";
+static NSString* SUB_OPTIMAL_ACCURACY = @"Your location accuracy may not be sufficient to allow Woosh to work optimally. Acquiring location...";
+static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
 
 @implementation FirstViewController
 
@@ -118,14 +121,14 @@ int last_action = LAST_ACTION_NONE;
         [self presentViewController:loginView animated:YES completion:^{ }];
     }
  
-    self.locationAccuracyLabel.text = @"";
+    self.locationAccuracyLabel.text = READY_TO_WOOSH;
     self.locationAccuracyLabel.hidden = YES;
     self.imgView.backgroundColor = [UIColor lightGrayColor];
 
     [self.locationManager startUpdatingLocation];
 
     if ( ! [CLLocationManager locationServicesEnabled] ) {
-        self.locationAccuracyLabel.text = @"Location Services are disabled. Loction Services are required to Woosh photos.";
+        self.locationAccuracyLabel.text = LOCATION_SERVICES_REQUIRED;
         self.locationAccuracyLabel.hidden = NO;
         self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.025];
     }
@@ -264,19 +267,19 @@ int last_action = LAST_ACTION_NONE;
     
     if ( ! [CLLocationManager locationServicesEnabled] ) {
 
-        self.locationAccuracyLabel.text = @"Location Services are disabled. Loction Services are required to Woosh photos.";
+        self.locationAccuracyLabel.text = LOCATION_SERVICES_REQUIRED;
         self.locationAccuracyLabel.hidden = NO;
         self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.025];
     
     } else if ( mostRecentLocation.horizontalAccuracy > 10.0f ) {
     
-        self.locationAccuracyLabel.text = @"Your location accuracy may not be sufficient to allow Woosh to work optimally.";
+        self.locationAccuracyLabel.text = SUB_OPTIMAL_ACCURACY;
         self.locationAccuracyLabel.hidden = NO;
         self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.8 blue:0.0 alpha:0.025];
     
     } else /* location accuracy is <= 10 metres */ {
     
-        self.locationAccuracyLabel.text = @"";
+        self.locationAccuracyLabel.text = READY_TO_WOOSH;
         self.locationAccuracyLabel.hidden = YES;
         self.imgView.backgroundColor = [UIColor lightGrayColor];
         
@@ -288,13 +291,13 @@ int last_action = LAST_ACTION_NONE;
     
     if ( ! [CLLocationManager locationServicesEnabled] ) {
         
-        self.locationAccuracyLabel.text = @"Location Services are disabled. Loction Services are required to Woosh photos.";
+        self.locationAccuracyLabel.text = LOCATION_SERVICES_REQUIRED;
         self.locationAccuracyLabel.hidden = NO;
         self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.025];
 
     } else {
         
-        self.locationAccuracyLabel.text = @"";
+        self.locationAccuracyLabel.text = READY_TO_WOOSH;
         self.locationAccuracyLabel.hidden = YES;
         self.imgView.backgroundColor = [UIColor lightGrayColor];        
         

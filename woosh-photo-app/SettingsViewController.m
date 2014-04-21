@@ -40,6 +40,7 @@
     self.signOutButton.titleLabel.font = [UIFont boldSystemFontOfSize:20];
     self.signOutButton.titleLabel.shadowColor = [UIColor lightGrayColor];
     self.signOutButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+    
 }
 
 - (BOOL)prefersStatusBarHidden {

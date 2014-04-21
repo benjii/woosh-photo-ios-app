@@ -34,14 +34,17 @@ int req_type = REQUEST_TYPE_NONE;
 
 
 - (void)viewDidLoad {
-    [super viewDidLoad];    
+    [super viewDidLoad];
+    
+    // make sure that the loading activity view is on the top
+    [self.view bringSubviewToFront:self.loadActivityView];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    [self.loadActivityView startAnimating];
-
+    [NSThread detachNewThreadSelector:@selector(threadStartAnimating:) toTarget:self withObject:nil];
+    
     // initialise the buffer to hold server response data
     self.receivedData = [NSMutableData data];
     
@@ -52,13 +55,21 @@ int req_type = REQUEST_TYPE_NONE;
     [conn start];
 }
 
+- (void) threadStartAnimating:(id)data {
+    [self.loadActivityView startAnimating];
+}
+
+- (void) threadStopAnimating:(id)data {
+    [self.loadActivityView stopAnimating];
+}
+
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }
 
 - (void) refreshCards {
 
-    [self.loadActivityView startAnimating];
+    [NSThread detachNewThreadSelector:@selector(threadStartAnimating:) toTarget:self withObject:nil];
     
     // initialise the buffer to hold server response data
     self.receivedData = [NSMutableData data];
@@ -357,7 +368,7 @@ int req_type = REQUEST_TYPE_NONE;
         [self.wooshCardTableView reloadData];
 
         // stop the loading animation
-        [self.loadActivityView stopAnimating];
+        [NSThread detachNewThreadSelector:@selector(threadStopAnimating:) toTarget:self withObject:nil];
 
     } else if (req_type == REQUEST_TYPE_DELETE_CARD) {
         
