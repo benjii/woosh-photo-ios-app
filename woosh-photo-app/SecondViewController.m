@@ -342,7 +342,12 @@ int req_type = REQUEST_TYPE_NONE;
             
         }
     }
-        
+    
+    // if this is the last cell to make then stop animating the activity view
+    if ( indexPath.row == [self.wooshCardsModel count] - 1 ) {
+        [NSThread detachNewThreadSelector:@selector(threadStopAnimating:) toTarget:self withObject:nil];
+    }
+    
     return cell;
 }
 
@@ -366,9 +371,6 @@ int req_type = REQUEST_TYPE_NONE;
             NSLog(@"%@", [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding]);
         
         [self.wooshCardTableView reloadData];
-
-        // stop the loading animation
-        [NSThread detachNewThreadSelector:@selector(threadStopAnimating:) toTarget:self withObject:nil];
 
     } else if (req_type == REQUEST_TYPE_DELETE_CARD) {
         
