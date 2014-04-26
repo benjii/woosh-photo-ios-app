@@ -368,7 +368,11 @@ int req_type = REQUEST_TYPE_NONE;
                                                                options:NSJSONReadingMutableContainers
                                                                  error:&jsonErr];
         
-            NSLog(@"%@", [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding]);
+        NSLog(@"%@", [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding]);
+        
+        if ([self.wooshCardsModel count] == 0) {
+            [NSThread detachNewThreadSelector:@selector(threadStopAnimating:) toTarget:self withObject:nil];            
+        }
         
         [self.wooshCardTableView reloadData];
 

@@ -183,7 +183,8 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
     // construct the request URL
 	NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
     NSString *scanEndpoint = [endpoint stringByAppendingPathComponent:@"offers"];    
-    NSString *fullUrl = [scanEndpoint stringByAppendingFormat:@"?latitude=%.6f&longitude=%.6f", latitude, longitude];
+//    NSString *fullUrl = [scanEndpoint stringByAppendingFormat:@"?latitude=%.6f&longitude=%.6f", latitude, longitude];
+    NSString *fullUrl = [scanEndpoint stringByAppendingFormat:@"?latitude=%.6f&longitude=%.6f&accuracy=%.0f", latitude, longitude, horizontalAccuracy];
 
     // construct the HTTP request object
     NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:fullUrl]
