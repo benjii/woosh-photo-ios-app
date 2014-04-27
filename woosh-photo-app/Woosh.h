@@ -28,6 +28,9 @@
 // perform a Woosh server ping
 - (BOOL) ping;
 
+// method for a client to say hello to the server and provide device data
+- (NSURLConnection *) sayClientHello:(id <NSURLConnectionDelegate>)delegate;
+
 // utility method for making an offer withg a single photograph
 - (NSURLConnection *) createCardWithPhoto:(NSString *)name
                              photographId:(NSString *)photographId

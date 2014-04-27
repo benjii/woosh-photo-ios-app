@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -10,6 +10,7 @@
                 <outlet property="confirmPasswordField" destination="50" id="74"/>
                 <outlet property="emailField" destination="57" id="75"/>
                 <outlet property="invitationKeyField" destination="97" id="105"/>
+                <outlet property="invitationOnlyWarningLabel" destination="APg-hs-TiR" id="Dde-bj-Ytx"/>
                 <outlet property="navigationBar" destination="MYU-ga-mDO" id="2Yb-7k-2iV"/>
                 <outlet property="passwordField" destination="37" id="73"/>
                 <outlet property="remainingSlotsLabel" destination="pGa-7a-6TX" id="CcG-QB-wOT"/>

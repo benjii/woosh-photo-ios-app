@@ -21,6 +21,7 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *signupButton;
 
 @property (strong, nonatomic) IBOutlet UILabel *remainingSlotsLabel;
+@property (strong, nonatomic) IBOutlet UILabel *invitationOnlyWarningLabel;
 
 
 - (IBAction) cancelTapped:(id)sender;

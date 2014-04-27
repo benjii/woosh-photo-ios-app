@@ -18,6 +18,13 @@
 
 @implementation LoginViewController
 
+static const int REQUEST_TYPE_NONE = -1;
+
+static const int REQUEST_TYPE_AUTHENTICATE = 0;
+static const int REQUEST_TYPE_SAY_HELLO = 1;
+
+int login_request_type = REQUEST_TYPE_NONE;
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -73,6 +80,7 @@
                                                        timeoutInterval:60.0];
 
     // reset the response data
+    login_request_type = REQUEST_TYPE_AUTHENTICATE;
     self.receivedData = [NSMutableData data];
     
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:authReq delegate:self startImmediately:NO];
@@ -88,30 +96,42 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
 
-    // if all is OK then save the users authentication credentials
-    NSString *username = self.usernameField.text;
-    NSString *password = self.passwordField.text;
+    if (login_request_type == REQUEST_TYPE_SAY_HELLO) {
     
-    NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-    NSURL *systemPropertiesPath = [documentPath URLByAppendingPathComponent:@"woosh.plist"];
+        NSLog(@"Server accepted client devices 'hello'.");
     
-    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:self.receivedData
-                                                             options:NSJSONReadingMutableContainers
-                                                               error:nil];
-    NSString *invitationKey = [jsonDict objectForKey:@"invitationKey"];
-    
-    NSMutableDictionary *props = [[Woosh woosh] systemProperties];
-    
-    // set the username and password on the system properties dictionary
-    [props setObject:username forKey:@"username"];
-    [props setObject:password forKey:@"password"];
-    [props setObject:invitationKey forKey:@"invitationKey"];
-    
-    // flush the system properties file to disk
-    [props writeToURL:systemPropertiesPath atomically:NO];
-    
-    // dismiss the login view - the user is free to being using the app
-    [self dismissViewControllerAnimated:YES completion:^{ }];
+    } else if (login_request_type == REQUEST_TYPE_AUTHENTICATE ) {
+        
+        // if all is OK then save the users authentication credentials
+        NSString *username = self.usernameField.text;
+        NSString *password = self.passwordField.text;
+        
+        NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+        NSURL *systemPropertiesPath = [documentPath URLByAppendingPathComponent:@"woosh.plist"];
+        
+        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:self.receivedData
+                                                                 options:NSJSONReadingMutableContainers
+                                                                   error:nil];
+        NSString *invitationKey = [jsonDict objectForKey:@"invitationKey"];
+        
+        NSMutableDictionary *props = [[Woosh woosh] systemProperties];
+        
+        // set the username and password on the system properties dictionary
+        [props setObject:username forKey:@"username"];
+        [props setObject:password forKey:@"password"];
+        [props setObject:invitationKey forKey:@"invitationKey"];
+        
+        // flush the system properties file to disk
+        [props writeToURL:systemPropertiesPath atomically:NO];
+        
+        // say hello to the Woosh servers and provide device data
+        login_request_type = REQUEST_TYPE_SAY_HELLO;
+        self.receivedData = [NSMutableData data];
+        [[[Woosh woosh] sayClientHello:self] start];
+        
+        // dismiss the login view - the user is free to start using the app
+        [self dismissViewControllerAnimated:YES completion:^{ }];
+    }
 
 }
 

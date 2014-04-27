@@ -236,15 +236,25 @@ static const int MINIMUM_PASSWORD_LENGTH = 6;
                                                               error:&jsonErr];
 
     int remainingSlots = [[pingResponse objectForKey:@"remainingUserSlots"] intValue];
-
-    if (remainingSlots <= 0) {
-        self.remainingSlotsLabel.text = [NSString stringWithFormat:@"Sorry! There are no more sign-up slots available."];
-        self.signupButton.enabled = NO;
+    int totalSlots = [[pingResponse objectForKey:@"totalSlotsAvailable"] intValue];
+    
+    // if totalSlots == -1 then Woosh is not in invitation-only mode anymore
+    if ( totalSlots == -1 ) {
+     
+        self.remainingSlotsLabel.hidden = YES;
+        self.invitationOnlyWarningLabel.hidden = YES;
+        
     } else {
-        self.remainingSlotsLabel.text = [NSString stringWithFormat:@"There are %d sign-up slots remaining", remainingSlots];
-        self.signupButton.enabled = YES;
-    }
 
+        if (remainingSlots <= 0) {
+            self.remainingSlotsLabel.text = [NSString stringWithFormat:@"Sorry! There are no more sign-up slots available."];
+            self.signupButton.enabled = NO;
+        } else {
+            self.remainingSlotsLabel.text = [NSString stringWithFormat:@"There are %d sign-up slots remaining", remainingSlots];
+            self.signupButton.enabled = YES;
+        }
+
+    }
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {

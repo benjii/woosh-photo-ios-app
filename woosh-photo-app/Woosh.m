@@ -43,12 +43,6 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 	return instance;
 }
 
-//- (NSString *) randomAlphaString {
-//    char data[RANDOM_CARD_NAME_LENGTH];
-//    for (int x=0; x < RANDOM_CARD_NAME_LENGTH; data[x++] = (char)('A' + (arc4random_uniform(26))));
-//    return [[NSString alloc] initWithBytes:data length:RANDOM_CARD_NAME_LENGTH encoding:NSUTF8StringEncoding];    
-//}
-
 + (NSString *) uuid {
 	CFUUIDRef uuidObj = CFUUIDCreate(nil);
 	
@@ -80,6 +74,29 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
     return pingErr == nil;
 }
 
+// method for saying hello to the Woosh servers
+- (NSURLConnection *) sayClientHello:(id <NSURLConnectionDelegate>)delegate {
+    
+    if ( [self.systemProperties objectForKey:@"username"] == nil || [self.systemProperties objectForKey:@"password"] == nil ) {
+        return nil;
+    }
+    
+    NSString *versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
+    NSString *deviceType = [UIDevice currentDevice].model;
+    NSString *operatingSystem = [UIDevice currentDevice].systemVersion;
+    
+    NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
+    NSString *helloEndpoint = [endpoint stringByAppendingPathComponent:[NSString stringWithFormat:@"hello?v=%@&type=%@&os=%@", versionString, deviceType, operatingSystem]];
+    NSString *escapedHelloEndpoint = [helloEndpoint stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    NSMutableURLRequest *helloReq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:escapedHelloEndpoint]
+                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                        timeoutInterval:60.0];
+    
+   return [[NSURLConnection alloc] initWithRequest:helloReq delegate:delegate startImmediately:NO];
+}
+
+
 // utility method for making an offer withg a single photograph
 - (NSURLConnection *) createCardWithPhoto:(NSString *)name
                              photographId:(NSString *)photographId
@@ -109,7 +126,6 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
                                         nil];
         
     NSDictionary *cardDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-//                                    [self randomAlphaString], @"name",
                                     [NSArray arrayWithObject:cardDataDictionary], @"data",
                                     nil];
     
@@ -183,7 +199,6 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
     // construct the request URL
 	NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
     NSString *scanEndpoint = [endpoint stringByAppendingPathComponent:@"offers"];    
-//    NSString *fullUrl = [scanEndpoint stringByAppendingFormat:@"?latitude=%.6f&longitude=%.6f", latitude, longitude];
     NSString *fullUrl = [scanEndpoint stringByAppendingFormat:@"?latitude=%.6f&longitude=%.6f&accuracy=%.0f", latitude, longitude, horizontalAccuracy];
 
     // construct the HTTP request object

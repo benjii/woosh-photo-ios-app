@@ -28,9 +28,10 @@ int mode = MODE_ACCEPT;
 static const int REQUEST_TYPE_NONE = -1;
 
 static const int REQUEST_TYPE_SCAN = 0;
-static const int REQUEST_TYPE_CREATE_CARD = 1;
-static const int REQUEST_TYPE_MAKE_OFFER = 2;
-static const int REQUEST_TYPE_ACCEPT_OFFER = 3;
+static const int REQUEST_TYPE_SAY_HELLO = 1;
+static const int REQUEST_TYPE_CREATE_CARD = 2;
+static const int REQUEST_TYPE_MAKE_OFFER = 3;
+static const int REQUEST_TYPE_ACCEPT_OFFER = 4;
 
 int request_type = REQUEST_TYPE_NONE;
 
@@ -42,7 +43,7 @@ static const int LAST_ACTION_OFFER = 2;
 int last_action = LAST_ACTION_NONE;
 
 static NSString* LOCATION_SERVICES_REQUIRED = @"Location Services are disabled. Loction Services are required to Woosh photos.";
-static NSString* SUB_OPTIMAL_ACCURACY = @"Location accuracy is a little low (%.0fm), so we'll ask the Woosh servers to compensate.";
+static NSString* SUB_OPTIMAL_ACCURACY = @"You can Woosh but a location accuracy of %.0fm is a little low. The Woosh servers will try to compensate.";
 static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
 
 @implementation FirstViewController
@@ -109,6 +110,11 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
     {
         [self processDeviceMotion:motion error:error];
     }];
+    
+    // record login here (including app version and device information)
+    request_type = REQUEST_TYPE_SAY_HELLO;
+    self.receivedData = [NSMutableData data];
+    [[[Woosh woosh] sayClientHello:self] start];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -123,7 +129,6 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
  
     self.locationAccuracyLabel.text = READY_TO_WOOSH;
     self.locationAccuracyLabel.textColor = [UIColor whiteColor];
-//    self.locationAccuracyLabel.hidden = YES;
     self.imgView.backgroundColor = [UIColor lightGrayColor];
 
     [self.locationManager startUpdatingLocation];
@@ -282,7 +287,6 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
     
         self.locationAccuracyLabel.text = READY_TO_WOOSH;
         [self.locationAccuracyLabel setTextColor:[UIColor greenColor]];
-//        self.locationAccuracyLabel.hidden = YES;
         self.imgView.backgroundColor = [UIColor lightGrayColor];
         
     }
@@ -301,7 +305,6 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
         
         self.locationAccuracyLabel.text = READY_TO_WOOSH;
         self.locationAccuracyLabel.textColor = [UIColor whiteColor];
-//        self.locationAccuracyLabel.hidden = YES;
         self.imgView.backgroundColor = [UIColor lightGrayColor];
         
     }
@@ -514,6 +517,10 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
      
         // do nothing
 
+    } else if (request_type == REQUEST_TYPE_SAY_HELLO) {
+
+        NSLog(@"Server accepted client devices 'hello'.");
+        
     } else if (request_type == REQUEST_TYPE_SCAN) {
         
         // render the response into an array for processing and pass back to the caller
