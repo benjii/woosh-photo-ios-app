@@ -22,7 +22,6 @@ static Woosh *instance;
 
 static NSDateFormatter *dateTimeFormatter;
 
-//static int RANDOM_CARD_NAME_LENGTH = 8;
 static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 
 
@@ -172,6 +171,15 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
     [newOfferReq setHTTPMethod:@"POST"];
     [newOfferReq setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [newOfferReq setHTTPBody:postData];
+    
+    // set up a local notification to let the user know when their offer has expired
+    UILocalNotification *expiredOfferNotification = [[UILocalNotification alloc] init];
+    expiredOfferNotification.fireDate = [[NSDate date] dateByAddingTimeInterval:DEFAULT_OFFER_DURATION];
+    expiredOfferNotification.timeZone = [NSTimeZone defaultTimeZone];
+    expiredOfferNotification.alertBody = [NSString stringWithFormat:@"An offer that you made at (%.4f,%.4f) has now expired.",
+                                          [[Woosh woosh] latitude], [[Woosh woosh] longitude]];
+    
+    [[UIApplication sharedApplication] scheduleLocalNotification:expiredOfferNotification];
 
     return [[NSURLConnection alloc] initWithRequest:newOfferReq delegate:delegate startImmediately:YES];
 }

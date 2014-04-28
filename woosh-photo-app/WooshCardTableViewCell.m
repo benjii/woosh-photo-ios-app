@@ -105,7 +105,7 @@ int cell_request_type = REQUEST_TYPE_NONE;
         // stop the timer
         [self.timer invalidate];
         [self.parentView refreshCards];
-        
+
     } else {
         self.remainingTimeLabel.text = [NSString stringWithFormat:@"%d:%02d remaining for offer", (int)time / 60, (int)time % 60];
     }

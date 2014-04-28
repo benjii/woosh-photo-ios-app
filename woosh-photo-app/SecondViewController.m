@@ -343,8 +343,9 @@ int req_type = REQUEST_TYPE_NONE;
         }
     }
     
+    
     // if this is the last cell to make then stop animating the activity view
-    if ( indexPath.row == [self.wooshCardsModel count] - 1 ) {
+    if( [indexPath row] == ((NSIndexPath*)[[tableView indexPathsForVisibleRows] lastObject]).row ) {
         [NSThread detachNewThreadSelector:@selector(threadStopAnimating:) toTarget:self withObject:nil];
     }
     

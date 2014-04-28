@@ -110,12 +110,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ayr-m0-iI5" userLabel="Gray Activity Indicator">
-                                <rect key="frame" x="150" y="223.5" width="37" height="37"/>
+                                <rect key="frame" x="150" y="223" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="color" cocoaTouchSystemColor="darkTextColor"/>
                             </activityIndicatorView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="CsJ-vH-5vm">
-                                <rect key="frame" x="0.0" y="44" width="320" height="524"/>
+                                <rect key="frame" x="0.0" y="44" width="320" height="475"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="WooshCardIdentifier" id="0sw-YP-qsG" customClass="WooshCardTableViewCell">
@@ -149,7 +149,7 @@
                         <constraints>
                             <constraint firstItem="ayr-m0-iI5" firstAttribute="leading" secondItem="17" secondAttribute="leading" constant="150" id="3RO-J5-B0e"/>
                             <constraint firstItem="6tH-hD-eZ9" firstAttribute="trailing" secondItem="CsJ-vH-5vm" secondAttribute="trailing" id="D3F-sn-ChM"/>
-                            <constraint firstAttribute="bottom" secondItem="CsJ-vH-5vm" secondAttribute="bottom" id="FZ6-25-Y0r"/>
+                            <constraint firstAttribute="bottom" secondItem="CsJ-vH-5vm" secondAttribute="bottom" constant="49" id="FZ6-25-Y0r"/>
                             <constraint firstItem="CsJ-vH-5vm" firstAttribute="top" secondItem="6tH-hD-eZ9" secondAttribute="bottom" id="VVD-yD-Ozf"/>
                             <constraint firstItem="6tH-hD-eZ9" firstAttribute="top" secondItem="17" secondAttribute="top" id="WaY-4C-4Jd"/>
                             <constraint firstItem="6tH-hD-eZ9" firstAttribute="leading" secondItem="17" secondAttribute="leading" id="fbL-bL-A6i"/>
