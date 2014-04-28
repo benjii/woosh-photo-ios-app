@@ -19,9 +19,13 @@
 @property (nonatomic) double latitude;
 @property (nonatomic) double longitude;
 @property (nonatomic) double horizontalAccuracy;
-//@property (nonatomic) BOOL networkIsReachable;
+
+@property (nonatomic) NSData *apnsToken;
 
 - (NSString *) dateAsDateTimeString:(NSDate *)date;
+
+- (void) createLocalExpityNotificationForOffer:(NSString *)offerId;
+- (void) removeLocalExpityNotificationForOffer:(NSString *)offerId;
 
 + (NSString *) uuid;
 

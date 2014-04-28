@@ -16,7 +16,8 @@
 @synthesize latitude;
 @synthesize longitude;
 @synthesize horizontalAccuracy;
-//@synthesize networkIsReachable;
+
+@synthesize apnsToken;
 
 static Woosh *instance;
 
@@ -56,6 +57,36 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 	return [dateTimeFormatter stringFromDate:date];
 }
 
+- (void) createLocalExpityNotificationForOffer:(NSString *)offerId {
+
+    // set up a local notification to let the user know when their offer has expired
+    UILocalNotification *expiredOfferNotification = [[UILocalNotification alloc] init];
+    expiredOfferNotification.fireDate = [[NSDate date] dateByAddingTimeInterval:DEFAULT_OFFER_DURATION];
+    expiredOfferNotification.timeZone = [NSTimeZone defaultTimeZone];
+    expiredOfferNotification.alertBody = [NSString stringWithFormat:@"An offer that you made at (%.4f,%.4f) has now expired.", [[Woosh woosh] latitude],
+                                                                                                                               [[Woosh woosh] longitude]];
+    expiredOfferNotification.userInfo = [NSDictionary dictionaryWithObject:offerId forKey:@"id"];
+    
+    [[UIApplication sharedApplication] scheduleLocalNotification:expiredOfferNotification];
+    
+}
+
+- (void) removeLocalExpityNotificationForOffer:(NSString *)offerId {
+
+    // remove any local notifications for the expiry of this offer
+    NSArray *notifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+
+    for (int i = 0; i < [notifications count]; i++) {
+        UILocalNotification* ln = [notifications objectAtIndex:i];
+        
+        if ( [[ln.userInfo objectForKey:@"id"] isEqualToString:offerId] ) {
+            [[UIApplication sharedApplication] cancelLocalNotification:ln];
+            break;
+        }
+    }
+    
+}
+
 - (BOOL) ping {
     
 	NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
@@ -80,19 +111,33 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
         return nil;
     }
     
+    NSString *rawToken = [[[Woosh woosh] apnsToken] description];
+    NSString *deviceToken = [rawToken stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    deviceToken = [deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+
     NSString *versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
     NSString *deviceType = [UIDevice currentDevice].model;
     NSString *operatingSystem = [UIDevice currentDevice].systemVersion;
     
     NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
-    NSString *helloEndpoint = [endpoint stringByAppendingPathComponent:[NSString stringWithFormat:@"hello?v=%@&type=%@&os=%@", versionString, deviceType, operatingSystem]];
-    NSString *escapedHelloEndpoint = [helloEndpoint stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *helloEndpoint = [endpoint stringByAppendingPathComponent:@"hello"];
     
-    NSMutableURLRequest *helloReq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:escapedHelloEndpoint]
+    NSMutableURLRequest *helloReq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:helloEndpoint]
                                                             cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                         timeoutInterval:60.0];
     
-   return [[NSURLConnection alloc] initWithRequest:helloReq delegate:delegate startImmediately:NO];
+    [helloReq setHTTPMethod:@"POST"];
+    NSString *postString = nil;
+    
+    if (deviceToken == nil) {
+        postString = [NSString stringWithFormat:@"v=%@&type=%@&os=%@", versionString, deviceType, operatingSystem];
+    } else {
+        postString = [NSString stringWithFormat:@"v=%@&type=%@&os=%@&tok=%@", versionString, deviceType, operatingSystem, deviceToken];
+    }
+    
+    [helloReq setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    return [[NSURLConnection alloc] initWithRequest:helloReq delegate:delegate startImmediately:NO];
 }
 
 
@@ -172,15 +217,6 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
     [newOfferReq setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [newOfferReq setHTTPBody:postData];
     
-    // set up a local notification to let the user know when their offer has expired
-    UILocalNotification *expiredOfferNotification = [[UILocalNotification alloc] init];
-    expiredOfferNotification.fireDate = [[NSDate date] dateByAddingTimeInterval:DEFAULT_OFFER_DURATION];
-    expiredOfferNotification.timeZone = [NSTimeZone defaultTimeZone];
-    expiredOfferNotification.alertBody = [NSString stringWithFormat:@"An offer that you made at (%.4f,%.4f) has now expired.",
-                                          [[Woosh woosh] latitude], [[Woosh woosh] longitude]];
-    
-    [[UIApplication sharedApplication] scheduleLocalNotification:expiredOfferNotification];
-
     return [[NSURLConnection alloc] initWithRequest:newOfferReq delegate:delegate startImmediately:YES];
 }
 

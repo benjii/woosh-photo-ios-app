@@ -70,6 +70,9 @@ int cell_request_type = REQUEST_TYPE_NONE;
         
         [self.timer invalidate];
         self.remainingTimeLabel.text = @"Offer Is Expired";
+        
+        // create a local notification for the offer expiry (so that the user knows when their offer expired)
+        [[Woosh woosh] removeLocalExpityNotificationForOffer:self.lastOfferId];
 
     } else if (cell_request_type == REQUEST_TYPE_MAKE_OFFER) {
         
@@ -88,6 +91,12 @@ int cell_request_type = REQUEST_TYPE_NONE;
                                                               cancelButtonTitle:@"Sweet!"
                                                               otherButtonTitles:nil];
             [confirmationAlert show];
+            
+            // update the last offer ID
+            self.lastOfferId = newOfferId;
+            
+            // create a local notification for the offer expiry (so that the user knows when their offer expired)
+            [[Woosh woosh] createLocalExpityNotificationForOffer:newOfferId];
         }
     }
 

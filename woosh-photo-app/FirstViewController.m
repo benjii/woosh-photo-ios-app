@@ -670,13 +670,15 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
             // show the location accuracy label
             [self.locationAccuracyLabel setHidden:NO];
 
-        } else if (request_type == REQUEST_TYPE_ACCEPT_OFFER) {
-            
-            // do nothing - we simply tell the Woosh servers that the user accepted the offer, nothing more
-            NSLog(@"Offer acceptance sent to the Woosh servers.");
-            
+            // create a local notification for the offer expiry (so that the user knows when their offer expired)
+            [[Woosh woosh] createLocalExpityNotificationForOffer:newOfferId];
         }
         
+    } else if (request_type == REQUEST_TYPE_ACCEPT_OFFER) {
+            
+        // do nothing - we simply tell the Woosh servers that the user accepted the offer, nothing more
+        NSLog(@"Offer acceptance sent to the Woosh servers.");
+            
     }
 }
 

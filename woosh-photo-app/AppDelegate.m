@@ -65,10 +65,35 @@
     
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:pingReq delegate:self startImmediately:NO];
     [conn start];
-    
+
+    // register for remote Push notifications
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert)];
+
     // Override point for customization after application launch.
     return YES;
 }
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    UIAlertView *notificationAlert = [[UIAlertView alloc] initWithTitle:@"Notification"
+                                                                message:notification.alertBody
+                                                               delegate:self cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+    [notificationAlert show];
+}
+
+// Delegation methods
+- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)devToken {
+    
+    // save the most recent token in the global Blue instance
+    [[Woosh woosh] setApnsToken:devToken];
+    
+    NSLog(@"APNS token: %@", devToken);
+}
+
+- (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
+    NSLog(@"Error when registering for remote Push notifications. Error: %@", err);
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
