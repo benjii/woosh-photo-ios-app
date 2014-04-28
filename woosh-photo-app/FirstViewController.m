@@ -327,6 +327,9 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
     self.navigationItem.rightBarButtonItem = self.offerButton;
     self.navigationItem.leftBarButtonItem = self.clearButton;
 
+    // hide the location accuracy label
+    [self.locationAccuracyLabel setHidden:YES];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -464,6 +467,9 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
 
     }
     
+    // disable the scan button
+    [self.scanButton setEnabled:NO];
+    
     [self.activityView setHidden:NO];
     [self.activityView startAnimating];
         
@@ -504,6 +510,8 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
     self.navigationItem.leftBarButtonItem = self.cameraButton;
     self.navigationItem.rightBarButtonItem = self.scanButton;
     
+    // hide the location accuracy label
+    [self.locationAccuracyLabel setHidden:NO];
 }
 
 
@@ -601,6 +609,8 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
                                                              otherButtonTitles: nil];
             [savedPhotosAlert show];
 
+            [self.scanButton setEnabled:YES];
+            
             // push to the offer history view
             [self.tabBarController setSelectedIndex:1];
         }
@@ -631,7 +641,6 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
         
         NSString *newOfferId = [respDict objectForKey:@"id"];
 
-        
         if (newOfferId != nil) {
 
             // stop the activity view
@@ -657,6 +666,9 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
             
             // the offer has been made - re-enable the offer button
             [self.offerButton setEnabled:YES];
+
+            // show the location accuracy label
+            [self.locationAccuracyLabel setHidden:NO];
 
         } else if (request_type == REQUEST_TYPE_ACCEPT_OFFER) {
             
