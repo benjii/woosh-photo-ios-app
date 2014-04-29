@@ -23,7 +23,7 @@ static Woosh *instance;
 
 static NSDateFormatter *dateTimeFormatter;
 
-static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
+static double DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 
 
 + (Woosh *) woosh {
@@ -61,10 +61,9 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 
     // set up a local notification to let the user know when their offer has expired
     UILocalNotification *expiredOfferNotification = [[UILocalNotification alloc] init];
-    expiredOfferNotification.fireDate = [[NSDate date] dateByAddingTimeInterval:DEFAULT_OFFER_DURATION];
+    expiredOfferNotification.fireDate = [[NSDate date] dateByAddingTimeInterval:DEFAULT_OFFER_DURATION / 1000];     // divide by 1000 to get seconds
     expiredOfferNotification.timeZone = [NSTimeZone defaultTimeZone];
-    expiredOfferNotification.alertBody = [NSString stringWithFormat:@"An offer that you made at (%.4f,%.4f) has now expired.", [[Woosh woosh] latitude],
-                                                                                                                               [[Woosh woosh] longitude]];
+    expiredOfferNotification.alertBody = [NSString stringWithFormat:@"An offer that you made has just expired."];
     expiredOfferNotification.userInfo = [NSDictionary dictionaryWithObject:offerId forKey:@"id"];
     
     [[UIApplication sharedApplication] scheduleLocalNotification:expiredOfferNotification];
@@ -200,7 +199,7 @@ static int DEFAULT_OFFER_DURATION = 300000;      // milliseconds
     // construct the dictionary to express the new Woosh card - this will be converted to a JSON payload for transport
     NSDictionary *offerDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                                      cardId, @"cardId",
-                                     [NSNumber numberWithInt:DEFAULT_OFFER_DURATION], @"duration",
+                                     [NSNumber numberWithInt:DEFAULT_OFFER_DURATION], @"duration",          // duration to the server needs to be in milliseconds
                                      [NSNumber numberWithDouble:[[Woosh woosh] latitude]], @"latitude",
                                      [NSNumber numberWithDouble:[[Woosh woosh] longitude]], @"longitude",
                                      @"true", @"autoAccept",

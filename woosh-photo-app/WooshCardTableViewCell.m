@@ -113,6 +113,8 @@ int cell_request_type = REQUEST_TYPE_NONE;
         
         // stop the timer
         [self.timer invalidate];
+        [theTimer invalidate];
+        
         [self.parentView refreshCards];
 
     } else {

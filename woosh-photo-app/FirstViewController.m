@@ -270,43 +270,47 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
     [[Woosh woosh] setHorizontalAccuracy:mostRecentLocation.horizontalAccuracy];
 
     NSLog(@"Horizontal accuracy is %f metres", mostRecentLocation.horizontalAccuracy);
-    
-    if ( ! [CLLocationManager locationServicesEnabled] ) {
 
-        self.locationAccuracyLabel.text = LOCATION_SERVICES_REQUIRED;
-        self.locationAccuracyLabel.hidden = NO;
-        self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.05];
-    
-    } else if ( mostRecentLocation.horizontalAccuracy > 10.0f ) {
-    
-        self.locationAccuracyLabel.text = [NSString stringWithFormat:SUB_OPTIMAL_ACCURACY, [[Woosh woosh] horizontalAccuracy]];
-        self.locationAccuracyLabel.hidden = NO;
-        self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.8 blue:0.0 alpha:0.05];
-    
-    } else /* location accuracy is <= 10 metres */ {
-    
-        self.locationAccuracyLabel.text = READY_TO_WOOSH;
-        [self.locationAccuracyLabel setTextColor:[UIColor greenColor]];
-        self.imgView.backgroundColor = [UIColor lightGrayColor];
-        
+    if (mode == MODE_ACCEPT) {
+        if ( ! [CLLocationManager locationServicesEnabled] ) {
+            
+            self.locationAccuracyLabel.text = LOCATION_SERVICES_REQUIRED;
+            self.locationAccuracyLabel.hidden = NO;
+            self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.05];
+            
+        } else if ( mostRecentLocation.horizontalAccuracy > 10.0f ) {
+            
+            self.locationAccuracyLabel.text = [NSString stringWithFormat:SUB_OPTIMAL_ACCURACY, [[Woosh woosh] horizontalAccuracy]];
+            self.locationAccuracyLabel.hidden = NO;
+            self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.8 blue:0.0 alpha:0.05];
+            
+        } else /* location accuracy is <= 10 metres */ {
+            
+            self.locationAccuracyLabel.text = READY_TO_WOOSH;
+            [self.locationAccuracyLabel setTextColor:[UIColor greenColor]];
+            self.imgView.backgroundColor = [UIColor lightGrayColor];
+            
+        }
     }
     
 }
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     
-    if ( ! [CLLocationManager locationServicesEnabled] ) {
+    if (mode == MODE_ACCEPT) {
+        if ( ! [CLLocationManager locationServicesEnabled] ) {
         
-        self.locationAccuracyLabel.text = LOCATION_SERVICES_REQUIRED;
-        self.locationAccuracyLabel.hidden = NO;
-        self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.05];
+            self.locationAccuracyLabel.text = LOCATION_SERVICES_REQUIRED;
+            self.locationAccuracyLabel.hidden = NO;
+            self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.05];
 
-    } else {
+        } else {
         
-        self.locationAccuracyLabel.text = READY_TO_WOOSH;
-        self.locationAccuracyLabel.textColor = [UIColor whiteColor];
-        self.imgView.backgroundColor = [UIColor lightGrayColor];
+            self.locationAccuracyLabel.text = READY_TO_WOOSH;
+            self.locationAccuracyLabel.textColor = [UIColor whiteColor];
+            self.imgView.backgroundColor = [UIColor lightGrayColor];
         
+        }
     }
 }
 
