@@ -99,7 +99,7 @@ static const int MINIMUM_PASSWORD_LENGTH = 6;
     NSString *invitationKey = self.invitationKeyField.text;
 
     // check that the username is OK
-    if (username == nil || [username compare:@""] == NSOrderedSame || [username length] < 8) {
+    if (username == nil || [username compare:@""] == NSOrderedSame || [username length] < MINIMUM_USERNAME_LENGTH) {
         [[[UIAlertView alloc] initWithTitle:@"Invalid Username"
                                     message:[NSString stringWithFormat:@"You must choose a username that is at least %d characters long.", MINIMUM_USERNAME_LENGTH]
                                    delegate:nil
@@ -109,7 +109,7 @@ static const int MINIMUM_PASSWORD_LENGTH = 6;
     }
     
     // check that the password is OK
-    if (password == nil || [password compare:@""] == NSOrderedSame || [password length] < 6) {
+    if (password == nil || [password compare:@""] == NSOrderedSame || [password length] < MINIMUM_PASSWORD_LENGTH) {
         [[[UIAlertView alloc] initWithTitle:@"Invalid Password"
                                     message:[NSString stringWithFormat:@"You must choose a password that is at least %d characters long.", MINIMUM_PASSWORD_LENGTH]
                                    delegate:nil

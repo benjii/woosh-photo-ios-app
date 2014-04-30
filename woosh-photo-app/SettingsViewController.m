@@ -48,7 +48,6 @@
 }
 
 -(IBAction) signOutButtonTapped:(id)sender {
-    
     UIAlertView *confirmSignOutAlert = [[UIAlertView alloc] initWithTitle:@"Are You Sure?"
                                                                   message:@"You are about to sign out. If you sign out then you will be prompted for your login credentials again the next time that you use Woosh."
                                                                  delegate:self
