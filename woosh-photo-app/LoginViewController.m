@@ -22,6 +22,7 @@ static const int REQUEST_TYPE_NONE = -1;
 
 static const int REQUEST_TYPE_AUTHENTICATE = 0;
 static const int REQUEST_TYPE_SAY_HELLO = 1;
+static const int REQUEST_TYPE_APNS_TOKEN = 2;
 
 int login_request_type = REQUEST_TYPE_NONE;
 
@@ -99,7 +100,15 @@ int login_request_type = REQUEST_TYPE_NONE;
     if (login_request_type == REQUEST_TYPE_SAY_HELLO) {
     
         NSLog(@"Server accepted client devices 'hello'.");
-    
+
+        login_request_type = REQUEST_TYPE_APNS_TOKEN;
+        self.receivedData = [NSMutableData data];
+        [[[Woosh woosh] submitApnsToken:self] start];
+
+    } else if (login_request_type == REQUEST_TYPE_APNS_TOKEN ) {
+
+        NSLog(@"Server accepted client APNS token.");
+
     } else if (login_request_type == REQUEST_TYPE_AUTHENTICATE ) {
         
         // if all is OK then save the users authentication credentials
@@ -123,12 +132,7 @@ int login_request_type = REQUEST_TYPE_NONE;
         
         // flush the system properties file to disk
         [props writeToURL:systemPropertiesPath atomically:NO];
-        
-        // say hello to the Woosh servers and provide device data
-        login_request_type = REQUEST_TYPE_SAY_HELLO;
-        self.receivedData = [NSMutableData data];
-        [[[Woosh woosh] sayClientHello:self] start];
-        
+                
         // dismiss the login view - the user is free to start using the app
         [self dismissViewControllerAnimated:YES completion:^{ }];
     }

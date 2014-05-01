@@ -106,14 +106,6 @@ static double DEFAULT_OFFER_DURATION = 300000;      // milliseconds
 // method for saying hello to the Woosh servers
 - (NSURLConnection *) sayClientHello:(id <NSURLConnectionDelegate>)delegate {
     
-    if ( [self.systemProperties objectForKey:@"username"] == nil || [self.systemProperties objectForKey:@"password"] == nil ) {
-        return nil;
-    }
-    
-    NSString *rawToken = [[[Woosh woosh] apnsToken] description];
-    NSString *deviceToken = [rawToken stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-    deviceToken = [deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
-
     NSString *versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
     NSString *deviceType = [UIDevice currentDevice].model;
     NSString *operatingSystem = [UIDevice currentDevice].systemVersion;
@@ -126,19 +118,33 @@ static double DEFAULT_OFFER_DURATION = 300000;      // milliseconds
                                                         timeoutInterval:60.0];
     
     [helloReq setHTTPMethod:@"POST"];
-    NSString *postString = nil;
-    
-    if (deviceToken == nil) {
-        postString = [NSString stringWithFormat:@"v=%@&type=%@&os=%@", versionString, deviceType, operatingSystem];
-    } else {
-        postString = [NSString stringWithFormat:@"v=%@&type=%@&os=%@&tok=%@", versionString, deviceType, operatingSystem, deviceToken];
-    }
+    NSString *postString = [NSString stringWithFormat:@"v=%@&type=%@&os=%@", versionString, deviceType, operatingSystem];
     
     [helloReq setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
     
     return [[NSURLConnection alloc] initWithRequest:helloReq delegate:delegate startImmediately:NO];
 }
 
+- (NSURLConnection *) submitApnsToken:(id <NSURLConnectionDelegate>)delegate {
+    
+    NSString *rawToken = [[[Woosh woosh] apnsToken] description];
+    NSString *deviceToken = [rawToken stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    deviceToken = [deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+
+    NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
+    NSString *aubmitApnsTokenEndpoint = [endpoint stringByAppendingPathComponent:@"apns"];
+
+    NSMutableURLRequest *submitApnsTokenReq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:aubmitApnsTokenEndpoint]
+                                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                                  timeoutInterval:60.0];
+    
+    [submitApnsTokenReq setHTTPMethod:@"POST"];
+    NSString *postString = [NSString stringWithFormat:@"apnsToken=%@", deviceToken];
+
+    [submitApnsTokenReq setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
+
+    return [[NSURLConnection alloc] initWithRequest:submitApnsTokenReq delegate:delegate startImmediately:NO];
+}
 
 // utility method for making an offer withg a single photograph
 - (NSURLConnection *) createCardWithPhoto:(NSString *)name

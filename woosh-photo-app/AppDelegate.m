@@ -88,6 +88,7 @@
     [[Woosh woosh] setApnsToken:devToken];
     
     NSLog(@"APNS token: %@", devToken);
+    
 }
 
 - (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {

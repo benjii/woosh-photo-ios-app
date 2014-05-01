@@ -29,9 +29,10 @@ static const int REQUEST_TYPE_NONE = -1;
 
 static const int REQUEST_TYPE_SCAN = 0;
 static const int REQUEST_TYPE_SAY_HELLO = 1;
-static const int REQUEST_TYPE_CREATE_CARD = 2;
-static const int REQUEST_TYPE_MAKE_OFFER = 3;
-static const int REQUEST_TYPE_ACCEPT_OFFER = 4;
+static const int REQUEST_TYPE_APNS_TOKEN = 2;
+static const int REQUEST_TYPE_CREATE_CARD = 3;
+static const int REQUEST_TYPE_MAKE_OFFER = 4;
+static const int REQUEST_TYPE_ACCEPT_OFFER = 5;
 
 int request_type = REQUEST_TYPE_NONE;
 
@@ -111,10 +112,6 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
         [self processDeviceMotion:motion error:error];
     }];
     
-    // record login here (including app version and device information)
-    request_type = REQUEST_TYPE_SAY_HELLO;
-    self.receivedData = [NSMutableData data];
-    [[[Woosh woosh] sayClientHello:self] start];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -125,6 +122,13 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
         LoginViewController *loginView = [[LoginViewController alloc] init];
         
         [self presentViewController:loginView animated:YES completion:^{ }];
+    } else {
+
+        // record login here (including app version and device information)
+        request_type = REQUEST_TYPE_SAY_HELLO;
+        self.receivedData = [NSMutableData data];
+        [[[Woosh woosh] sayClientHello:self] start];
+
     }
  
     self.locationAccuracyLabel.text = READY_TO_WOOSH;
@@ -138,6 +142,7 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
         self.locationAccuracyLabel.hidden = NO;
         self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.05];
     }
+
 }
 
 - (void) viewDidDisappear:(BOOL)animated {
@@ -532,6 +537,14 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
     } else if (request_type == REQUEST_TYPE_SAY_HELLO) {
 
         NSLog(@"Server accepted client devices 'hello'.");
+
+        request_type = REQUEST_TYPE_APNS_TOKEN;
+        self.receivedData = [NSMutableData data];
+        [[[Woosh woosh] submitApnsToken:self] start];
+
+    } else if (request_type == REQUEST_TYPE_APNS_TOKEN ) {
+
+        NSLog(@"Server accepted client device APNS token.");
         
     } else if (request_type == REQUEST_TYPE_SCAN) {
         
