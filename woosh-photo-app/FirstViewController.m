@@ -625,12 +625,12 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
                                                              cancelButtonTitle:@"OK!"
                                                              otherButtonTitles: nil];
             [savedPhotosAlert show];
-
-            [self.scanButton setEnabled:YES];
             
             // push to the offer history view
             [self.tabBarController setSelectedIndex:1];
         }
+
+        [self.scanButton setEnabled:YES];
 
     } else if (request_type == REQUEST_TYPE_CREATE_CARD) {
         
