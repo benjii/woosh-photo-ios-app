@@ -50,7 +50,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="10" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="829" y="-486"/>
+            <point key="canvasLocation" x="1541" y="-498"/>
         </scene>
         <!--View Photo View Controller-->
         <scene sceneID="wFT-nv-azg">
@@ -95,7 +95,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k5w-TV-Lpl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1559" y="128"/>
+            <point key="canvasLocation" x="2271" y="116"/>
         </scene>
         <!--Second View Controller - History-->
         <scene sceneID="13">
@@ -109,7 +109,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ayr-m0-iI5" userLabel="Gray Activity Indicator">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ayr-m0-iI5" userLabel="Gray Activity Indicator">
                                 <rect key="frame" x="150" y="223" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="color" cocoaTouchSystemColor="darkTextColor"/>
@@ -167,7 +167,91 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="12" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="829" y="186"/>
+            <point key="canvasLocation" x="1541" y="174"/>
+        </scene>
+        <!--Navigation Controller - Woosh-->
+        <scene sceneID="gQT-29-3y7">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="eGV-t4-8FX" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Woosh" image="first.png" id="Y1q-Jr-kG4"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="8o4-xq-FYa">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="bAw-1A-jNP" kind="relationship" relationship="rootViewController" id="mqR-vQ-jak"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wCA-xK-tcd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="609" y="-348"/>
+        </scene>
+        <!--Woosh Photos Collection View Controller - Woosh-->
+        <scene sceneID="gRj-Tp-Ckk">
+            <objects>
+                <collectionViewController autoresizesArchivedViewToFullSize="NO" title="Woosh" id="bAw-1A-jNP" customClass="WooshPhotosCollectionViewController" sceneMemberID="viewController">
+                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="VwM-Fx-1J0">
+                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="0.0" id="SZM-Yt-Xit">
+                            <size key="itemSize" width="80" height="107"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="WooshPhotoCell" id="giB-de-MTN" customClass="WooshPhotoCollectionViewCell">
+                                <rect key="frame" x="0.0" y="0.0" width="80" height="107"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="80" height="107"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0/0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mM4-Wl-rYa">
+                                            <rect key="frame" x="3.5" y="86" width="25" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jg9-Te-A8e">
+                                            <rect key="frame" x="42.5" y="86" width="35" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ucf-Tk-3UI">
+                                            <rect key="frame" x="0.0" y="0.0" width="80" height="87"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="offerCountLabel" destination="mM4-Wl-rYa" id="9r4-TC-hwP"/>
+                                    <outlet property="remainingTimeLabel" destination="jg9-Te-A8e" id="Jv8-qj-mSC"/>
+                                    <outlet property="thumbnail" destination="Ucf-Tk-3UI" id="Own-6g-5wg"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="bAw-1A-jNP" id="5ZY-eh-g6w"/>
+                            <outlet property="delegate" destination="bAw-1A-jNP" id="7mo-0N-NHY"/>
+                        </connections>
+                    </collectionView>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <tabBarItem key="tabBarItem" title="Woosh" image="first.png" id="hbi-6e-u7f"/>
+                    <navigationItem key="navigationItem" title="Woosh" id="axh-Bv-XYL">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="SmD-9s-6yK">
+                            <connections>
+                                <action selector="selectPhotographButtonTapped:" destination="bAw-1A-jNP" id="quZ-CL-yc1"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bv2-uV-yNd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1109" y="-348"/>
         </scene>
         <!--Settings View Controller - Settings-->
         <scene sceneID="HSh-hb-xWW">
@@ -308,14 +392,13 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="2" kind="relationship" relationship="viewControllers" id="26"/>
-                        <segue destination="3" kind="relationship" relationship="viewControllers" id="27"/>
+                        <segue destination="eGV-t4-8FX" kind="relationship" relationship="viewControllers" id="WYT-AY-Wbj"/>
                         <segue destination="Q9w-55-zEs" kind="relationship" relationship="viewControllers" id="0rc-c1-nRW"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="14" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="124" y="180"/>
+            <point key="canvasLocation" x="72" y="174"/>
         </scene>
     </scenes>
     <resources>

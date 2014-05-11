@@ -61,10 +61,9 @@ static NSString* READY_TO_WOOSH = @"You're ready to Woosh!";
 @synthesize lastDeviceMotions;
 
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-        
+
     [self.activityView setHidden:YES];
     
     // ensure that the view is initialised correctly

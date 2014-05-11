@@ -18,6 +18,8 @@
 @property (strong, nonatomic) IBOutlet UITextField *emailField;
 @property (strong, nonatomic) IBOutlet UITextField *invitationKeyField;
 
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *signingUpActivity;
+
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *signupButton;
 
 @property (strong, nonatomic) IBOutlet UILabel *remainingSlotsLabel;

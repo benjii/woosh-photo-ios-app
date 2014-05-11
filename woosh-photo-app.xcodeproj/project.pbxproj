@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		B50D8E841903D40200C5BC2C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B50D8E831903D40200C5BC2C /* SystemConfiguration.framework */; };
 		B50D8E881903D73400C5BC2C /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B50D8E871903D73400C5BC2C /* Reachability.m */; };
+		B5101C4719155967001048CE /* WooshPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B5101C4619155967001048CE /* WooshPhotoCollectionViewCell.m */; };
+		B5101C4D19155F11001048CE /* WooshPhotosCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5101C4C19155F11001048CE /* WooshPhotosCollectionViewController.m */; };
 		B525B8DB16B456710011D811 /* woosh-icon-standard.png in Resources */ = {isa = PBXBuildFile; fileRef = B525B8DA16B456710011D811 /* woosh-icon-standard.png */; };
 		B525B8DE16B4567C0011D811 /* woosh-icon-retina.png in Resources */ = {isa = PBXBuildFile; fileRef = B525B8DD16B4567C0011D811 /* woosh-icon-retina.png */; };
 		B52C7A6316B9D2F6003923C7 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B52C7A6216B9D2F6003923C7 /* SettingsViewController.m */; };
@@ -63,6 +65,10 @@
 		B50D8E831903D40200C5BC2C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		B50D8E861903D73400C5BC2C /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		B50D8E871903D73400C5BC2C /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		B5101C4519155967001048CE /* WooshPhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WooshPhotoCollectionViewCell.h; sourceTree = "<group>"; };
+		B5101C4619155967001048CE /* WooshPhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WooshPhotoCollectionViewCell.m; sourceTree = "<group>"; };
+		B5101C4B19155F11001048CE /* WooshPhotosCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WooshPhotosCollectionViewController.h; sourceTree = "<group>"; };
+		B5101C4C19155F11001048CE /* WooshPhotosCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WooshPhotosCollectionViewController.m; sourceTree = "<group>"; };
 		B525B8DA16B456710011D811 /* woosh-icon-standard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "woosh-icon-standard.png"; path = "../woosh-icon-standard.png"; sourceTree = "<group>"; };
 		B525B8DD16B4567C0011D811 /* woosh-icon-retina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "woosh-icon-retina.png"; path = "../woosh-icon-retina.png"; sourceTree = "<group>"; };
 		B52C7A6116B9D2F6003923C7 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
@@ -153,6 +159,25 @@
 			name = Reachability;
 			sourceTree = "<group>";
 		};
+		B5101C4419155940001048CE /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B5101C4519155967001048CE /* WooshPhotoCollectionViewCell.h */,
+				B5101C4619155967001048CE /* WooshPhotoCollectionViewCell.m */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		B5101C4E19155F26001048CE /* Photo Offers View */ = {
+			isa = PBXGroup;
+			children = (
+				B5101C4419155940001048CE /* Cells */,
+				B5101C4B19155F11001048CE /* WooshPhotosCollectionViewController.h */,
+				B5101C4C19155F11001048CE /* WooshPhotosCollectionViewController.m */,
+			);
+			name = "Photo Offers View";
+			sourceTree = "<group>";
+		};
 		B54922E816973694002C9438 /* Global */ = {
 			isa = PBXGroup;
 			children = (
@@ -198,6 +223,7 @@
 		B5B73FA016929105008A8BBC /* woosh-photo-app */ = {
 			isa = PBXGroup;
 			children = (
+				B5101C4E19155F26001048CE /* Photo Offers View */,
 				B54922E816973694002C9438 /* Global */,
 				B50D8E851903D72100C5BC2C /* Reachability */,
 				B5F8E18E1699FA69000FF293 /* Util */,
@@ -419,9 +445,11 @@
 				B5B73FC116929105008A8BBC /* SecondViewController.m in Sources */,
 				B54922EC169736A9002C9438 /* Woosh.m in Sources */,
 				B5F8E1951699FB03000FF293 /* NSData+Base64.m in Sources */,
+				B5101C4719155967001048CE /* WooshPhotoCollectionViewCell.m in Sources */,
 				B57330AA18E0929E003DA719 /* ViewPhotoViewController.m in Sources */,
 				B5B8189816B58D2F007E962F /* LoginViewController.m in Sources */,
 				B5527ABB16B5BAE700A7FD85 /* SignupViewController.m in Sources */,
+				B5101C4D19155F11001048CE /* WooshPhotosCollectionViewController.m in Sources */,
 				B52C7A6316B9D2F6003923C7 /* SettingsViewController.m in Sources */,
 				B50D8E881903D73400C5BC2C /* Reachability.m in Sources */,
 				B5EA2E0A16D2B5E5007E6B14 /* WooshCardTableViewCell.m in Sources */,
