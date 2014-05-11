@@ -34,9 +34,36 @@ int w_request_type = REQUEST_TYPE_NONE;
 @synthesize receivedData;
 @synthesize cards;
 
+static NSString* LOCATION_SERVICES_REQUIRED = @"Location Services are disabled";
+static NSString* SUB_OPTIMAL_ACCURACY = @"%.0fm location accuracy";
+static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    // if the system properties array is empty at this point then pop up the login view to capture user authentication credentials
+    if ([[[Woosh woosh] systemProperties] count] == 0) {
+        
+        LoginViewController *loginView = [[LoginViewController alloc] init];
+        [self presentViewController:loginView animated:YES completion:^{ }];
+        
+    } else {
+        
+        // record login here (including app version and device information)
+        w_request_type = REQUEST_TYPE_SAY_HELLO;
+        self.receivedData = [NSMutableData data];
+        [[[Woosh woosh] sayClientHello:self] start];
+        
+    }
+
+    // start the location manager
+    self.locationManager = [[CLLocationManager alloc] init];
+    
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+
 }
 
 - (void) refreshCards {
@@ -56,37 +83,15 @@ int w_request_type = REQUEST_TYPE_NONE;
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+
+    self.navigationItem.prompt = READY_TO_WOOSH;
     
-    // if the system properties array is empty at this point then pop up the login view to capture user authentication credentials
-    if ([[[Woosh woosh] systemProperties] count] == 0) {
-        
-        LoginViewController *loginView = [[LoginViewController alloc] init];
-        [self presentViewController:loginView animated:YES completion:^{ }];
-        
-    } else {
-        
-        // record login here (including app version and device information)
-        w_request_type = REQUEST_TYPE_SAY_HELLO;
-        self.receivedData = [NSMutableData data];
-        [[[Woosh woosh] sayClientHello:self] start];
-        
-    }
-    
-//    self.locationAccuracyLabel.text = READY_TO_WOOSH;
-//    self.locationAccuracyLabel.textColor = [UIColor whiteColor];
-//    self.imgView.backgroundColor = [UIColor lightGrayColor];
-    
+    // start updating location
     [self.locationManager startUpdatingLocation];
     
-//    if ( ! [CLLocationManager locationServicesEnabled] ) {
-//        self.locationAccuracyLabel.text = LOCATION_SERVICES_REQUIRED;
-//        self.locationAccuracyLabel.hidden = NO;
-//        self.imgView.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.05];
-//    }
- 
-//    // reload collection view data
-//    NSLog(@"%@", self.collectionView);
-//    [self.collectionView reloadData];
+    if ( ! [CLLocationManager locationServicesEnabled] ) {
+        self.navigationItem.prompt = LOCATION_SERVICES_REQUIRED;
+    }
 }
 
 - (void) viewDidDisappear:(BOOL)animated {
@@ -106,6 +111,14 @@ int w_request_type = REQUEST_TYPE_NONE;
     [[Woosh woosh] setHorizontalAccuracy:mostRecentLocation.horizontalAccuracy];
     
     NSLog(@"Horizontal accuracy is %f metres", mostRecentLocation.horizontalAccuracy);
+
+    if ( ! [CLLocationManager locationServicesEnabled] ) {
+        self.navigationItem.prompt = LOCATION_SERVICES_REQUIRED;
+    } else if ( mostRecentLocation.horizontalAccuracy > 10.0f ) {
+        self.navigationItem.prompt = [NSString stringWithFormat:SUB_OPTIMAL_ACCURACY, [[Woosh woosh] horizontalAccuracy]];
+    } else /* location accuracy is <= 10 metres */ {
+        self.navigationItem.prompt = READY_TO_WOOSH;
+    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
@@ -177,16 +190,31 @@ int w_request_type = REQUEST_TYPE_NONE;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [self.cards count];
+
+    // TODO check each card to make sure that it has at least a "fromOffer" or a "lastOffer"
+
+    return ( self.cards == nil ) ? 0 : [self.cards count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     WooshPhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WooshPhotoCell" forIndexPath:indexPath];
     
-    // load the photo that is associated with this cell
+    // grab the card and it's data from the JSON
     NSDictionary *card = [self.cards objectAtIndex:indexPath.row];
     id data = [card objectForKey:@"data"];
     
+    // output the card JSON
+    NSLog(@"%@", card);
+    
+    // set properties that are common to all cells
+    cell.parentView = self;
+    cell.timer = [NSTimer timerWithTimeInterval:1.0
+                                         target:cell
+                                       selector:@selector(remainingTimeDidTick:)
+                                       userInfo:nil
+                                        repeats:YES];
+
+    // load the photo (either from local storage if it exists, or from S3 if it doesn't)
     if ([data isKindOfClass:[NSArray class]]) {
         
         NSDictionary *dataDict = [data objectAtIndex:0];
@@ -228,8 +256,45 @@ int w_request_type = REQUEST_TYPE_NONE;
         }
     }
     
-    cell.remainingTimeLabel.text = @"1:00";
-    cell.offerCountLabel.text = @"1 / 1";
+    // the rendering of cells depends somewhat on whether the card is owned by this user or not
+    // we can tell if a user owns a card if there is
+    
+    if ( [[card objectForKey:@"fromOffer"] isKindOfClass:[NSDictionary class]] ) {
+        // there is a "fromOffer" property set so this offer did not originate from here - it's read only
+
+        cell.fromOfferId = [[card objectForKey:@"fromOffer"] objectForKey:@"id"];
+        cell.remainingTimeLabel.hidden = YES;
+        cell.offerCountLabel.hidden = YES;
+        
+    } else if ( [[card objectForKey:@"lastOffer"] isKindOfClass:[NSDictionary class]] ){
+        // there is a "lastOffer" property set so this offer did originate here
+        
+        // figure out how long the offer is open for
+        double offerEnd = [[[card objectForKey:@"lastOffer"] objectForKey:@"offerEnd"] doubleValue];
+        NSDate *offerEndDate = [NSDate dateWithTimeIntervalSince1970:offerEnd / 1000];
+        BOOL active = [offerEndDate compare:[NSDate date]] == NSOrderedDescending;
+        
+        cell.cardId = [card objectForKey:@"id"];
+        cell.lastOfferId = [[card objectForKey:@"lastOffer"] objectForKey:@"id"];
+        cell.active = active;
+        cell.offerCountLabel.hidden = NO;
+        cell.offerCountLabel.text = [NSString stringWithFormat:@"%@ / %@", [card objectForKey:@"totalAcceptances"], [card objectForKey:@"totalOffers"]];
+
+        if ( cell.active ) {
+            cell.offerEnd = offerEnd;
+            cell.remainingTimeLabel.hidden = NO;
+
+            [[NSRunLoop mainRunLoop] addTimer:cell.timer forMode:NSRunLoopCommonModes];
+        } else {
+            cell.remainingTimeLabel.hidden = YES;
+        }
+        
+    } else {
+        
+        NSLog(@"No 'from offer' or 'last offer' set on the card. Something is very wrong!");
+        return nil;
+        
+    }
     
     return cell;
 }
@@ -264,7 +329,7 @@ int w_request_type = REQUEST_TYPE_NONE;
                                                      options:NSJSONReadingMutableContainers
                                                        error:&jsonErr];
         
-        NSLog(@"%@", [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding]);
+//        NSLog(@"%@", [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding]);
         
         [self.collectionView reloadData];
 

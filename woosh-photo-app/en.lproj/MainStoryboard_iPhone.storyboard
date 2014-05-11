@@ -190,9 +190,10 @@
             <objects>
                 <collectionViewController autoresizesArchivedViewToFullSize="NO" title="Woosh" id="bAw-1A-jNP" customClass="WooshPhotosCollectionViewController" sceneMemberID="viewController">
                     <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="VwM-Fx-1J0">
-                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="94" width="320" height="425"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="0.0" id="SZM-Yt-Xit">
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="5" minimumInteritemSpacing="0.0" id="SZM-Yt-Xit">
                             <size key="itemSize" width="80" height="107"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -241,7 +242,7 @@
                     </collectionView>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" title="Woosh" image="first.png" id="hbi-6e-u7f"/>
-                    <navigationItem key="navigationItem" title="Woosh" id="axh-Bv-XYL">
+                    <navigationItem key="navigationItem" title="Woosh" prompt="Ready to Woosh!" id="axh-Bv-XYL">
                         <barButtonItem key="rightBarButtonItem" systemItem="action" id="SmD-9s-6yK">
                             <connections>
                                 <action selector="selectPhotographButtonTapped:" destination="bAw-1A-jNP" id="quZ-CL-yc1"/>
