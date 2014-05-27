@@ -31,6 +31,7 @@
 
 // perform a Woosh server ping
 - (BOOL) ping;
+- (BOOL) credentialed;
 
 // method for a client to say hello to the server and provide device data
 - (NSURLConnection *) sayClientHello:(id <NSURLConnectionDelegate>)delegate;

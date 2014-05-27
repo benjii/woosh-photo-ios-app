@@ -23,8 +23,8 @@ static const int REQUEST_TYPE_APNS_TOKEN = 1;
 static const int REQUEST_TYPE_LIST_CARDS = 2;
 static const int REQUEST_TYPE_CREATE_CARD = 3;
 static const int REQUEST_TYPE_MAKE_OFFER = 4;
+static const int REQUEST_TYPE_SCAN = 5;
 
-//static const int REQUEST_TYPE_SCAN = 5;
 //static const int REQUEST_TYPE_ACCEPT_OFFER = 6;
 
 int w_request_type = REQUEST_TYPE_NONE;
@@ -34,8 +34,10 @@ int w_request_type = REQUEST_TYPE_NONE;
 @synthesize receivedData;
 @synthesize cards;
 
+@synthesize loadingCardsActivityView;
+
 static NSString* LOCATION_SERVICES_REQUIRED = @"Location Services are disabled";
-static NSString* SUB_OPTIMAL_ACCURACY = @"%.0fm location accuracy";
+static NSString* SUB_OPTIMAL_ACCURACY = @"%.0f metre location accuracy";
 static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
 
 
@@ -43,18 +45,15 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    w_request_type = REQUEST_TYPE_NONE;
+    
     // if the system properties array is empty at this point then pop up the login view to capture user authentication credentials
-    if ([[[Woosh woosh] systemProperties] count] == 0) {
+    if ( [[[Woosh woosh] systemProperties] count] == 0 ) {
         
         LoginViewController *loginView = [[LoginViewController alloc] init];
-        [self presentViewController:loginView animated:YES completion:^{ }];
-        
-    } else {
-        
-        // record login here (including app version and device information)
-        w_request_type = REQUEST_TYPE_SAY_HELLO;
-        self.receivedData = [NSMutableData data];
-        [[[Woosh woosh] sayClientHello:self] start];
+        [self presentViewController:loginView animated:YES completion:^{
+            // do nothing
+        }];
         
     }
 
@@ -63,7 +62,13 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     
     self.locationManager.delegate = self;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-
+    
+    // add a swipe gesture to the view so that users can swipe down to scan
+    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(scanForOffers:)];
+    swipeGesture.numberOfTouchesRequired = 1;
+    swipeGesture.direction = (UISwipeGestureRecognizerDirectionUp|UISwipeGestureRecognizerDirectionDown);
+    
+    [self.collectionView addGestureRecognizer:swipeGesture];
 }
 
 - (void) refreshCards {
@@ -92,6 +97,13 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     if ( ! [CLLocationManager locationServicesEnabled] ) {
         self.navigationItem.prompt = LOCATION_SERVICES_REQUIRED;
     }
+
+    // if no other request is going on at the moment then we can refresh the cards list
+    if ( w_request_type == REQUEST_TYPE_NONE && [[Woosh woosh] credentialed] ) {
+        w_request_type = REQUEST_TYPE_SAY_HELLO;
+        self.receivedData = [NSMutableData data];
+        [[[Woosh woosh] sayClientHello:self] start];
+    }
 }
 
 - (void) viewDidDisappear:(BOOL)animated {
@@ -99,6 +111,35 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     
     // stop location services to conserve power
     [self.locationManager stopUpdatingLocation];
+}
+
+- (void) threadStartAnimating:(id)data {
+    [self.loadingCardsActivityView startAnimating];
+}
+
+- (void) threadStopAnimating:(id)data {
+    [self.loadingCardsActivityView stopAnimating];
+}
+
+-(IBAction) scanForOffers:(id)sender {
+    
+    // check that location services is working (if not warn the user that Woosh won't work well)
+    if ( ! [CLLocationManager locationServicesEnabled] ) {
+        UIAlertView *locServicesDisabledAlert = [[UIAlertView alloc] initWithTitle:@"Location Services Disabled"
+                                                                           message:@"Woosh would like to scan for photos but it needs Location Services enabled to be able to to so. Please enable Location Services in Settings and try again."
+                                                                          delegate:nil
+                                                                 cancelButtonTitle:@"OK"
+                                                                 otherButtonTitles:nil];
+        [locServicesDisabledAlert show];
+        return;
+        
+    }
+    
+    // scan for offers at the current location
+    w_request_type = REQUEST_TYPE_SCAN;
+    self.receivedData = [NSMutableData data];
+    [[Woosh woosh] scan:self];
+    
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
@@ -296,6 +337,10 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
         
     }
     
+//    if ( [indexPath row] == ((NSIndexPath*)[collectionView indexPathForCell:cell]).row ) {
+//        [NSThread detachNewThreadSelector:@selector(threadStopAnimating:) toTarget:self withObject:nil];
+//    }
+
     return cell;
 }
 
@@ -377,6 +422,81 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
             // now that we've created the new card and offered it, refresh all cards
             [self refreshCards];
         }
+        
+    } else if (w_request_type == REQUEST_TYPE_SCAN) {
+
+        // render the response into an array for processing and pass back to the caller
+        NSError *jsonErr = nil;
+        NSArray *availableOffers = [NSJSONSerialization JSONObjectWithData:self.receivedData
+                                                                   options:NSJSONReadingMutableContainers
+                                                                     error:&jsonErr];
+        
+        if ([availableOffers count] == 0) {
+            UIAlertView *noAvailableOffersAlert = [[UIAlertView alloc] initWithTitle:@"Sorry!"
+                                                                             message:@"There are no offers available at your location at the present time. Please try again later."
+                                                                            delegate:nil
+                                                                   cancelButtonTitle:@"Bummer!"
+                                                                   otherButtonTitles: nil];
+            [noAvailableOffersAlert show];
+            
+        } else {
+            
+            NSError *error = nil;
+            NSArray *offers = [NSJSONSerialization JSONObjectWithData:self.receivedData
+                                                              options:NSJSONReadingMutableContainers
+                                                                error:&error];
+            
+            // procoess each offer
+            for (int count = 0; count < [offers count]; count++) {
+                NSDictionary *offer = [offers objectAtIndex:count];
+                
+                // figure out if the offer is auto-accept
+                int isAutoAccept = [[[[offer objectForKey:@"offeredCard"] objectForKey:@"lastOffer"] objectForKey:@"autoAccept"] intValue];
+                
+                if ( isAutoAccept == YES ) {
+                    
+                    // if the offer is auto-accept then make the required server calls (and download the photo)
+                    NSString *offerId = [offer objectForKey:@"offerId"];
+                    
+                    // send a message to the Woosh servers to accept the offer
+                    NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
+                    NSString *acceptOfferEndpoint = [endpoint stringByAppendingPathComponent:[NSString stringWithFormat:@"offer/accept/%@", offerId]];
+                    
+                    NSURLResponse *resp = nil;
+                    NSError *error = nil;
+                    [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:acceptOfferEndpoint]]
+                                          returningResponse:&resp
+                                                      error:&error];
+                    
+                    // download the photo (card) that is associated with the offer
+                    NSString *url = [[[[offer objectForKey:@"offeredCard"] objectForKey:@"data"] objectAtIndex:0] objectForKey:@"value"];
+                    NSURLRequest *photoDownloadReq = [NSURLRequest requestWithURL:[NSURL URLWithString:url]
+                                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                                  timeoutInterval:60.0];
+                    
+                    // download the photo
+                    NSData *photographData = [NSURLConnection sendSynchronousRequest:photoDownloadReq
+                                                                   returningResponse:&resp
+                                                                               error:&error];
+                    
+                    // save it to the camera roll
+                    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+                    [library writeImageDataToSavedPhotosAlbum:photographData
+                                                     metadata:nil
+                                              completionBlock:nil];
+                }
+                
+            }
+
+            // tell the user what we just did
+            UIAlertView *savedPhotosAlert = [[UIAlertView alloc] initWithTitle:@"Photos Added To Gallery"
+                                                                       message:[NSString stringWithFormat:@"%ld photo(s) were found in your proximity and have been saved to your Photo Gallery.", (unsigned long)[offers count]]
+                                                                      delegate:nil
+                                                             cancelButtonTitle:@"OK!"
+                                                             otherButtonTitles: nil];
+            [savedPhotosAlert show];
+        }
+
     }
 }
 

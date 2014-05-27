@@ -15,12 +15,15 @@
 
 @interface WooshPhotosCollectionViewController : UICollectionViewController<NSURLConnectionDelegate, CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *loadingCardsActivityView;
+
 @property NSMutableData *receivedData;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 
 @property NSArray *cards;
 
 - (void) refreshCards;
+- (void) scanForOffers:(id)sender;
 
 -(IBAction) selectPhotographButtonTapped:(id)sender;
 

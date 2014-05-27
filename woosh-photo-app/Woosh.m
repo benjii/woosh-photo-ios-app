@@ -86,6 +86,10 @@ static double DEFAULT_OFFER_DURATION = 300000;      // milliseconds
     
 }
 
+- (BOOL) credentialed {
+    return [[[Woosh woosh] systemProperties] objectForKey:@"username"] != nil;
+}
+
 - (BOOL) ping {
     
 	NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
