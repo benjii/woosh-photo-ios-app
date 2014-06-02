@@ -6,6 +6,10 @@
 //  Copyright (c) 2013 Luminos. All rights reserved.
 //
 
+//
+//  DEPRECATED
+//
+
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #import "FirstViewController.h"

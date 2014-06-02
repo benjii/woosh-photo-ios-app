@@ -23,7 +23,9 @@ static const int REQUEST_TYPE_APNS_TOKEN = 1;
 static const int REQUEST_TYPE_LIST_CARDS = 2;
 static const int REQUEST_TYPE_CREATE_CARD = 3;
 static const int REQUEST_TYPE_MAKE_OFFER = 4;
-static const int REQUEST_TYPE_SCAN = 5;
+static const int REQUEST_TYPE_EXPIRE_OFFER = 5;
+static const int REQUEST_TYPE_DELETE_CARD = 6;
+static const int REQUEST_TYPE_SCAN = 7;
 
 //static const int REQUEST_TYPE_ACCEPT_OFFER = 6;
 
@@ -34,6 +36,7 @@ int w_request_type = REQUEST_TYPE_NONE;
 @synthesize receivedData;
 @synthesize cards;
 @synthesize imageCache;
+@synthesize selectedPath;
 
 @synthesize loadingCardsActivityView;
 
@@ -66,14 +69,20 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     self.locationManager = [[CLLocationManager alloc] init];
     
     self.locationManager.delegate = self;
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
     
     // add a swipe gesture to the view so that users can swipe down to scan
     UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(scanForOffers:)];
     swipeGesture.numberOfTouchesRequired = 1;
-    swipeGesture.direction = (UISwipeGestureRecognizerDirectionUp|UISwipeGestureRecognizerDirectionDown);
+    swipeGesture.direction = (UISwipeGestureRecognizerDirectionUp | UISwipeGestureRecognizerDirectionDown);
     
     [self.collectionView addGestureRecognizer:swipeGesture];
+    
+    // add a long-press gesture to the view so that users can manipulate image cells
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    longPress.minimumPressDuration = .5;    // seconds
+
+    [self.collectionView addGestureRecognizer:longPress];
 }
 
 - (void) refreshCards {
@@ -147,6 +156,88 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     
 }
 
+-(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {
+
+    // if the gesture has not ended yet then ignore it
+    if (gestureRecognizer.state != UIGestureRecognizerStateEnded) {
+        return;
+    }
+    
+    // find the point at which the user is pressing
+    CGPoint p = [gestureRecognizer locationInView:self.collectionView];
+    
+    self.selectedPath = [self.collectionView indexPathForItemAtPoint:p];
+    
+    if (self.selectedPath == nil){
+       
+        NSLog(@"User was not pressing over a cell. Ignoring...");
+    
+    } else {
+        
+        WooshPhotoCollectionViewCell* cell = (WooshPhotoCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:self.selectedPath];
+        
+        NSLog(@"User long-pressed on cell: %@", cell);
+        
+        if ( [cell isActive] ) {
+
+            UIActionSheet *cellActions = [[UIActionSheet alloc] initWithTitle:nil
+                                                                     delegate:self
+                                                            cancelButtonTitle:@"Cancel"
+                                                       destructiveButtonTitle:nil
+                                                            otherButtonTitles:@"Expire", nil];
+            
+            [cellActions showFromTabBar:self.tabBarController.tabBar];
+
+        } else {
+            
+            UIActionSheet *cellActions = [[UIActionSheet alloc] initWithTitle:nil
+                                                                     delegate:self
+                                                            cancelButtonTitle:@"Cancel"
+                                                       destructiveButtonTitle:@"Delete"
+                                                            otherButtonTitles:@"Offer Again", nil];
+            
+            [cellActions showFromTabBar:self.tabBarController.tabBar];
+            
+        }
+    }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+
+    // grab the relevant cell
+    WooshPhotoCollectionViewCell* cell = (WooshPhotoCollectionViewCell *) [self.collectionView cellForItemAtIndexPath:self.selectedPath];
+    
+    if ( buttonIndex == 0 ) {
+        
+        // make the call to the server to delete the card
+        self.receivedData = [NSMutableData data];
+        w_request_type = REQUEST_TYPE_DELETE_CARD;
+        [[Woosh woosh] deleteCard:cell.cardId delegate:self];
+
+    } else if ( buttonIndex == 1 ) {
+
+        // expire the current offer on the card
+        self.receivedData = [NSMutableData data];
+        w_request_type = REQUEST_TYPE_EXPIRE_OFFER;
+        
+        [[Woosh woosh] expireOffer:cell.lastOfferId delegate:self];
+
+    } else if ( buttonIndex == 2 ) {
+
+        // this is the re-offer button
+        
+        // re-offer the card
+        self.receivedData = [NSMutableData data];
+        w_request_type = REQUEST_TYPE_MAKE_OFFER;
+        
+        [[Woosh woosh] makeOffer:cell.cardId latitude:[[Woosh woosh] latitude] longitude:[[Woosh woosh] longitude] delegate:self];
+
+    }
+    
+    NSLog(@"User clicked button: %d", buttonIndex);
+    
+}
+
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     
     CLLocation *mostRecentLocation = [locations objectAtIndex:[locations count] - 1];
@@ -156,11 +247,11 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     [[Woosh woosh] setLongitude:mostRecentLocation.coordinate.longitude];
     [[Woosh woosh] setHorizontalAccuracy:mostRecentLocation.horizontalAccuracy];
     
-    NSLog(@"Horizontal accuracy is %f metres", mostRecentLocation.horizontalAccuracy);
+//    NSLog(@"Horizontal accuracy is %f metres", mostRecentLocation.horizontalAccuracy);
 
     if ( ! [CLLocationManager locationServicesEnabled] ) {
         self.navigationItem.prompt = LOCATION_SERVICES_REQUIRED;
-    } else if ( mostRecentLocation.horizontalAccuracy > 10.0f ) {
+    } else if ( mostRecentLocation.horizontalAccuracy > 20.0f ) {
         self.navigationItem.prompt = [NSString stringWithFormat:SUB_OPTIMAL_ACCURACY, [[Woosh woosh] horizontalAccuracy]];
     } else /* location accuracy is <= 10 metres */ {
         self.navigationItem.prompt = READY_TO_WOOSH;
@@ -197,6 +288,34 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
         [self presentViewController:picker animated:YES completion:nil];
         
     }    
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    if (buttonIndex == 1) {
+        
+        // the user chose camera
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        [picker setSourceType:UIImagePickerControllerSourceTypeCamera];
+        [picker setDelegate:self];
+        
+        [self presentViewController:picker animated:YES completion:nil];
+        
+    } else if (buttonIndex == 2) {
+        
+        // the user chose gallery
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        [picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        [picker setDelegate:self];
+        
+        [self presentViewController:picker animated:YES completion:nil];
+        
+    } else {
+        
+        // user cancelled the action
+        
+    }
+    
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -448,6 +567,23 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
             // now that we've created the new card and offered it, refresh all cards
             [self refreshCards];
         }
+
+    } else if (w_request_type == REQUEST_TYPE_EXPIRE_OFFER) {
+
+        // grab the relevant cell
+        WooshPhotoCollectionViewCell* cell = (WooshPhotoCollectionViewCell *) [self.collectionView cellForItemAtIndexPath:self.selectedPath];
+
+        [cell.timer invalidate];
+        cell.remainingTimeLabel.text = @"";
+        
+        // create a local notification for the offer expiry (so that the user knows when their offer expired)
+        [[Woosh woosh] removeLocalExpityNotificationForOffer:cell.lastOfferId];
+        
+    } else if (w_request_type == REQUEST_TYPE_DELETE_CARD) {
+        
+        // refresh the list of card from the servers
+        w_request_type = REQUEST_TYPE_LIST_CARDS;
+        [[Woosh woosh] getCards:self];
         
     } else if (w_request_type == REQUEST_TYPE_SCAN) {
 

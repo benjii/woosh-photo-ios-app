@@ -13,7 +13,7 @@
 #import "WooshPhotoCollectionViewCell.h"
 
 
-@interface WooshPhotosCollectionViewController : UICollectionViewController<NSURLConnectionDelegate, CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface WooshPhotosCollectionViewController : UICollectionViewController<NSURLConnectionDelegate, CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate, UIActionSheetDelegate>
 
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *loadingCardsActivityView;
 
@@ -22,6 +22,7 @@
 
 @property NSArray *cards;
 @property NSCache *imageCache;
+@property NSIndexPath *selectedPath;
 
 - (void) refreshCards;
 - (void) scanForOffers:(id)sender;
