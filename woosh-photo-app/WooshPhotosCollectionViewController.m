@@ -76,7 +76,7 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
     
     // add a swipe gesture to the view so that users can swipe down to scan
-    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(scanForOffers:)];
+    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
     swipeGesture.numberOfTouchesRequired = 1;
     swipeGesture.direction = (UISwipeGestureRecognizerDirectionUp | UISwipeGestureRecognizerDirectionDown);
     
@@ -139,24 +139,32 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     [self.loadingCardsActivityView stopAnimating];
 }
 
--(IBAction) scanForOffers:(id)sender {
+-(void) handleSwipe:(UISwipeGestureRecognizer *)gestureRecognizer {
     
-    // check that location services is working (if not warn the user that Woosh won't work well)
-    if ( ! [CLLocationManager locationServicesEnabled] ) {
-        UIAlertView *locServicesDisabledAlert = [[UIAlertView alloc] initWithTitle:@"Location Services Disabled"
-                                                                           message:@"Woosh would like to scan for photos but it needs Location Services enabled to be able to to so. Please enable Location Services in Settings and try again."
-                                                                          delegate:nil
-                                                                 cancelButtonTitle:@"OK"
-                                                                 otherButtonTitles:nil];
-        [locServicesDisabledAlert show];
-        return;
+    if ( gestureRecognizer.direction == UISwipeGestureRecognizerDirectionDown ) {
+
+        // check that location services is working (if not warn the user that Woosh won't work well)
+        if ( ! [CLLocationManager locationServicesEnabled] ) {
+            UIAlertView *locServicesDisabledAlert = [[UIAlertView alloc] initWithTitle:@"Location Services Disabled"
+                                                                               message:@"Woosh would like to scan for photos but it needs Location Services enabled to be able to to so. Please enable Location Services in Settings and try again."
+                                                                              delegate:nil
+                                                                     cancelButtonTitle:@"OK"
+                                                                     otherButtonTitles:nil];
+            [locServicesDisabledAlert show];
+            return;
+            
+        }
+        
+        // scan for offers at the current location
+        w_request_type = REQUEST_TYPE_SCAN;
+        self.receivedData = [NSMutableData data];
+        [[Woosh woosh] scan:self];
+
+    } else if ( gestureRecognizer.direction == UISwipeGestureRecognizerDirectionUp ) {
+        
+        // TODO handle the 'swipe up' gesture as a re-offer
         
     }
-    
-    // scan for offers at the current location
-    w_request_type = REQUEST_TYPE_SCAN;
-    self.receivedData = [NSMutableData data];
-    [[Woosh woosh] scan:self];
     
 }
 
@@ -219,14 +227,14 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     // grab the relevant cell
     WooshPhotoCollectionViewCell* cell = (WooshPhotoCollectionViewCell *) [self.collectionView cellForItemAtIndexPath:self.selectedPath];
     
-    if ( buttonIndex == self.expireButtonIndex ) {
+    if ( buttonIndex == self.deleteButtonIndex ) {
         
         // make the call to the server to delete the card
         self.receivedData = [NSMutableData data];
         w_request_type = REQUEST_TYPE_DELETE_CARD;
         [[Woosh woosh] deleteCard:cell.cardId delegate:self];
 
-    } else if ( buttonIndex == self.deleteButtonIndex ) {
+    } else if ( buttonIndex == self.expireButtonIndex ) {
 
         // expire the current offer on the card
         self.receivedData = [NSMutableData data];

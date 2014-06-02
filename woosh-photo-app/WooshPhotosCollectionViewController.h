@@ -29,7 +29,7 @@
 @property NSInteger reofferButtonIndex;
 
 - (void) refreshCards;
-- (void) scanForOffers:(id)sender;
+//- (void) scanForOffers:(id)sender;
 
 -(IBAction) selectPhotographButtonTapped:(id)sender;
 
