@@ -33,6 +33,7 @@ int w_request_type = REQUEST_TYPE_NONE;
 
 @synthesize receivedData;
 @synthesize cards;
+@synthesize imageCache;
 
 @synthesize loadingCardsActivityView;
 
@@ -44,7 +45,8 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
+    // initialise the request type
     w_request_type = REQUEST_TYPE_NONE;
     
     // if the system properties array is empty at this point then pop up the login view to capture user authentication credentials
@@ -57,6 +59,9 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
         
     }
 
+    // initialise the image cache
+    self.imageCache = [[NSCache alloc] init];
+    
     // start the location manager
     self.locationManager = [[CLLocationManager alloc] init];
     
@@ -184,7 +189,7 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
         
     } else {
         
-        // the only option that the user has is to select from the gallery
+        // no camera - the only option that the user has is to select from the gallery
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         [picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
         [picker setDelegate:self];
@@ -204,10 +209,14 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     // the card creation is started here and the offer is made then the new card ID is received in the response (within the delegate)
     w_request_type = REQUEST_TYPE_CREATE_CARD;
     self.receivedData = [NSMutableData data];
+
+    // generate a new unique ID for the photograph
+    NSString *photographId = [Woosh uuid];
+
+    // place the JPEG into the in-memory cache
+    [self.imageCache setObject:jpeg forKey:photographId];
     
     // write the JPEG to the local image cache
-    NSString *photographId = [Woosh uuid];
-    
     NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
     NSURL *imagePath = [[documentPath URLByAppendingPathComponent:@"images"] URLByAppendingPathComponent:photographId];
     
@@ -261,39 +270,56 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
         NSDictionary *dataDict = [data objectAtIndex:0];
         NSString *binaryId = [dataDict objectForKey:@"binaryId"];
         
-        NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-        NSURL *imagePath = [[documentPath URLByAppendingPathComponent:@"images"] URLByAppendingPathComponent:binaryId];
-        
-        if ( [[NSFileManager defaultManager] fileExistsAtPath:[imagePath path]] ) {
+        // look for the photograph in the in-memory cache
+        if ([self.imageCache objectForKey:binaryId] != nil) {
             
-            // load the image from the local image cache
-            NSLog(@"Locally cached image found - loading...");
-            cell.thumbnail.image = [UIImage imageWithContentsOfFile:[imagePath path]];
+            NSLog(@"Found image in the in-memory cache - rendering...");
+            cell.thumbnail.image = [UIImage imageWithData:[self.imageCache objectForKey:binaryId]];
             
         } else {
-            NSURL *remoteUrl = [NSURL URLWithString:[dataDict objectForKey:@"value"]];
             
-            // download the image to the local cache
-            NSLog(@"No locally cached image found - downloading...");
-            NSData *imageData = [NSData dataWithContentsOfURL:remoteUrl];
+            // the photograph was not found in the image cache so look for it on disk
+            // if not found on disk then we download from S3
             
-            if (imageData == nil) {
-                
-                NSLog(@"Warning! Could not download image from S3. Tagging image as unavailable.");
-                
-                // write an empty image to the cache - it's missing
-                [[NSFileManager defaultManager] createFileAtPath:[imagePath path] contents:[NSData data] attributes:nil];
-                
-                cell.remainingTimeLabel.text = @"Card Missing!";
+            NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+            NSURL *imagePath = [[documentPath URLByAppendingPathComponent:@"images"] URLByAppendingPathComponent:binaryId];
+            
+            if ( [[NSFileManager defaultManager] fileExistsAtPath:[imagePath path]] ) {
+
+                NSLog(@"Locally cached image found - loading...");
+
+                // locally cached image found - store the image in the in-memory cache for later
+                [self.imageCache setObject:[NSData dataWithContentsOfFile:[imagePath path]] forKey:binaryId];
+                cell.thumbnail.image = [UIImage imageWithData:[self.imageCache objectForKey:binaryId]];
                 
             } else {
+                NSURL *remoteUrl = [NSURL URLWithString:[dataDict objectForKey:@"value"]];
                 
-                NSLog(@"Downloaded image from S3 - storing in local cache.");
-                [imageData writeToURL:imagePath atomically:YES];
+                // download the image to the local cache
+                NSLog(@"No locally cached image found - downloading...");
+                NSData *imageData = [NSData dataWithContentsOfURL:remoteUrl];
+                
+                if (imageData == nil) {
+                    
+                    NSLog(@"Warning! Could not download image from S3. Tagging image as unavailable.");
+                    
+                    // write an empty image to the cache - it's missing
+                    [[NSFileManager defaultManager] createFileAtPath:[imagePath path] contents:[NSData data] attributes:nil];
+                    
+                    cell.remainingTimeLabel.text = @"Card Missing!";
+                    
+                } else {
+                    
+                    NSLog(@"Downloaded image from S3 - storing in local cache.");
+
+                    [imageData writeToURL:imagePath atomically:YES];
+                    [self.imageCache setObject:imageData forKey:binaryId];
+                    
+                    cell.thumbnail.image = [UIImage imageWithData:imageData];
+                }
                 
             }
-            
-            cell.thumbnail.image = [UIImage imageWithContentsOfFile:[imagePath path]];
+
         }
     }
     
@@ -446,7 +472,7 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
                                                               options:NSJSONReadingMutableContainers
                                                                 error:&error];
             
-            // procoess each offer
+            // process each offer
             for (int count = 0; count < [offers count]; count++) {
                 NSDictionary *offer = [offers objectAtIndex:count];
                 

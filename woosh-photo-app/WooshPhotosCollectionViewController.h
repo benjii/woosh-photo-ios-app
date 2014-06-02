@@ -21,6 +21,7 @@
 @property (strong, nonatomic) CLLocationManager *locationManager;
 
 @property NSArray *cards;
+@property NSCache *imageCache;
 
 - (void) refreshCards;
 - (void) scanForOffers:(id)sender;
