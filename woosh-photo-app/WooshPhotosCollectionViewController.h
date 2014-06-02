@@ -24,6 +24,10 @@
 @property NSCache *imageCache;
 @property NSIndexPath *selectedPath;
 
+@property NSInteger expireButtonIndex;
+@property NSInteger deleteButtonIndex;
+@property NSInteger reofferButtonIndex;
+
 - (void) refreshCards;
 - (void) scanForOffers:(id)sender;
 

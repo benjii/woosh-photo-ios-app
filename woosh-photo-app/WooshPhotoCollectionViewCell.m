@@ -43,8 +43,12 @@
     
 }
 
--(BOOL) isActive {
-    return [self.timer isValid];
+-(BOOL) isOffered {
+    NSDate *offerEndDate = [NSDate dateWithTimeIntervalSince1970:self.offerEnd / 1000];
+    NSTimeInterval interval = [offerEndDate timeIntervalSinceNow];
+    NSInteger time = interval;
+    
+    return time > 0;
 }
 
 /*

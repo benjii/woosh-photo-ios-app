@@ -38,6 +38,10 @@ int w_request_type = REQUEST_TYPE_NONE;
 @synthesize imageCache;
 @synthesize selectedPath;
 
+@synthesize expireButtonIndex;
+@synthesize deleteButtonIndex;
+@synthesize reofferButtonIndex;
+
 @synthesize loadingCardsActivityView;
 
 static NSString* LOCATION_SERVICES_REQUIRED = @"Location Services are disabled";
@@ -178,13 +182,17 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
         
         NSLog(@"User long-pressed on cell: %@", cell);
         
-        if ( [cell isActive] ) {
+        if ( [cell isOffered] ) {
 
             UIActionSheet *cellActions = [[UIActionSheet alloc] initWithTitle:nil
                                                                      delegate:self
                                                             cancelButtonTitle:@"Cancel"
                                                        destructiveButtonTitle:nil
                                                             otherButtonTitles:@"Expire", nil];
+            
+            self.expireButtonIndex = 0;
+            self.deleteButtonIndex = -1;
+            self.reofferButtonIndex = -1;
             
             [cellActions showFromTabBar:self.tabBarController.tabBar];
 
@@ -195,7 +203,11 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
                                                             cancelButtonTitle:@"Cancel"
                                                        destructiveButtonTitle:@"Delete"
                                                             otherButtonTitles:@"Offer Again", nil];
-            
+
+            self.expireButtonIndex = -1;
+            self.deleteButtonIndex = 0;
+            self.reofferButtonIndex = 1;
+
             [cellActions showFromTabBar:self.tabBarController.tabBar];
             
         }
@@ -207,14 +219,14 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     // grab the relevant cell
     WooshPhotoCollectionViewCell* cell = (WooshPhotoCollectionViewCell *) [self.collectionView cellForItemAtIndexPath:self.selectedPath];
     
-    if ( buttonIndex == 0 ) {
+    if ( buttonIndex == self.expireButtonIndex ) {
         
         // make the call to the server to delete the card
         self.receivedData = [NSMutableData data];
         w_request_type = REQUEST_TYPE_DELETE_CARD;
         [[Woosh woosh] deleteCard:cell.cardId delegate:self];
 
-    } else if ( buttonIndex == 1 ) {
+    } else if ( buttonIndex == self.deleteButtonIndex ) {
 
         // expire the current offer on the card
         self.receivedData = [NSMutableData data];
@@ -222,7 +234,7 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
         
         [[Woosh woosh] expireOffer:cell.lastOfferId delegate:self];
 
-    } else if ( buttonIndex == 2 ) {
+    } else if ( buttonIndex == self.reofferButtonIndex ) {
 
         // this is the re-offer button
         
@@ -583,7 +595,7 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
         
         // refresh the list of card from the servers
         w_request_type = REQUEST_TYPE_LIST_CARDS;
-        [[Woosh woosh] getCards:self];
+        [self refreshCards];
         
     } else if (w_request_type == REQUEST_TYPE_SCAN) {
 

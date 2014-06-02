@@ -35,6 +35,6 @@
 // a timer to show the offer time ticking down
 @property (nonatomic) NSTimer *timer;
 
--(BOOL) isActive;
+-(BOOL) isOffered;
 
 @end
