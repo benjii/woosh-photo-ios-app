@@ -31,6 +31,7 @@
 - (void) refreshCards;
 //- (void) scanForOffers:(id)sender;
 
+-(IBAction) helpButtonTapped:(id)sender;
 -(IBAction) selectPhotographButtonTapped:(id)sender;
 
 @end

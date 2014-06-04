@@ -56,6 +56,9 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     // initialise the request type
     w_request_type = REQUEST_TYPE_NONE;
     
+    // make sure that the loading activity view is at the top
+    [self.collectionView bringSubviewToFront:self.loadingCardsActivityView];
+
     // if the system properties array is empty at this point then pop up the login view to capture user authentication credentials
     if ( [[[Woosh woosh] systemProperties] count] == 0 ) {
         
@@ -286,6 +289,17 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
 // action buttons
 //
 
+-(IBAction) helpButtonTapped:(id)sender {
+    
+    UIAlertView *helpAlert = [[UIAlertView alloc] initWithTitle:@"How To Share Photos With Your Friends"
+                                                        message:@"\nTap the Share icon to drop a photo into the world\n\nSwipe down to grab shared photos\n\nHold on a photo for more options"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"I Got It"
+                                              otherButtonTitles:nil];
+    [helpAlert show];
+    
+}
+
 -(IBAction) selectPhotographButtonTapped:(id)sender {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         
@@ -463,7 +477,7 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     }
     
     // the rendering of cells depends somewhat on whether the card is owned by this user or not
-    // we can tell if a user owns a card if there is
+    // we can tell if a user owns a card if there is a 'lastOffer' property set
     
     if ( [[card objectForKey:@"fromOffer"] isKindOfClass:[NSDictionary class]] ) {
         // there is a "fromOffer" property set so this offer did not originate from here - it's read only
@@ -487,6 +501,7 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
         cell.offerCountLabel.text = [NSString stringWithFormat:@"%@ / %@", [card objectForKey:@"totalAcceptances"], [card objectForKey:@"totalOffers"]];
 
         if ( cell.active ) {
+            
             cell.offerEnd = offerEnd;
             cell.remainingTimeLabel.hidden = NO;
 
@@ -594,6 +609,7 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
         WooshPhotoCollectionViewCell* cell = (WooshPhotoCollectionViewCell *) [self.collectionView cellForItemAtIndexPath:self.selectedPath];
 
         [cell.timer invalidate];
+        cell.remainingTimeLabel.hidden = YES;
         cell.remainingTimeLabel.text = @"";
         
         // create a local notification for the offer expiry (so that the user knows when their offer expired)

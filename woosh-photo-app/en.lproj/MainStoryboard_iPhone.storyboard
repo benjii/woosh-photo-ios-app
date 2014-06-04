@@ -194,40 +194,45 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="5" minimumInteritemSpacing="0.0" id="SZM-Yt-Xit">
-                            <size key="itemSize" width="80" height="107"/>
+                            <size key="itemSize" width="120" height="160"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
+                        <activityIndicatorView key="backgroundView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" id="faf-qF-af2">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="425"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </activityIndicatorView>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="WooshPhotoCell" id="giB-de-MTN" customClass="WooshPhotoCollectionViewCell">
-                                <rect key="frame" x="0.0" y="0.0" width="80" height="107"/>
+                                <rect key="frame" x="0.0" y="0.0" width="120" height="160"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="80" height="107"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="120" height="160"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0/0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mM4-Wl-rYa">
-                                            <rect key="frame" x="3.5" y="86" width="25" height="21"/>
+                                            <rect key="frame" x="7.5" y="139" width="25" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jg9-Te-A8e">
-                                            <rect key="frame" x="42.5" y="86" width="35" height="21"/>
+                                            <rect key="frame" x="79" y="139" width="35" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ucf-Tk-3UI">
-                                            <rect key="frame" x="0.0" y="0.0" width="80" height="87"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="120" height="140"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <size key="customSize" width="120" height="160"/>
                                 <connections>
                                     <outlet property="offerCountLabel" destination="mM4-Wl-rYa" id="9r4-TC-hwP"/>
                                     <outlet property="remainingTimeLabel" destination="jg9-Te-A8e" id="Jv8-qj-mSC"/>
@@ -243,12 +248,20 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" title="Woosh" image="first.png" id="hbi-6e-u7f"/>
                     <navigationItem key="navigationItem" title="Woosh" prompt="Ready to Woosh!" id="axh-Bv-XYL">
+                        <barButtonItem key="leftBarButtonItem" title="Help" id="sva-g4-sEN">
+                            <connections>
+                                <action selector="helpButtonTapped:" destination="bAw-1A-jNP" id="pe8-uo-D6o"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="action" id="SmD-9s-6yK">
                             <connections>
                                 <action selector="selectPhotographButtonTapped:" destination="bAw-1A-jNP" id="quZ-CL-yc1"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="loadingCardsActivityView" destination="faf-qF-af2" id="Dt6-AE-Jts"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bv2-uV-yNd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
