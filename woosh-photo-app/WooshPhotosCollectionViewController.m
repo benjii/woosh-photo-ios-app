@@ -79,12 +79,19 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
     
     // add a swipe gesture to the view so that users can swipe down to scan
-    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
-    swipeGesture.numberOfTouchesRequired = 1;
-    swipeGesture.direction = (UISwipeGestureRecognizerDirectionUp | UISwipeGestureRecognizerDirectionDown);
+    UISwipeGestureRecognizer *downSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleDownSwipe:)];
+    downSwipeGesture.numberOfTouchesRequired = 1;
+    downSwipeGesture.direction = UISwipeGestureRecognizerDirectionDown;
     
-    [self.collectionView addGestureRecognizer:swipeGesture];
+    [self.collectionView addGestureRecognizer:downSwipeGesture];
+
+    // add a swipe gesture to the view so that users can swipe up to re-offer
+    UISwipeGestureRecognizer *upSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleUpSwipe:)];
+    upSwipeGesture.numberOfTouchesRequired = 1;
+    upSwipeGesture.direction = UISwipeGestureRecognizerDirectionUp;
     
+    [self.collectionView addGestureRecognizer:upSwipeGesture];
+
     // add a long-press gesture to the view so that users can manipulate image cells
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     longPress.minimumPressDuration = .5;    // seconds
@@ -155,33 +162,29 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     [self.loadingCardsActivityView stopAnimating];
 }
 
--(void) handleSwipe:(UISwipeGestureRecognizer *)gestureRecognizer {
+-(void) handleDownSwipe:(UISwipeGestureRecognizer *)gestureRecognizer {
     
-    if ( gestureRecognizer.direction == UISwipeGestureRecognizerDirectionDown ) {
-
-        // check that location services is working (if not warn the user that Woosh won't work well)
-        if ( ! [CLLocationManager locationServicesEnabled] ) {
-            UIAlertView *locServicesDisabledAlert = [[UIAlertView alloc] initWithTitle:@"Location Services Disabled"
-                                                                               message:@"Woosh would like to scan for photos but it needs Location Services enabled to be able to to so. Please enable Location Services in Settings and try again."
-                                                                              delegate:nil
-                                                                     cancelButtonTitle:@"OK"
-                                                                     otherButtonTitles:nil];
-            [locServicesDisabledAlert show];
-            return;
-            
-        }
-        
-        // scan for offers at the current location
-        w_request_type = REQUEST_TYPE_SCAN;
-        self.receivedData = [NSMutableData data];
-        [[Woosh woosh] scan:self];
-
-    } else if ( gestureRecognizer.direction == UISwipeGestureRecognizerDirectionUp ) {
-        
-        // TODO handle the 'swipe up' gesture as a re-offer
+    // check that location services is working (if not warn the user that Woosh won't work well)
+    if ( ! [CLLocationManager locationServicesEnabled] ) {
+        UIAlertView *locServicesDisabledAlert = [[UIAlertView alloc] initWithTitle:@"Location Services Disabled"
+                                                                           message:@"Woosh would like to scan for photos but it needs Location Services enabled to be able to to so. Please enable Location Services in Settings and try again."
+                                                                          delegate:nil
+                                                                 cancelButtonTitle:@"OK"
+                                                                 otherButtonTitles:nil];
+        [locServicesDisabledAlert show];
+        return;
         
     }
     
+    // scan for offers at the current location
+    w_request_type = REQUEST_TYPE_SCAN;
+    self.receivedData = [NSMutableData data];
+    [[Woosh woosh] scan:self];
+    
+}
+
+-(void) handleUpSwipe:(UISwipeGestureRecognizer *)gestureRecognizer {
+    NSLog(@"Up swipe gesture detected.");
 }
 
 -(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {
