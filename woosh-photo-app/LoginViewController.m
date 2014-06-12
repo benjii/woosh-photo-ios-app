@@ -50,6 +50,12 @@ int login_request_type = REQUEST_TYPE_NONE;
 
 - (IBAction) loginTapped:(id)sender {
  
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Logging In...";
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        // do nothing
+    });
+    
     NSString *username = self.usernameField.text;
     NSString *password = self.passwordField.text;
     
@@ -62,7 +68,7 @@ int login_request_type = REQUEST_TYPE_NONE;
                           otherButtonTitles:nil] show];
         return;
     }
-
+    
     if (password == nil || [password compare:@""] == NSOrderedSame) {
         [[[UIAlertView alloc] initWithTitle:@"Invalid Password"
                                     message:@"To log in you must provide a password."
@@ -71,7 +77,7 @@ int login_request_type = REQUEST_TYPE_NONE;
                           otherButtonTitles:nil] show];
         return;
     }
-
+    
     // if all input is valid then attempt an authenticated action
     NSString *endpoint = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"ServerEndpoint"];
     NSString *authEndpoint = [endpoint stringByAppendingPathComponent:@"authenticate"];
@@ -79,13 +85,14 @@ int login_request_type = REQUEST_TYPE_NONE;
     NSMutableURLRequest *authReq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:authEndpoint]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:60.0];
-
+    
     // reset the response data
     login_request_type = REQUEST_TYPE_AUTHENTICATE;
     self.receivedData = [NSMutableData data];
     
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:authReq delegate:self startImmediately:NO];
     [conn start];
+
 }
 
 - (IBAction) signupTapped:(id)sender {
@@ -134,7 +141,11 @@ int login_request_type = REQUEST_TYPE_NONE;
         
         // flush the system properties file to disk
         [props writeToURL:systemPropertiesPath atomically:NO];
-                
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
+
         // dismiss the login view - the user is free to start using the app
         [self dismissViewControllerAnimated:YES completion:^{ }];
     }

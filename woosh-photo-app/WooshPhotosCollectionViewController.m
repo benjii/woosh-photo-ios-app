@@ -94,7 +94,11 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
 
 - (void) refreshCards {
     
-//    [NSThread detachNewThreadSelector:@selector(threadStartAnimating:) toTarget:self withObject:nil];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Refreshing...";
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        // do nothing
+    });
     
     // initialise the buffer to hold server response data
     self.receivedData = [NSMutableData data];
@@ -266,7 +270,7 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
 
     }
     
-    NSLog(@"User clicked button: %d", buttonIndex);
+    NSLog(@"User clicked button: %ld", (long)buttonIndex);
     
 }
 
@@ -415,8 +419,8 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     NSDictionary *card = [self.cards objectAtIndex:indexPath.row];
     id data = [card objectForKey:@"data"];
     
-    // output the card JSON
-    NSLog(@"%@", card);
+//    // output the card JSON
+//    NSLog(@"%@", card);
     
     // set properties that are common to all cells
     cell.parentView = self;
@@ -526,10 +530,6 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
         
     }
     
-//    if ( [indexPath row] == ((NSIndexPath*)[collectionView indexPathForCell:cell]).row ) {
-//        [NSThread detachNewThreadSelector:@selector(threadStopAnimating:) toTarget:self withObject:nil];
-//    }
-
     return cell;
 }
 
@@ -564,8 +564,12 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
                                                        error:&jsonErr];
         
 //        NSLog(@"%@", [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding]);
-        
+
         [self.collectionView reloadData];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
 
     } else if (w_request_type == REQUEST_TYPE_CREATE_CARD) {
         

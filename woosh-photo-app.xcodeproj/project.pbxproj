@@ -48,6 +48,7 @@
 		B5E3AB31169293F30076A99E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5E3AB30169293F30076A99E /* CoreLocation.framework */; };
 		B5EA2E0716D2B369007E6B14 /* WooshCardTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5EA2E0616D2B369007E6B14 /* WooshCardTableViewCell.xib */; };
 		B5EA2E0A16D2B5E5007E6B14 /* WooshCardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B5EA2E0916D2B5E5007E6B14 /* WooshCardTableViewCell.m */; };
+		B5EAB2D1194A48B200CEBBA6 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = B5EAB2D0194A48B200CEBBA6 /* MBProgressHUD.m */; };
 		B5F8E1951699FB03000FF293 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F8E1941699FB03000FF293 /* NSData+Base64.m */; };
 /* End PBXBuildFile section */
 
@@ -119,6 +120,8 @@
 		B5EA2E0616D2B369007E6B14 /* WooshCardTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WooshCardTableViewCell.xib; path = ../WooshCardTableViewCell.xib; sourceTree = "<group>"; };
 		B5EA2E0816D2B5E5007E6B14 /* WooshCardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WooshCardTableViewCell.h; sourceTree = "<group>"; };
 		B5EA2E0916D2B5E5007E6B14 /* WooshCardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WooshCardTableViewCell.m; sourceTree = "<group>"; };
+		B5EAB2CF194A48B200CEBBA6 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		B5EAB2D0194A48B200CEBBA6 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		B5F8E1931699FB03000FF293 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		B5F8E1941699FB03000FF293 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -223,6 +226,7 @@
 		B5B73FA016929105008A8BBC /* woosh-photo-app */ = {
 			isa = PBXGroup;
 			children = (
+				B5EAB2CE194A489F00CEBBA6 /* MBProgressHUB */,
 				B5101C4E19155F26001048CE /* Photo Offers View */,
 				B54922E816973694002C9438 /* Global */,
 				B50D8E851903D72100C5BC2C /* Reachability */,
@@ -300,6 +304,15 @@
 				B57330A918E0929E003DA719 /* ViewPhotoViewController.m */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		B5EAB2CE194A489F00CEBBA6 /* MBProgressHUB */ = {
+			isa = PBXGroup;
+			children = (
+				B5EAB2CF194A48B200CEBBA6 /* MBProgressHUD.h */,
+				B5EAB2D0194A48B200CEBBA6 /* MBProgressHUD.m */,
+			);
+			name = MBProgressHUB;
 			sourceTree = "<group>";
 		};
 		B5F8E18E1699FA69000FF293 /* Util */ = {
@@ -446,6 +459,7 @@
 				B54922EC169736A9002C9438 /* Woosh.m in Sources */,
 				B5F8E1951699FB03000FF293 /* NSData+Base64.m in Sources */,
 				B5101C4719155967001048CE /* WooshPhotoCollectionViewCell.m in Sources */,
+				B5EAB2D1194A48B200CEBBA6 /* MBProgressHUD.m in Sources */,
 				B57330AA18E0929E003DA719 /* ViewPhotoViewController.m in Sources */,
 				B5B8189816B58D2F007E962F /* LoginViewController.m in Sources */,
 				B5527ABB16B5BAE700A7FD85 /* SignupViewController.m in Sources */,

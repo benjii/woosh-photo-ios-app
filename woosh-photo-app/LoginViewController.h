@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MBProgressHUD.h"
 
 @interface LoginViewController : UIViewController<NSURLConnectionDelegate, UITextFieldDelegate>
 
