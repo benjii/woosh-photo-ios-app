@@ -76,7 +76,6 @@
         [[Woosh woosh] setSystemProperties:[NSMutableDictionary dictionary]];
         
         [self.tabBarController setSelectedIndex:0];
-
     }
     
 }

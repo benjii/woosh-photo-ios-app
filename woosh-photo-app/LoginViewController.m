@@ -118,6 +118,8 @@ int login_request_type = REQUEST_TYPE_NONE;
         NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
         NSURL *systemPropertiesPath = [documentPath URLByAppendingPathComponent:@"woosh.plist"];
         
+//        NSLog(@"%@", [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding]);
+        
         NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:self.receivedData
                                                                  options:NSJSONReadingMutableContainers
                                                                    error:nil];

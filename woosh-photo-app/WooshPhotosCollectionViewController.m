@@ -110,6 +110,15 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
+    if ( [[[Woosh woosh] systemProperties] count] == 0 ) {
+        
+        LoginViewController *loginView = [[LoginViewController alloc] init];
+        [self presentViewController:loginView animated:YES completion:^{
+            // do nothing
+        }];
+        
+    }
+    
     self.navigationItem.prompt = READY_TO_WOOSH;
     
     // start updating location
