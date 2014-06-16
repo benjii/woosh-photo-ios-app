@@ -15,8 +15,6 @@
 
 @interface WooshPhotosCollectionViewController : UICollectionViewController<NSURLConnectionDelegate, CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate, UIActionSheetDelegate>
 
-@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *loadingCardsActivityView;
-
 @property NSMutableData *receivedData;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 
@@ -27,6 +25,8 @@
 @property NSInteger expireButtonIndex;
 @property NSInteger deleteButtonIndex;
 @property NSInteger reofferButtonIndex;
+
+@property NSFileManager *fileManager;
 
 - (void) refreshCards;
 //- (void) scanForOffers:(id)sender;

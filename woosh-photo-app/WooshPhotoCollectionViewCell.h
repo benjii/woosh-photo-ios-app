@@ -17,8 +17,11 @@
 @property (nonatomic, weak) IBOutlet UILabel *offerCountLabel;
 @property (nonatomic, weak) IBOutlet UILabel *remainingTimeLabel;
 
-// the ID of the card that is bwing shown
+// the ID of the card that is being shown
 @property (nonatomic, strong) NSString *cardId;
+
+// the ID of the image that is being shown
+@property (nonatomic, strong) NSString *imageId;
 
 // indicates whether the card is active (offered) or not
 @property (nonatomic) BOOL active;

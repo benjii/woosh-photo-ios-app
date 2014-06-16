@@ -42,7 +42,7 @@ int w_request_type = REQUEST_TYPE_NONE;
 @synthesize deleteButtonIndex;
 @synthesize reofferButtonIndex;
 
-@synthesize loadingCardsActivityView;
+@synthesize fileManager;
 
 static NSString* LOCATION_SERVICES_REQUIRED = @"Location Services are disabled";
 static NSString* SUB_OPTIMAL_ACCURACY = @"%.0f metre location accuracy";
@@ -56,9 +56,9 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     // initialise the request type
     w_request_type = REQUEST_TYPE_NONE;
     
-    // make sure that the loading activity view is at the top
-    [self.collectionView bringSubviewToFront:self.loadingCardsActivityView];
-
+    // grab the default file manager
+    self.fileManager = [NSFileManager defaultManager];
+    
     // if the system properties array is empty at this point then pop up the login view to capture user authentication credentials
     if ( [[[Woosh woosh] systemProperties] count] == 0 ) {
         
@@ -154,14 +154,6 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     [self.locationManager stopUpdatingLocation];
 }
 
-- (void) threadStartAnimating:(id)data {
-    [self.loadingCardsActivityView startAnimating];
-}
-
-- (void) threadStopAnimating:(id)data {
-    [self.loadingCardsActivityView stopAnimating];
-}
-
 -(void) handleDownSwipe:(UISwipeGestureRecognizer *)gestureRecognizer {
     
     // check that location services is working (if not warn the user that Woosh won't work well)
@@ -229,7 +221,7 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
                                                                      delegate:self
                                                             cancelButtonTitle:@"Cancel"
                                                        destructiveButtonTitle:@"Delete"
-                                                            otherButtonTitles:@"Offer Again", nil];
+                                                            otherButtonTitles:@"Woosh Again", nil];
 
             self.expireButtonIndex = -1;
             self.deleteButtonIndex = 0;
@@ -248,12 +240,34 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     
     if ( buttonIndex == self.deleteButtonIndex ) {
         
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = @"Deleting...";
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            // do nothing
+        });
+
+        // evaculate the local cache
+        NSURL *documentPath = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+        NSURL *imagePath = [[documentPath URLByAppendingPathComponent:@"images"] URLByAppendingPathComponent:cell.imageId];
+        
+        // locally cached image found - store the image in the in-memory cache for later
+        [self.imageCache removeObjectForKey:cell.imageId];
+        [fileManager removeItemAtURL:imagePath error:nil];
+        
         // make the call to the server to delete the card
         self.receivedData = [NSMutableData data];
         w_request_type = REQUEST_TYPE_DELETE_CARD;
         [[Woosh woosh] deleteCard:cell.cardId delegate:self];
 
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
     } else if ( buttonIndex == self.expireButtonIndex ) {
+
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = @"Expiring...";
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            // do nothing
+        });
 
         // expire the current offer on the card
         self.receivedData = [NSMutableData data];
@@ -261,15 +275,25 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
         
         [[Woosh woosh] expireOffer:cell.lastOfferId delegate:self];
 
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+
     } else if ( buttonIndex == self.reofferButtonIndex ) {
 
         // this is the re-offer button
-        
+
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = @"Wooshing...";
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            // do nothing
+        });
+
         // re-offer the card
         self.receivedData = [NSMutableData data];
         w_request_type = REQUEST_TYPE_MAKE_OFFER;
         
         [[Woosh woosh] makeOffer:cell.cardId latitude:[[Woosh woosh] latitude] longitude:[[Woosh woosh] longitude] delegate:self];
+
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
 
     }
     
@@ -386,10 +410,10 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     [self.imageCache setObject:jpeg forKey:photographId];
     
     // write the JPEG to the local image cache
-    NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    NSURL *documentPath = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
     NSURL *imagePath = [[documentPath URLByAppendingPathComponent:@"images"] URLByAppendingPathComponent:photographId];
     
-    [[NSFileManager defaultManager] createFileAtPath:[imagePath path] contents:jpeg attributes:nil];
+    [fileManager createFileAtPath:[imagePath path] contents:jpeg attributes:nil];
     
     // create the new Woosh card
     [[Woosh woosh] createCardWithPhoto:@"default"
@@ -422,6 +446,8 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
     NSDictionary *card = [self.cards objectAtIndex:indexPath.row];
     id data = [card objectForKey:@"data"];
     
+    cell.cardId = [card objectForKey:@"id"];
+ 
 //    // output the card JSON
 //    NSLog(@"%@", card);
     
@@ -444,22 +470,24 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
             
             NSLog(@"Found image in the in-memory cache - rendering...");
             cell.thumbnail.image = [UIImage imageWithData:[self.imageCache objectForKey:binaryId]];
+            cell.imageId = binaryId;
             
         } else {
             
             // the photograph was not found in the image cache so look for it on disk
             // if not found on disk then we download from S3
             
-            NSURL *documentPath = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+            NSURL *documentPath = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
             NSURL *imagePath = [[documentPath URLByAppendingPathComponent:@"images"] URLByAppendingPathComponent:binaryId];
             
-            if ( [[NSFileManager defaultManager] fileExistsAtPath:[imagePath path]] ) {
+            if ( [fileManager fileExistsAtPath:[imagePath path]] ) {
 
                 NSLog(@"Locally cached image found - loading...");
 
                 // locally cached image found - store the image in the in-memory cache for later
                 [self.imageCache setObject:[NSData dataWithContentsOfFile:[imagePath path]] forKey:binaryId];
                 cell.thumbnail.image = [UIImage imageWithData:[self.imageCache objectForKey:binaryId]];
+                cell.imageId = binaryId;
                 
             } else {
                 NSURL *remoteUrl = [NSURL URLWithString:[dataDict objectForKey:@"value"]];
@@ -473,7 +501,7 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
                     NSLog(@"Warning! Could not download image from S3. Tagging image as unavailable.");
                     
                     // write an empty image to the cache - it's missing
-                    [[NSFileManager defaultManager] createFileAtPath:[imagePath path] contents:[NSData data] attributes:nil];
+                    [fileManager createFileAtPath:[imagePath path] contents:[NSData data] attributes:nil];
                     
                     cell.remainingTimeLabel.text = @"Card Missing!";
                     
@@ -485,6 +513,7 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
                     [self.imageCache setObject:imageData forKey:binaryId];
                     
                     cell.thumbnail.image = [UIImage imageWithData:imageData];
+                    cell.imageId = binaryId;
                 }
                 
             }
@@ -510,7 +539,6 @@ static NSString* READY_TO_WOOSH = @"Ready to Woosh!";
         NSDate *offerEndDate = [NSDate dateWithTimeIntervalSince1970:offerEnd / 1000];
         BOOL active = [offerEndDate compare:[NSDate date]] == NSOrderedDescending;
         
-        cell.cardId = [card objectForKey:@"id"];
         cell.lastOfferId = [[card objectForKey:@"lastOffer"] objectForKey:@"id"];
         cell.active = active;
         cell.offerCountLabel.hidden = NO;
